@@ -3,7 +3,6 @@ using System.Linq;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Support.Design.Widget;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
@@ -70,6 +69,11 @@ namespace GUT.Schedule
                 error.Visibility = ViewStates.Visible;
             }
 
+            Data.Faculty = faculty.SelectedItemPosition;
+            Data.Group = group.SelectedItemPosition;
+            Data.Course = course.SelectedItemPosition + 1;
+            Data.Reminder = reminder.SelectedItemPosition;
+            Data.AddTitle = groupTitle.Checked;
 
             StartActivity(new Intent(this, typeof(ExportActivity)));
         }
@@ -113,6 +117,7 @@ namespace GUT.Schedule
             calendar = FindViewById<Spinner>(Resource.Id.calendar);
 
             error = FindViewById<TextView>(Resource.Id.error);
+            groupTitle = FindViewById<CheckBox>(Resource.Id.groupTitle);
         }
 
         private void AddEvents()

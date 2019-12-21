@@ -9,6 +9,7 @@ using Android.Support.V4.Content;
 using Android.Support.V7.App;
 using Android.Widget;
 using System.Linq;
+using System.Net.Http;
 
 namespace GUT.Schedule
 {
@@ -44,6 +45,10 @@ namespace GUT.Schedule
 
             status.Text = "Загрузка списка факультетов";
             await Parser.LoadFaculties();
+
+            status.Text = "Загрузка дат смещения";
+            using (HttpClient client = new HttpClient())
+                Data.FirstWeekDay = int.Parse(await client.GetStringAsync("https://xfox111.net/schedule_offset.txt"));
 
             StartActivity(new Intent(this, typeof(MainActivity)));
         }
