@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools">
     <item
         android:id="@+id/github"
-        android:orderInCategory="100"
         android:title="Посмотреть исходный код на GitHub"
         app:showAsAction="never" />
 </menu>

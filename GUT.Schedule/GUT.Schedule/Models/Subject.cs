@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GUT.Schedule
+namespace GUT.Schedule.Models
 {
     public class Subject
     {

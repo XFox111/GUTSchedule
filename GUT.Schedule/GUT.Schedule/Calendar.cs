@@ -1,21 +1,30 @@
 ﻿using System.Collections.Generic;
 using Android.App;
-using Android.Content;
 using Android.Database;
 using Android.Net;
 using Android.Provider;
 using Android.Support.V4.Content;
+using GUT.Schedule.Models;
 using Java.Util;
 
 namespace GUT.Schedule
 {
     public static class Calendar
     {
+        /// <summary>
+        /// List of all existing Google calendars on the device
+        /// </summary>
+        public static List<(string Id, string Name)> Calendars { get; private set; } = new List<(string Id, string Name)>();
+
+        /// <summary>
+        /// Retrieves all Google Accounts' calendars existing on the device and puts them to <see cref="Calendars"/>
+        /// </summary>
         public static void LoadCalendars()
         {
-            Data.Calendars = new List<(string, string)>();
+            Calendars = new List<(string, string)>();   // Resetting current calendars list
 
-            var calendarsUri = CalendarContract.Calendars.ContentUri;
+            // Building calendar data retrieval projections
+            Uri calendarsUri = CalendarContract.Calendars.ContentUri;
             string[] calendarsProjection = {
                 CalendarContract.Calendars.InterfaceConsts.Id,
                 CalendarContract.Calendars.InterfaceConsts.CalendarDisplayName,
@@ -24,54 +33,61 @@ namespace GUT.Schedule
                 CalendarContract.Calendars.InterfaceConsts.AccountType,
             };
 
-            using Android.Support.V4.Content.CursorLoader loader = new Android.Support.V4.Content.CursorLoader(Application.Context, calendarsUri, calendarsProjection, null, null, null);
+            // Retrieving calendars data
+            using CursorLoader loader = new CursorLoader(Application.Context, calendarsUri, calendarsProjection, null, null, null);
             ICursor cursor = (ICursor)loader.LoadInBackground();
 
             cursor.MoveToNext();
             for (int i = 0; i < cursor.Count; i++)
             {
-                if (cursor.GetString(4) == "com.google" && !cursor.GetString(3).Contains("google"))
-                    Data.Calendars.Add((cursor.GetString(0), $"{cursor.GetString(1)} ({cursor.GetString(2)})"));
+                if (cursor.GetString(4) == "com.google" && !cursor.GetString(3).Contains("google"))         // Loading only users' main calendars
+                    Calendars.Add((cursor.GetString(0), $"{cursor.GetString(1)} ({cursor.GetString(2)})"));
                 cursor.MoveToNext();
             }
         }
 
-        public static void Export(string calendarId, IEnumerable<Subject> schedule, int? remindBefore, bool addGroupToTitle)
+        
+        public static void Export(IEnumerable<Subject> schedule)
         {
+            DataSet data = Data.DataSet;
+
             foreach (Subject item in schedule)
-                AddEvent(calendarId, item, remindBefore, addGroupToTitle);
-        }
-
-        static void AddEvent(string calendarId, Subject subject, int? reminderMinutes, bool addHeader)
-        {
-            ContentValues eventValues = new ContentValues();
-
-            eventValues.Put(CalendarContract.Events.InterfaceConsts.CalendarId, calendarId);
-            eventValues.Put(CalendarContract.Events.InterfaceConsts.Title, $"{subject.Order}.{(addHeader ? $" [{subject.Group}]" : "")} {subject.Name} ({subject.Type})");
-            eventValues.Put(CalendarContract.Events.InterfaceConsts.Description, subject.Professor);
-            eventValues.Put(CalendarContract.Events.InterfaceConsts.EventLocation, string.Join(';', subject.Cabinets));
-
-            eventValues.Put(CalendarContract.Events.InterfaceConsts.Availability, 0);
-
-            if(reminderMinutes.HasValue)
-                eventValues.Put(CalendarContract.Events.InterfaceConsts.HasAlarm, true);
-
-            eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtstart, subject.StartTime.ToUnixTime());
-            eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtend, Extensions.ToUnixTime(subject.EndTime));
-
-            eventValues.Put(CalendarContract.Events.InterfaceConsts.EventTimezone, TimeZone.Default.ID);
-            eventValues.Put(CalendarContract.Events.InterfaceConsts.EventEndTimezone, TimeZone.Default.ID);
-
-            Uri response = Application.Context.ContentResolver.Insert(CalendarContract.Events.ContentUri, eventValues);
-
-            if (reminderMinutes.HasValue)
             {
-                ContentValues reminderValues = new ContentValues();
-                reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.EventId, long.Parse(response.LastPathSegment));
-                reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Method, 1);
-                reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Minutes, reminderMinutes.Value);
+                Android.Content.ContentValues eventValues = new Android.Content.ContentValues();
 
-                Application.Context.ContentResolver.Insert(CalendarContract.Reminders.ContentUri, reminderValues);
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.CalendarId, data.Calendar);
+
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.Title, string.Format("{0}.{1} {2} ({3})", 
+                    item.Order, 
+                    data.AddGroupToTitle ? $" [{item.Group}]" : "", 
+                    item.Name, 
+                    item.Type));
+
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.Description, string.Join(';', item.Professor));
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.EventLocation, string.Join(';', item.Cabinets));
+
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.Availability, 0);
+
+                if (data.Reminder.HasValue)
+                    eventValues.Put(CalendarContract.Events.InterfaceConsts.HasAlarm, true);
+
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtstart, item.StartTime.ToUnixTime());
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtend, Extensions.ToUnixTime(item.EndTime));
+
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.EventTimezone, TimeZone.Default.ID);
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.EventEndTimezone, TimeZone.Default.ID);
+
+                Uri response = Application.Context.ContentResolver.Insert(CalendarContract.Events.ContentUri, eventValues);
+
+                if (data.Reminder.HasValue)
+                {
+                    Android.Content.ContentValues reminderValues = new Android.Content.ContentValues();
+                    reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.EventId, long.Parse(response.LastPathSegment));
+                    reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Method, 1);
+                    reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Minutes, data.Reminder.Value);
+
+                    Application.Context.ContentResolver.Insert(CalendarContract.Reminders.ContentUri, reminderValues);
+                }
             }
         }
     }

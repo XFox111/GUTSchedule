@@ -13,6 +13,9 @@ using System.Net.Http;
 
 namespace GUT.Schedule
 {
+    /// <summary>
+    /// Splash screen activity. Loads init data
+    /// </summary>
     [Activity(MainLauncher = true, Theme = "@style/AppTheme.NoActionBar")]
     public class StartActivity : AppCompatActivity
     {
@@ -40,7 +43,7 @@ namespace GUT.Schedule
 
         private async void Proceed()
         {
-            status.Text = "Загрузка списка доступных для записи календарей";
+            status.Text = "Загрузка списка календарей";
             Calendar.LoadCalendars();
 
             status.Text = "Загрузка списка факультетов";
@@ -56,6 +59,7 @@ namespace GUT.Schedule
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
             if (grantResults.All(i => i == Permission.Granted))
                 Proceed();
             else
@@ -63,10 +67,11 @@ namespace GUT.Schedule
         }
 
         private void RequestPermissions() =>
-            ActivityCompat.RequestPermissions(this, new string[]
+            ActivityCompat.RequestPermissions(this, new[]
             {
-                Manifest.Permission.ReadCalendar, Manifest.Permission.WriteCalendar
-            }, 76);
+                Manifest.Permission.ReadCalendar, 
+                Manifest.Permission.WriteCalendar
+            }, 76);     // IDK why I need requestCode value to be set (instead of 76 there can be any other number. Anyway it doesn't affect anything)
 
         private void ShowDialog()
         {
@@ -79,6 +84,6 @@ namespace GUT.Schedule
             dialog.Show();
         }
 
-        public override void OnBackPressed() { }
+        public override void OnBackPressed() { }    // Disables back button
     }
 }

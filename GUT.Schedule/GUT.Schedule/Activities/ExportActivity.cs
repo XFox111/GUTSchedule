@@ -1,14 +1,20 @@
 ﻿using Android.App;
 using Android.OS;
 using Android.Widget;
+using GUT.Schedule.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GUT.Schedule
 {
+    /// <summary>
+    /// Shows status of schedule export process
+    /// </summary>
     [Activity(Theme = "@style/AppTheme.NoActionBar")]
     public class ExportActivity : Activity
     {
         TextView status;
+
         protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -17,24 +23,19 @@ namespace GUT.Schedule
             status = FindViewById<TextView>(Resource.Id.status);
 
             status.Text = "Загрузка расписания";
-            await Parser.LoadSchedule();
+            List<Subject> schedule = await Parser.LoadSchedule();
+
+            schedule = schedule.FindAll(i => i.StartTime.Date >= Data.StartDate && i.StartTime.Date <= Data.EndDate);   // Filtering schedule according to export range
 
             status.Text = "Экспортирование в календарь";
-            int minutes = Data.Reminder switch
-            {
-                1 => 0,
-                2 => 5,
-                3 => 10,
-                _ => -1
-            };
-            Calendar.Export(Data.Calendars[Data.Calendar].Id, Data.Schedule, minutes < 0 ? (int?)null : minutes, Data.AddTitle);
+            Calendar.Export(schedule);
+
 
             status.Text = "Готово";
-
             await Task.Delay(3000);
-            base.OnBackPressed();
+            base.OnBackPressed();   // Navigates back to main activity (always because I don't allow backward navigation)
         }
 
-        public override void OnBackPressed() { }
+        public override void OnBackPressed() { }    // Disables back button
     }
 }

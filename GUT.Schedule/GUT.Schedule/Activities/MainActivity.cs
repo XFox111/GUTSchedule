@@ -6,6 +6,7 @@ using Android.OS;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
+using GUT.Schedule.Models;
 
 namespace GUT.Schedule
 {
@@ -25,9 +26,9 @@ namespace GUT.Schedule
             AssignVariables();
             AddEvents();
 
+            // Settings spinners' dropdown lists content
             faculty.SetList(this, Data.Faculties.Select(i => i.Name));
-            course.SetList(this, "12345".ToCharArray());
-
+            course.SetList(this, "1234".ToCharArray());
             reminder.SetList(this, new string[] 
             {
                 "Нет",
@@ -35,28 +36,10 @@ namespace GUT.Schedule
                 "За 5 мин",
                 "За 10 мин"
             });
-            calendar.SetList(this, Data.Calendars.Select(i => i.Name));
+            calendar.SetList(this, Calendar.Calendars.Select(i => i.Name));
 
             end.Text = Data.EndDate.ToShortDateString();
             start.Text = Data.StartDate.ToShortDateString();
-        }
-
-        public override bool OnCreateOptionsMenu(IMenu menu)
-        {
-            MenuInflater.Inflate(Resource.Menu.menu_main, menu);
-            return true;
-        }
-
-        public override bool OnOptionsItemSelected(IMenuItem item)
-        {
-            int id = item.ItemId;
-            if (id == Resource.Id.github)
-            {
-                StartActivity(new Intent(Intent.ActionView, Android.Net.Uri.Parse("https://github.com/xfox111/GUTSchedule")));
-                return true;
-            }
-
-            return base.OnOptionsItemSelected(item);
         }
 
         private void Export_Click(object sender, EventArgs e)
@@ -69,26 +52,35 @@ namespace GUT.Schedule
                 error.Visibility = ViewStates.Visible;
             }
 
-            Data.Faculty = faculty.SelectedItemPosition;
-            Data.Group = group.SelectedItemPosition;
-            Data.Course = course.SelectedItemPosition + 1;
-            Data.Reminder = reminder.SelectedItemPosition;
-            Data.AddTitle = groupTitle.Checked;
+            // Forming export parameters
+            Data.DataSet = new DataSet
+            {
+                Faculty = Data.Faculties[faculty.SelectedItemPosition].Id,
+                Group = Data.Groups[group.SelectedItemPosition].Id,
+                Course = course.SelectedItemPosition + 1,
+                AddGroupToTitle = groupTitle.Checked,
+                Calendar = Calendar.Calendars[calendar.SelectedItemPosition].Id,
+                Reminder = reminder.SelectedItemPosition switch
+                {
+                    1 => 0,
+                    2 => 5,
+                    3 => 10,
+                    _ => null
+                }
+            };
 
             StartActivity(new Intent(this, typeof(ExportActivity)));
         }
 
         private async void End_Click(object sender, EventArgs e)
         {
-            DatePickerFragment picker = new DatePickerFragment();
-            Data.EndDate = await picker.GetDate(SupportFragmentManager, "datePicker");
+            Data.EndDate = await new DatePickerFragment().GetDate(SupportFragmentManager, Data.EndDate);
             end.Text = Data.EndDate.ToShortDateString();
         }
 
         private async void Start_Click(object sender, EventArgs e)
         {
-            DatePickerFragment picker = new DatePickerFragment();
-            Data.StartDate = await picker.GetDate(SupportFragmentManager, "datePicker");
+            Data.StartDate = await new DatePickerFragment().GetDate(SupportFragmentManager, Data.StartDate);
             start.Text = Data.StartDate.ToShortDateString();
         }
 
@@ -100,8 +92,6 @@ namespace GUT.Schedule
             await Parser.LoadGroups(Data.Faculties[faculty.SelectedItemPosition].Id, course.SelectedItemPosition + 1);
             group.SetList(this, Data.Groups.Select(i => i.Name));
         }
-
-        public override void OnBackPressed() { }
 
         #region Init stuff
         private void AssignVariables()
@@ -131,5 +121,26 @@ namespace GUT.Schedule
             export.Click += Export_Click;
         }
         #endregion
+
+        #region Menu stuff
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.menu_main, menu);
+            return true;
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            if (item.ItemId == Resource.Id.github)
+            {
+                StartActivity(new Intent(Intent.ActionView, Android.Net.Uri.Parse("https://github.com/xfox111/GUTSchedule")));
+                return true;
+            }
+
+            return base.OnOptionsItemSelected(item);
+        }
+        #endregion
+
+        public override void OnBackPressed() { }    // Disables back button
     }
 }

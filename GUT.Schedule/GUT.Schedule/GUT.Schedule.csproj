@@ -60,21 +60,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Calendar.cs" />
-    <Compile Include="Data.cs" />
-    <Compile Include="DatePickerFragment.cs" />
-    <Compile Include="ExportActivity.cs" />
+    <Compile Include="Models\Data.cs" />
+    <Compile Include="Fragments\DatePickerFragment.cs" />
+    <Compile Include="Activities\ExportActivity.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="MainActivity.cs" />
+    <Compile Include="Activities\MainActivity.cs" />
+    <Compile Include="Models\DataSet.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StartActivity.cs" />
-    <Compile Include="Subject.cs" />
+    <Compile Include="Activities\StartActivity.cs" />
+    <Compile Include="Models\Subject.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
-    <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\activity_main.xml">
