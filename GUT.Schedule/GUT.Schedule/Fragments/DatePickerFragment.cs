@@ -3,6 +3,7 @@ using Android.OS;
 using Android.Widget;
 using Android.App;
 using System.Threading.Tasks;
+using Android.Content;
 
 namespace GUT.Schedule
 {
@@ -23,6 +24,12 @@ namespace GUT.Schedule
             dismissed = true;
         }
 
+        public override void OnCancel(IDialogInterface dialog)
+        {
+            base.OnCancel(dialog);
+            dismissed = true;
+        }
+
         /// <summary>
         /// Shows date picker and waits for user input
         /// </summary>
@@ -37,7 +44,7 @@ namespace GUT.Schedule
             while (!dismissed) 
                 await Task.Delay(100);
 
-            return date;
+            return _date;
         }
     }
 }

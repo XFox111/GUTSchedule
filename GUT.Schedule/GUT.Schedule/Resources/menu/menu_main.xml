@@ -5,4 +5,8 @@
         android:id="@+id/github"
         android:title="Посмотреть исходный код на GitHub"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/email"
+        android:title="Сообщить об ошибке"
+        app:showAsAction="never" />
 </menu>

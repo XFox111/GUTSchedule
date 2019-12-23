@@ -63,13 +63,12 @@ namespace GUT.Schedule
                     item.Name, 
                     item.Type));
 
-                eventValues.Put(CalendarContract.Events.InterfaceConsts.Description, string.Join(';', item.Professor));
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.Description, item.Professor);
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.EventLocation, string.Join(';', item.Cabinets));
 
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.Availability, 0);
 
-                if (data.Reminder.HasValue)
-                    eventValues.Put(CalendarContract.Events.InterfaceConsts.HasAlarm, true);
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.HasAlarm, System.Convert.ToInt32(data.Reminder.HasValue));
 
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtstart, item.StartTime.ToUnixTime());
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtend, Extensions.ToUnixTime(item.EndTime));

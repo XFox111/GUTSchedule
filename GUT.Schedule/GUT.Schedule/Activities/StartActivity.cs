@@ -16,7 +16,7 @@ namespace GUT.Schedule
     /// <summary>
     /// Splash screen activity. Loads init data
     /// </summary>
-    [Activity(MainLauncher = true, Theme = "@style/AppTheme.NoActionBar")]
+    [Activity(MainLauncher = true)]
     public class StartActivity : AppCompatActivity
     {
         TextView status;

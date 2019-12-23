@@ -10,7 +10,7 @@ namespace GUT.Schedule
     /// <summary>
     /// Shows status of schedule export process
     /// </summary>
-    [Activity(Theme = "@style/AppTheme.NoActionBar")]
+    [Activity]
     public class ExportActivity : Activity
     {
         TextView status;

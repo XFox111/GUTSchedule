@@ -1,6 +1,7 @@
 ﻿using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
+using GUT.Schedule.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,17 +13,17 @@ namespace GUT.Schedule
 {
     public static class Parser
     {
-        public static async Task LoadSchedule()
+        public static async Task<List<Subject>> LoadSchedule()
         {
-            Data.Schedule = new List<Subject>();
+            List<Subject> schedule = new List<Subject>();
             using HttpClient client = new HttpClient();
             Dictionary<string, string> requestBody = new Dictionary<string, string>
             {
                 { "group_el", "0" },
-                { "kurs", Data.Course.ToString() },
+                { "kurs", Data.DataSet.Course.ToString() },
                 { "type_z", "1" },
-                { "faculty", Data.Faculties[Data.Faculty].Id },
-                { "group", Data.Groups[Data.Group].Id },
+                { "faculty", Data.DataSet.Faculty },
+                { "group", Data.DataSet.Group },
                 { "ok", "Показать" },
                 { "schet", GetCurrentSemester() }
             };
@@ -33,12 +34,10 @@ namespace GUT.Schedule
             request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
 
             HttpResponseMessage response = await client.SendAsync(request);
-            string responseBody = await response.Content.ReadAsStringAsync();
 
-            HtmlParser parser = new HtmlParser();
-            IHtmlDocument doc = parser.ParseDocument(responseBody);
+            IHtmlDocument doc = new HtmlParser().ParseDocument(await response.Content.ReadAsStringAsync());
 
-            string groupName = doc.QuerySelectorAll("#group option").FirstOrDefault(i => i.HasAttribute("selected")).TextContent;
+            string groupName = Data.Groups.First(i => i.Id == Data.DataSet.Group).Name;
 
             IHtmlCollection<IElement> pairs = doc.QuerySelectorAll(".pair");
             foreach (IElement item in pairs)
@@ -51,11 +50,14 @@ namespace GUT.Schedule
                 type = item.QuerySelector(".type").TextContent.Replace("(", "").Replace(")", "");
                 professor = item.QuerySelector(".teacher")?.GetAttribute("title") ?? "";
                 place = item.QuerySelector(".aud")?.TextContent ?? "СПбГУТ";
-                order = int.Parse(item.GetAttribute("pair") ?? "2") - 1;
+                order = int.Parse(item.GetAttribute("pair")) - 1;
                 weeks = item.QuerySelector(".weeks").TextContent.Replace("(", "").Replace("н)", "").Split(", ");
                 weekday = int.Parse(item.GetAttribute("weekday"));
-                Data.Schedule.AddRange(Subject.GetSubject(name, type, professor, place, order, weeks, weekday, groupName));
+
+                schedule.AddRange(Subject.GetSubject(name, type, professor, place, order, weeks, weekday, groupName));
             }
+
+            return schedule;
         }
 
         public static async Task LoadFaculties()

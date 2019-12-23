@@ -14,6 +14,7 @@ namespace GUT.Schedule
     public class MainActivity : AppCompatActivity
     {
         Button start, end, export;
+        Button forDay, forWeek, forMonth, forSemester;
         Spinner faculty, course, group, reminder, calendar;
         CheckBox groupTitle;
         TextView error;
@@ -93,12 +94,23 @@ namespace GUT.Schedule
             group.SetList(this, Data.Groups.Select(i => i.Name));
         }
 
+        private void SetDate(int days)
+        {
+            Data.EndDate = Data.StartDate.AddDays(days);
+            end.Text = Data.EndDate.ToShortDateString();
+        }
+
         #region Init stuff
         private void AssignVariables()
         {
             start = FindViewById<Button>(Resource.Id.start);
             end = FindViewById<Button>(Resource.Id.end);
             export = FindViewById<Button>(Resource.Id.export);
+
+            forDay = FindViewById<Button>(Resource.Id.forDay);
+            forWeek = FindViewById<Button>(Resource.Id.forWeek);
+            forMonth = FindViewById<Button>(Resource.Id.forMonth);
+            forSemester = FindViewById<Button>(Resource.Id.forSemester);
 
             faculty = FindViewById<Spinner>(Resource.Id.faculty);
             course = FindViewById<Spinner>(Resource.Id.course);
@@ -114,6 +126,15 @@ namespace GUT.Schedule
         {
             faculty.ItemSelected += UpdateGroupsList;
             course.ItemSelected += UpdateGroupsList;
+
+            forDay.Click += (s, e) => SetDate(0);
+            forWeek.Click += (s, e) => SetDate(6);
+            forMonth.Click += (s, e) => SetDate(30);
+            forSemester.Click += (s, e) =>
+            {
+                Data.EndDate = DateTime.Today.Month > 8 ? new DateTime(DateTime.Today.Year + 1, 1, 1) : new DateTime(DateTime.Today.Year, 8, 31);
+                end.Text = Data.EndDate.ToShortDateString();
+            };
 
             start.Click += Start_Click;
             end.Click += End_Click;
@@ -131,10 +152,14 @@ namespace GUT.Schedule
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
-            if (item.ItemId == Resource.Id.github)
+            switch (item.ItemId)
             {
-                StartActivity(new Intent(Intent.ActionView, Android.Net.Uri.Parse("https://github.com/xfox111/GUTSchedule")));
-                return true;
+                case Resource.Id.github:
+                    StartActivity(new Intent(Intent.ActionView, Android.Net.Uri.Parse("https://github.com/xfox111/GUTSchedule")));
+                    return true;
+                case Resource.Id.email:
+                    StartActivity(new Intent(Intent.CategoryAppEmail, Android.Net.Uri.Parse("feedback@xfox111.net")));
+                    return true;
             }
 
             return base.OnOptionsItemSelected(item);

@@ -73,11 +73,37 @@
                     android:layout_height="wrap_content"
                     android:text="20-Dec-2019"/>
 
-                <Button
-                    android:id="@+id/end"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="31-Dec-2019"/>
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/end"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="31-Dec-2019"/>
+                    <Button
+                        android:id="@+id/forDay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="На день"/>
+                    <Button
+                        android:id="@+id/forWeek"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="На неделю"/>
+                    <Button
+                        android:id="@+id/forMonth"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="На месяц"/>
+                    <Button
+                        android:id="@+id/forSemester"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="На семестр"/>
+                </LinearLayout>
         </TableRow>
     </TableLayout>
 
@@ -95,7 +121,7 @@
         android:id="@+id/groupTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Добавлять номер группы в заголовок"/>
+        android:text="Добавить номер группы в заголовок"/>
 
     <TextView
         android:layout_width="match_parent"
