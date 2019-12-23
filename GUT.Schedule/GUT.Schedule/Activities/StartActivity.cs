@@ -70,7 +70,8 @@ namespace GUT.Schedule
             ActivityCompat.RequestPermissions(this, new[]
             {
                 Manifest.Permission.ReadCalendar, 
-                Manifest.Permission.WriteCalendar
+                Manifest.Permission.WriteCalendar,
+                Manifest.Permission.Internet
             }, 76);     // IDK why I need requestCode value to be set (instead of 76 there can be any other number. Anyway it doesn't affect anything)
 
         private void ShowDialog()

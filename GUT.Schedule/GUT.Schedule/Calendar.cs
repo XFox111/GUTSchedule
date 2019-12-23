@@ -3,7 +3,6 @@ using Android.App;
 using Android.Database;
 using Android.Net;
 using Android.Provider;
-using Android.Support.V4.Content;
 using GUT.Schedule.Models;
 using Java.Util;
 
@@ -34,8 +33,7 @@ namespace GUT.Schedule
             };
 
             // Retrieving calendars data
-            using CursorLoader loader = new CursorLoader(Application.Context, calendarsUri, calendarsProjection, null, null, null);
-            ICursor cursor = (ICursor)loader.LoadInBackground();
+            ICursor cursor = Application.Context.ContentResolver.Query(calendarsUri, calendarsProjection, null, null);
 
             cursor.MoveToNext();
             for (int i = 0; i < cursor.Count; i++)
@@ -75,14 +73,15 @@ namespace GUT.Schedule
 
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.EventTimezone, TimeZone.Default.ID);
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.EventEndTimezone, TimeZone.Default.ID);
+                eventValues.Put(CalendarContract.Reminders.InterfaceConsts.CustomAppPackage, "bonch.schedule");
 
                 Uri response = Application.Context.ContentResolver.Insert(CalendarContract.Events.ContentUri, eventValues);
 
                 Android.Content.ContentValues reminderValues = new Android.Content.ContentValues();
                 reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.EventId, long.Parse(response.LastPathSegment));
-                reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Method, 1);
+                reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.CustomAppPackage, "bonch.schedule");
 
-                // Since Android fucks around and creates 30 minute reminder if I don't set any I just override that reminder with invalid one. Fuck Android!
+                // Fuck Android!
                 reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Minutes, data.Reminder?.ToString());
                 // P.S. I mean fuck Android!
 
