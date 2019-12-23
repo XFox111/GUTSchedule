@@ -172,10 +172,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="©2019 Михаил Гордеев ИКСС, ИКТ-907"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Задонатить: +7 (996) 929-19-69 (Сбербанк)"/>
 
     </LinearLayout>
     

@@ -1,9 +1,12 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Support.V4.Text;
 using Android.Support.V7.App;
+using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
 using GUT.Schedule.Models;
@@ -51,6 +54,7 @@ namespace GUT.Schedule
             {
                 error.Text = "Ошибка: Неправильный диапазон дат";
                 error.Visibility = ViewStates.Visible;
+                return;
             }
 
             // Forming export parameters
@@ -154,11 +158,20 @@ namespace GUT.Schedule
         {
             switch (item.ItemId)
             {
-                case Resource.Id.github:
-                    StartActivity(new Intent(Intent.ActionView, Android.Net.Uri.Parse("https://github.com/xfox111/GUTSchedule")));
+                case Resource.Id.about:
+                    Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(this);
+                    builder.SetMessage(HtmlCompat.FromHtml(new StreamReader(Assets.Open("About.html")).ReadToEnd(), HtmlCompat.FromHtmlModeLegacy))
+                        .SetTitle("ГУТ.Расписание")
+                        .SetPositiveButton("ОК", (IDialogInterfaceOnClickListener)null);
+
+                    Android.Support.V7.App.AlertDialog dialog = builder.Create();
+                    dialog.Show();
+
+                    // Making links clickable
+                    dialog.FindViewById<TextView>(Android.Resource.Id.Message).MovementMethod = LinkMovementMethod.Instance;
                     return true;
                 case Resource.Id.email:
-                    StartActivity(new Intent(Intent.CategoryAppEmail, Android.Net.Uri.Parse("feedback@xfox111.net")));
+                    StartActivity(new Intent(Intent.ActionView, Android.Net.Uri.Parse("mailto:feedback@xfox111.net")));
                     return true;
             }
 

@@ -109,7 +109,9 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher_foreground.png" />
     <AndroidResource Include="Resources\mipmap-xxxhdpi\ic_launcher_round.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <AndroidAsset Include="Assets\About.html" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AngleSharp">
       <Version>0.13.0</Version>

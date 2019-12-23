@@ -2,11 +2,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <item
-        android:id="@+id/github"
-        android:title="Посмотреть исходный код на GitHub"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/email"
         android:title="Сообщить об ошибке"
         app:showAsAction="never" />
+  <item
+      android:id="@+id/about"
+      android:title="О приложении"
+      app:showAsAction="never" />
 </menu>
