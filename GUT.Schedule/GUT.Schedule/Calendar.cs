@@ -68,7 +68,7 @@ namespace GUT.Schedule
 
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.Availability, 0);
 
-                eventValues.Put(CalendarContract.Events.InterfaceConsts.HasAlarm, System.Convert.ToInt32(data.Reminder.HasValue));
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.HasAlarm, data.Reminder.HasValue);
 
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtstart, item.StartTime.ToUnixTime());
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtend, Extensions.ToUnixTime(item.EndTime));
@@ -78,15 +78,15 @@ namespace GUT.Schedule
 
                 Uri response = Application.Context.ContentResolver.Insert(CalendarContract.Events.ContentUri, eventValues);
 
-                if (data.Reminder.HasValue)
-                {
-                    Android.Content.ContentValues reminderValues = new Android.Content.ContentValues();
-                    reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.EventId, long.Parse(response.LastPathSegment));
-                    reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Method, 1);
-                    reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Minutes, data.Reminder.Value);
+                Android.Content.ContentValues reminderValues = new Android.Content.ContentValues();
+                reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.EventId, long.Parse(response.LastPathSegment));
+                reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Method, 1);
 
-                    Application.Context.ContentResolver.Insert(CalendarContract.Reminders.ContentUri, reminderValues);
-                }
+                // Since Android fucks around and creates 30 minute reminder if I don't set any I just override that reminder with invalid one. Fuck Android!
+                reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Minutes, data.Reminder?.ToString());
+                // P.S. I mean fuck Android!
+
+                Application.Context.ContentResolver.Insert(CalendarContract.Reminders.ContentUri, reminderValues);
             }
         }
     }
