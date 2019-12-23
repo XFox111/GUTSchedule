@@ -48,7 +48,7 @@ namespace GUT.Schedule
 
                 name = item.QuerySelector(".subect strong")?.TextContent ?? "Неизвестный предмет (см. Расписание)";
                 type = item.QuerySelector(".type").TextContent.Replace("(", "").Replace(")", "");
-                professor = item.QuerySelector(".teacher")?.GetAttribute("title") ?? "";
+                professor = item.QuerySelector(".teacher")?.GetAttribute("title").Replace(";", "") ?? "";
                 place = item.QuerySelector(".aud")?.TextContent ?? "СПбГУТ";
                 order = int.Parse(item.GetAttribute("pair")) - 1;
                 weeks = item.QuerySelector(".weeks").TextContent.Replace("(", "").Replace("н)", "").Split(", ");
