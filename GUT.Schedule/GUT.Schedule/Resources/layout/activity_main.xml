@@ -1,161 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:padding="10dp">
+    android:paddingBottom="50dp">
     
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Параметры расписания"
-        android:textStyle="bold"
-        android:textSize="16dp"/>
+        android:orientation="vertical"
+        android:layout_margin="10dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Факультет"/>
-
-    <Spinner
-        android:id="@+id/faculty"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Курс"/>
-
-    <Spinner
-        android:id="@+id/course"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Группа"/>
-
-    <Spinner
-        android:id="@+id/group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Параметры экспорта"
-        android:textStyle="bold"
-        android:textSize="16dp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Диапазон экспорта"/>
-
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:stretchColumns="*"
-        android:shrinkColumns="*">
-
-        <TableRow
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:text="Параметры расписания"
+            android:textStyle="bold"
+            android:textSize="16dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Факультет"/>
+
+        <Spinner
+            android:id="@+id/faculty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Курс"/>
+
+        <Spinner
+            android:id="@+id/course"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Группа"/>
+
+        <Spinner
+            android:id="@+id/group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Параметры экспорта"
+            android:textStyle="bold"
+            android:textSize="16dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Диапазон экспорта"/>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            android:shrinkColumns="*">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             
-                <Button
-                    android:id="@+id/start"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="20-Dec-2019"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
+                    <Button
+                        android:id="@+id/start"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="20-Dec-2019"/>
+                
                     <Button
                         android:id="@+id/end"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="31-Dec-2019"/>
-                    <Button
-                        android:id="@+id/forDay"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="На день"/>
-                    <Button
-                        android:id="@+id/forWeek"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="На неделю"/>
-                    <Button
-                        android:id="@+id/forMonth"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="На месяц"/>
-                    <Button
-                        android:id="@+id/forSemester"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="На семестр"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    
+                        <Button
+                            android:id="@+id/forDay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="На день"/>
+                        <Button
+                            android:id="@+id/forWeek"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="На неделю"/>
                 </LinearLayout>
-        </TableRow>
-    </TableLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Напоминать за"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    
+                        <Button
+                            android:id="@+id/forMonth"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="На месяц"/>
+                        <Button
+                            android:id="@+id/forSemester"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="На семестр"/>
+                </LinearLayout>
+            </TableRow>
+        </TableLayout>
 
-    <Spinner
-        android:id="@+id/reminder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Напоминать за"/>
 
-    <CheckBox
-        android:id="@+id/groupTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Добавить номер группы в заголовок"/>
+        <Spinner
+            android:id="@+id/reminder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Конечный календарь"/>
+        <CheckBox
+            android:id="@+id/groupTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Добавить номер группы в заголовок"/>
 
-    <Spinner
-        android:id="@+id/calendar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Конечный календарь"/>
 
-    <TextView
-        android:id="@+id/error"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#FF0000"
-        android:text="Error"
-        android:layout_marginVertical="5dp"
-        android:visibility="gone"
-    />
+        <Spinner
+            android:id="@+id/calendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-    <Button
-        android:id="@+id/export"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Добавить расписание"/>
+        <TextView
+            android:id="@+id/error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#FF0000"
+            android:text="Error"
+            android:layout_marginVertical="5dp"
+            android:visibility="gone"
+        />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="©2019 Михаил Гордеев ИКСС, ИКТ-907"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Задонатить: +7 (996) 929-19-69 (Сбербанк)"/>
+        <Button
+            android:id="@+id/export"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Добавить расписание"/>
 
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="©2019 Михаил Гордеев ИКСС, ИКТ-907"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Задонатить: +7 (996) 929-19-69 (Сбербанк)"/>
+
+    </LinearLayout>
+    
+</ScrollView>
