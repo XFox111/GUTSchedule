@@ -32,7 +32,7 @@ namespace GUT.Schedule
 
 
             status.Text = "Готово";
-            await Task.Delay(3000);
+            await Task.Delay(1000);
             base.OnBackPressed();   // Navigates back to main activity (always because I don't allow backward navigation)
         }
 
