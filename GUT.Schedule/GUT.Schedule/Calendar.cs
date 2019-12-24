@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Database;
 using Android.Net;
@@ -45,7 +46,7 @@ namespace GUT.Schedule
         }
 
         
-        public static void Export(IEnumerable<Subject> schedule)
+        public static  void Export(IEnumerable<Subject> schedule)
         {
             DataSet data = Data.DataSet;
 
@@ -66,26 +67,27 @@ namespace GUT.Schedule
 
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.Availability, 0);
 
-                eventValues.Put(CalendarContract.Events.InterfaceConsts.HasAlarm, data.Reminder.HasValue);
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.HasAlarm, 1);
 
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtstart, item.StartTime.ToUnixTime());
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtend, Extensions.ToUnixTime(item.EndTime));
 
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.EventTimezone, TimeZone.Default.ID);
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.EventEndTimezone, TimeZone.Default.ID);
-                eventValues.Put(CalendarContract.Reminders.InterfaceConsts.CustomAppPackage, "bonch.schedule");
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.CustomAppPackage, Application.Context.PackageName);
 
                 Uri response = Application.Context.ContentResolver.Insert(CalendarContract.Events.ContentUri, eventValues);
 
+                // Settings reminder
                 Android.Content.ContentValues reminderValues = new Android.Content.ContentValues();
                 reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.EventId, long.Parse(response.LastPathSegment));
-                reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.CustomAppPackage, "bonch.schedule");
-
-                // Fuck Android!
-                reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Minutes, data.Reminder?.ToString());
-                // P.S. I mean fuck Android!
+                reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Minutes, data.Reminder);
 
                 Application.Context.ContentResolver.Insert(CalendarContract.Reminders.ContentUri, reminderValues);
+
+                // TODO: Add ability to completely disable reminders
+                // Fuck Android!
+                // P.S. I mean fuck Android!
             }
         }
     }

@@ -35,7 +35,7 @@ namespace GUT.Schedule
             course.SetList(this, "1234".ToCharArray());
             reminder.SetList(this, new string[] 
             {
-                "Нет",
+                //"Нет",
                 "Во время начала",
                 "За 5 мин",
                 "За 10 мин"
@@ -65,13 +65,13 @@ namespace GUT.Schedule
                 Course = course.SelectedItemPosition + 1,
                 AddGroupToTitle = groupTitle.Checked,
                 Calendar = Calendar.Calendars[calendar.SelectedItemPosition].Id,
-                Reminder = reminder.SelectedItemPosition switch
+                Reminder = reminder.SelectedItemPosition * 5 /*switch
                 {
                     1 => 0,
                     2 => 5,
                     3 => 10,
                     _ => null
-                }
+                }*/
             };
 
             StartActivity(new Intent(this, typeof(ExportActivity)));

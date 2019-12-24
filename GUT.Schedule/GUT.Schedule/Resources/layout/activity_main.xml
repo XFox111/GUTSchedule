@@ -136,6 +136,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="(i) На данный момент полное отключение уведомлений не поддерживается"/>
+
         <CheckBox
             android:id="@+id/groupTitle"
             android:layout_width="match_parent"
