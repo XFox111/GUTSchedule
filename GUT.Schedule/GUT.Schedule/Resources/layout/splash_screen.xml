@@ -10,11 +10,19 @@
         android:orientation="vertical"
         android:layout_centerInParent="true">
 
-        <ImageView
+        <!--<ImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/logo"/>
+            android:src="@drawable/logo"/>-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ГУТ.Расписание"
+            android:textColor="#ffffff"
+            android:layout_gravity="center_horizontal"
+            android:textSize="36dp"/>
 
         <ProgressBar
             android:layout_width="50dp"

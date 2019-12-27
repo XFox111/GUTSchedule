@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:paddingBottom="50dp">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
     
     <LinearLayout
         android:layout_width="match_parent"
@@ -164,8 +163,7 @@
             android:textColor="#FF0000"
             android:text="Error"
             android:layout_marginVertical="5dp"
-            android:visibility="gone"
-        />
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/export"
@@ -176,8 +174,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="©2019 Михаил Гордеев ИКСС, ИКТ-907"/>
-
+            android:text="©2019 Михаил Гордеев ИКСС, ИКТ-907"
+            android:layout_marginBottom="50dp"/>
     </LinearLayout>
-    
 </ScrollView>

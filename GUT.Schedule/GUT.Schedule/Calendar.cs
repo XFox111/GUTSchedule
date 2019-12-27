@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using Android.App;
 using Android.Database;
 using Android.Net;
@@ -34,7 +33,7 @@ namespace GUT.Schedule
             };
 
             // Retrieving calendars data
-            ICursor cursor = Application.Context.ContentResolver.Query(calendarsUri, calendarsProjection, null, null);
+            ICursor cursor = Application.Context.ContentResolver.Query(calendarsUri, calendarsProjection, string.Empty, null, string.Empty);
 
             cursor.MoveToNext();
             for (int i = 0; i < cursor.Count; i++)
@@ -44,7 +43,6 @@ namespace GUT.Schedule
                 cursor.MoveToNext();
             }
         }
-
         
         public static  void Export(IEnumerable<Subject> schedule)
         {
