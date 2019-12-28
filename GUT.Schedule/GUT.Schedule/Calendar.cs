@@ -27,9 +27,7 @@ namespace GUT.Schedule
             string[] calendarsProjection = {
                 CalendarContract.Calendars.InterfaceConsts.Id,
                 CalendarContract.Calendars.InterfaceConsts.CalendarDisplayName,
-                CalendarContract.Calendars.InterfaceConsts.AccountName,
-                CalendarContract.Calendars.InterfaceConsts.OwnerAccount,
-                CalendarContract.Calendars.InterfaceConsts.AccountType,
+                CalendarContract.Calendars.InterfaceConsts.AccountName
             };
 
             // Retrieving calendars data
@@ -38,8 +36,7 @@ namespace GUT.Schedule
             cursor.MoveToNext();
             for (int i = 0; i < cursor.Count; i++)
             {
-                if (cursor.GetString(4) == "com.google" && !cursor.GetString(3).Contains("google"))         // Loading only users' main calendars
-                    Calendars.Add((cursor.GetString(0), $"{cursor.GetString(1)} ({cursor.GetString(2)})"));
+                Calendars.Add((cursor.GetString(0), $"{cursor.GetString(1)} ({cursor.GetString(2)})"));
                 cursor.MoveToNext();
             }
         }
