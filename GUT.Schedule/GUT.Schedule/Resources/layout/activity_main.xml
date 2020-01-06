@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -138,7 +138,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="(i) На данный момент полное отключение уведомлений не поддерживается"/>
+            android:text="(i) При экспорте расписания в Google календарь (не локальный) с отключенными уведомлениями, Google автоматически поставит уведомление за 30 минут"/>
 
         <CheckBox
             android:id="@+id/groupTitle"
@@ -174,7 +174,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="©2019 Михаил Гордеев ИКСС, ИКТ-907"
+            android:text="©2020 Михаил Гордеев ИКСС, ИКТ-907"
             android:layout_marginBottom="50dp"/>
     </LinearLayout>
 </ScrollView>

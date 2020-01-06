@@ -62,7 +62,8 @@ namespace GUT.Schedule
 
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.Availability, 0);
 
-                eventValues.Put(CalendarContract.Events.InterfaceConsts.HasAlarm, 1);
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.HasAlarm, data.Reminder != -5);
+                // For some reason Google calendars ignore HasAlarm = false and set reminder for 30 minutes. Local calendars don't seem to have this issue
 
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtstart, item.StartTime.ToUnixTime());
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtend, Extensions.ToUnixTime(item.EndTime));
@@ -74,15 +75,14 @@ namespace GUT.Schedule
                 Uri response = Application.Context.ContentResolver.Insert(CalendarContract.Events.ContentUri, eventValues);
 
                 // Settings reminder
-                Android.Content.ContentValues reminderValues = new Android.Content.ContentValues();
-                reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.EventId, long.Parse(response.LastPathSegment));
-                reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Minutes, data.Reminder);
+                if(data.Reminder != -5)
+                {
+                    Android.Content.ContentValues reminderValues = new Android.Content.ContentValues();
+                    reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.EventId, long.Parse(response.LastPathSegment));
+                    reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Minutes, data.Reminder);
 
-                Application.Context.ContentResolver.Insert(CalendarContract.Reminders.ContentUri, reminderValues);
-
-                // TODO: Add ability to completely disable reminders
-                // Fuck Android!
-                // P.S. I mean fuck Android!
+                    Application.Context.ContentResolver.Insert(CalendarContract.Reminders.ContentUri, reminderValues);
+                }
             }
         }
     }
