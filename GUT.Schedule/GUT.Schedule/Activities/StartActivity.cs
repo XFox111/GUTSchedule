@@ -34,7 +34,7 @@ namespace GUT.Schedule
             if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteCalendar) != Permission.Granted)
             {
                 if (ActivityCompat.ShouldShowRequestPermissionRationale(this, Manifest.Permission.WriteCalendar))
-                    ShowRationale();
+                    ShowDialog("Доступ к календарю", "Разрешите приложению получать доступ к календарю. Без этого разрешения приложение не сможет добавлять расписание в ваш календарь", RequestPermissions);
                 else
                     RequestPermissions();
             }
@@ -49,15 +49,11 @@ namespace GUT.Schedule
                 status.Text = "Загрузка списка календарей";
                 Calendar.LoadCalendars();
                 if (Calendar.Calendars.Count == 0)
+                {
                     ShowDialog("Создайте новый календарь", "На вашем устройстве нет календарей пригодных для записи расписания");
-            }
-            catch (Exception e)
-            {
-                ShowDialog(e.GetType().ToString(), e.Message);
-            }
+                    return;
+                }
 
-            try
-            {
                 status.Text = "Загрузка списка факультетов";
                 await Parser.LoadFaculties();
 
@@ -65,11 +61,11 @@ namespace GUT.Schedule
                 using HttpClient client = new HttpClient();
                 Data.FirstWeekDay = int.Parse(await client.GetStringAsync("https://xfox111.net/schedule_offset.txt"));
             }
-            catch
+            catch (Exception e)
             {
-                ShowDialog("Не удалось загрузить данные", "Проверьте интернет-соединение или попробуйте позже");
+                ShowDialog(e.GetType().ToString(), e.Message, FinishAndRemoveTask);
+                return;
             }
-
             StartActivity(new Intent(this, typeof(MainActivity)));
         }
 
@@ -80,7 +76,7 @@ namespace GUT.Schedule
             if (grantResults.All(i => i == Permission.Granted))
                 Proceed();
             else
-                ShowRationale();
+                ShowDialog("Доступ к календарю", "Разрешите приложению получать доступ к календарю. Без этого разрешения приложение не сможет добавлять расписание в ваш календарь", RequestPermissions);
         }
 
         private void RequestPermissions() =>
@@ -91,23 +87,12 @@ namespace GUT.Schedule
                 Manifest.Permission.Internet
             }, 76);     // IDK why I need requestCode value to be set (instead of 76 there can be any other number. Anyway it doesn't affect anything)
 
-        private void ShowRationale()
-        {
-            Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(this);
-            builder.SetMessage("Разрешите приложению получать доступ к календарю. Без этого разрешения приложение не сможет добавлять расписание в ваш календарь")
-                .SetTitle("Доступ к календарю")
-                .SetPositiveButton("ОК", (s, e) => RequestPermissions());
-
-            Android.Support.V7.App.AlertDialog dialog = builder.Create();
-            dialog.Show();
-        }
-
-        private void ShowDialog(string title, string content)
+        private void ShowDialog(string title, string content, Action action = null)
         {
             Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(this);
             builder.SetMessage(content)
                 .SetTitle(title)
-                .SetPositiveButton("ОК", (EventHandler<DialogClickEventArgs>)null);
+                .SetPositiveButton("ОК", (s, e) => action?.Invoke());
 
             Android.Support.V7.App.AlertDialog dialog = builder.Create();
             dialog.Show();

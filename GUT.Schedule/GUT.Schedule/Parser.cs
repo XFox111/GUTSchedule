@@ -79,6 +79,9 @@ namespace GUT.Schedule
 
             HttpResponseMessage response = await client.SendAsync(request);
             string responseBody = await response.Content.ReadAsStringAsync();
+            if (string.IsNullOrWhiteSpace(responseBody))
+                throw new NullReferenceException("Расписание на текущий семестр еще не объявлено");
+
             foreach (string s in responseBody.Split(';'))
                 try { Data.Faculties.Add((s.Split(',')[0], s.Split(',')[1])); }
                 catch { }
