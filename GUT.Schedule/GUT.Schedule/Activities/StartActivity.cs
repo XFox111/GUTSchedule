@@ -61,6 +61,11 @@ namespace GUT.Schedule
                 using HttpClient client = new HttpClient();
                 Data.FirstWeekDay = int.Parse(await client.GetStringAsync("https://xfox111.net/schedule_offset.txt"));
             }
+            catch(HttpRequestException e)
+            {
+                ShowDialog(e.Message, "Невозможно загрузить расписание. Проверьте интернет-соединение или попробуйте позже", Proceed, FinishAndRemoveTask, "Повторить", "Выйти");
+                return;
+            } 
             catch (Exception e)
             {
                 ShowDialog(e.GetType().ToString(), e.Message, FinishAndRemoveTask);
@@ -85,14 +90,16 @@ namespace GUT.Schedule
                 Manifest.Permission.ReadCalendar, 
                 Manifest.Permission.WriteCalendar,
                 Manifest.Permission.Internet
-            }, 76);     // IDK why I need requestCode value to be set (instead of 76 there can be any other number. Anyway it doesn't affect anything)
+            }, 0);
 
-        private void ShowDialog(string title, string content, Action action = null)
+        private void ShowDialog(string title, string content, Action posAction = null, Action negAction = null, string posActionLabel = null, string negActionLabel = null)
         {
             Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(this);
             builder.SetMessage(content)
-                .SetTitle(title)
-                .SetPositiveButton("ОК", (s, e) => action?.Invoke());
+                .SetTitle(title).SetPositiveButton(posActionLabel ?? "OK", (s, e) => posAction?.Invoke());
+
+            if (negAction != null)
+                builder.SetNegativeButton(negActionLabel ?? "Close", (s, e) => negAction.Invoke());
 
             Android.Support.V7.App.AlertDialog dialog = builder.Create();
             dialog.Show();
