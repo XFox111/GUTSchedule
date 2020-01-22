@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Android.App;
+using Android.Content;
 using Android.Database;
 using Android.Net;
 using Android.Provider;
@@ -31,17 +32,15 @@ namespace GUT.Schedule
             };
 
             // Retrieving calendars data
-            ICursor cursor = Application.Context.ContentResolver.Query(calendarsUri, calendarsProjection, string.Empty, null, string.Empty);
+            ICursor cursor = Application.Context.ContentResolver.Query(calendarsUri, calendarsProjection, null, null, null);
 
-            cursor.MoveToNext();
-            for (int i = 0; i < cursor.Count; i++)
-            {
+            while (cursor.MoveToNext())
                 Calendars.Add((cursor.GetString(0), $"{cursor.GetString(1)} ({cursor.GetString(2)})"));
-                cursor.MoveToNext();
-            }
+
+            cursor.Close();
         }
         
-        public static  void Export(IEnumerable<Subject> schedule)
+        public static void Export(IEnumerable<Subject> schedule)
         {
             DataSet data = Data.DataSet;
 
@@ -84,6 +83,27 @@ namespace GUT.Schedule
                     Application.Context.ContentResolver.Insert(CalendarContract.Reminders.ContentUri, reminderValues);
                 }
             }
+        }
+
+        public static void Clear(bool keepPrevious = true)
+        {
+            Uri contentUri = CalendarContract.Events.ContentUri;
+            string selector = $"({CalendarContract.Events.InterfaceConsts.CustomAppPackage} == \"{Application.Context.PackageName}\") AND (deleted != 1)";
+            if (keepPrevious)
+                selector += $" AND (dtstart > {System.DateTime.Now.ToUnixTime()})";
+
+            string[] calendarsProjection = {
+                CalendarContract.Events.InterfaceConsts.Id,
+                CalendarContract.Events.InterfaceConsts.Dtstart,
+                CalendarContract.Events.InterfaceConsts.CustomAppPackage,
+            };
+
+            // Retrieving calendars data
+            ICursor cursor = Application.Context.ContentResolver.Query(contentUri, calendarsProjection, selector, null, null);
+            while (cursor.MoveToNext())
+                Application.Context.ContentResolver.Delete(ContentUris.WithAppendedId(CalendarContract.Events.ContentUri, cursor.GetLong(0)), null, null);
+
+            cursor.Close();
         }
     }
 }

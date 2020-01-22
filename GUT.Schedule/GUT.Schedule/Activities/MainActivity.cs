@@ -148,17 +148,39 @@ namespace GUT.Schedule
             return true;
         }
 
+        public void Clear(bool keepPrevious = true)
+        {
+            try
+            {
+                Toast.MakeText(ApplicationContext, "Очистка...", ToastLength.Short);
+                Calendar.Clear(keepPrevious);
+                Toast.MakeText(ApplicationContext, "Готово!", ToastLength.Short);
+            }
+            catch (Exception e)
+            {
+                Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(this);
+                builder.SetMessage(e.Message)
+                    .SetTitle(e.GetType().ToString())
+                    .SetPositiveButton("ОК", (IDialogInterfaceOnClickListener)null);
+
+                Android.Support.V7.App.AlertDialog dialog = builder.Create();
+                dialog.Show();
+            }
+        }
+
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
+            Android.Support.V7.App.AlertDialog.Builder builder;
+            Android.Support.V7.App.AlertDialog dialog;
             switch (item.ItemId)
             {
                 case Resource.Id.about:
-                    Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(this);
+                    builder = new Android.Support.V7.App.AlertDialog.Builder(this);
                     builder.SetMessage(HtmlCompat.FromHtml(new StreamReader(Assets.Open("About.html")).ReadToEnd(), HtmlCompat.FromHtmlModeLegacy))
                         .SetTitle("ГУТ.Расписание")
                         .SetPositiveButton("ОК", (IDialogInterfaceOnClickListener)null);
 
-                    Android.Support.V7.App.AlertDialog dialog = builder.Create();
+                    dialog = builder.Create();
                     dialog.Show();
 
                     // Making links clickable
@@ -167,12 +189,31 @@ namespace GUT.Schedule
                 case Resource.Id.email:
                     StartActivity(new Intent(Intent.ActionView, Android.Net.Uri.Parse("mailto:feedback@xfox111.net")));
                     return true;
+
+                case Resource.Id.clear:
+                    builder = new Android.Support.V7.App.AlertDialog.Builder(this);
+                    builder.SetMessage("Это действие удалит экспортированное расписание из всех доступных календарей.\n" +
+                        "Данное действие затронет только расписание, экспортированное этим приложением\n" +
+                        "'Все' - удалит все события расписания, включая прошедшие\n" +
+                        "'Только новые' - удалит будущие события расписания")
+                        .SetTitle("Очистка календарей")
+                        .SetPositiveButton("Только новые", (s, e) => Clear())
+                        .SetNegativeButton("Все", (s, e) => Clear(false))
+                        .SetNeutralButton("Отмена", (IDialogInterfaceOnClickListener)null);
+
+                    dialog = builder.Create();
+                    dialog.Show();
+
+                    // Making links clickable
+                    dialog.FindViewById<TextView>(Android.Resource.Id.Message).MovementMethod = LinkMovementMethod.Instance;
+                    return true;
             }
 
             return base.OnOptionsItemSelected(item);
         }
         #endregion
 
-        public override void OnBackPressed() { }    // Disables back button
+        public override void OnBackPressed() =>
+            FinishAffinity();   // Close application
     }
 }

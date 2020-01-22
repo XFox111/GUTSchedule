@@ -1,10 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <item
-        android:id="@+id/email"
-        android:title="Сообщить об ошибке"
-        app:showAsAction="never" />
+
+  <item
+      android:id="@+id/clear"
+      android:title="Очистить расписание"
+      android:showAsAction="never"/>
+  <item
+      android:id="@+id/email"
+      android:title="Сообщить об ошибке"
+      app:showAsAction="never" />
   <item
       android:id="@+id/about"
       android:title="О приложении"
