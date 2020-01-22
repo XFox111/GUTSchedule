@@ -29,7 +29,7 @@ namespace GUT.Schedule
         /// <returns><see cref="DateTime"/> instance based on study week number, weekday and semester start day number</returns>
         public static DateTime GetDateFromWeeks(int week, int weekday)
         {
-            DateTime dt = new DateTime(DateTime.Today.Year, 9, Data.FirstWeekDay);
+            DateTime dt = new DateTime(DateTime.Today.Year, DateTime.Today.Month >= 8 ? 9 : 2, Data.FirstWeekDay);
 
             dt = dt.AddDays(--week * 7);
             dt = dt.AddDays(--weekday);
