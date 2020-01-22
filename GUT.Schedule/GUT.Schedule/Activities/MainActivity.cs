@@ -152,9 +152,9 @@ namespace GUT.Schedule
         {
             try
             {
-                Toast.MakeText(ApplicationContext, "Очистка...", ToastLength.Short);
+                Toast.MakeText(ApplicationContext, "Очистка...", ToastLength.Short).Show();
                 Calendar.Clear(keepPrevious);
-                Toast.MakeText(ApplicationContext, "Готово!", ToastLength.Short);
+                Toast.MakeText(ApplicationContext, "Готово!", ToastLength.Short).Show();
             }
             catch (Exception e)
             {
