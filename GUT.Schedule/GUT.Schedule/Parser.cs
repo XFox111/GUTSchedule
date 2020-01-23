@@ -89,7 +89,6 @@ namespace GUT.Schedule
 
         public static async Task LoadGroups(string facultyId, int course)
         {
-            Data.Groups = new List<(string, string)>();
             using HttpClient client = new HttpClient();
             Dictionary<string, string> requestBody = new Dictionary<string, string>
             {
@@ -107,6 +106,7 @@ namespace GUT.Schedule
 
             HttpResponseMessage response = await client.SendAsync(request);
             string responseBody = await response.Content.ReadAsStringAsync();
+            Data.Groups = new List<(string, string)>();
             foreach (string s in responseBody.Split(';'))
                 try { Data.Groups.Add((s.Split(',')[0], s.Split(',')[1])); }
                 catch { }
@@ -122,5 +122,39 @@ namespace GUT.Schedule
                 return $"205.{now.Year - 2001}{now.Year - 2000}/2";
         }
 
+        public static async Task<List<ProfessorSubject>> GetProfessorSchedule(HttpClient client, DateTime date)
+        {
+            using HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://cabs.itut.ru/cabinet/project/cabinet/forms/pr_raspisanie_kalendar.php");
+            request.SetContent(
+                ("month", date.Month.ToString()),
+                ("year", date.Year.ToString()),
+                ("type_z", "0"));
+
+            HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
+            string responseContent = await response.GetString().ConfigureAwait(false);
+
+            if (!response.IsSuccessStatusCode)
+                throw new HttpRequestException(responseContent);
+
+            IHtmlDocument doc = new HtmlParser().ParseDocument(responseContent);
+            List<ProfessorSubject> schedule = new List<ProfessorSubject>();
+            foreach(var i in doc.QuerySelectorAll("td").Where(i => i.GetAttribute("style") == "text-align: center; vertical-align: top"))
+                for (int k = 0; k < i.QuerySelectorAll("i").Length; k++)
+                {
+                    ProfessorSubject item = new ProfessorSubject(
+                        name: i.QuerySelectorAll("b")[k * 2 + 1].TextContent,
+                        type: i.QuerySelectorAll("i")[k].TextContent,
+                        cabinet: i.ChildNodes[k * 13 + 12].TextContent,
+                        groups: i.ChildNodes[k * 13 + 7].TextContent,
+                        year: date.Year,
+                        month: date.Month,
+                        day: int.Parse(i.QuerySelectorAll("b")[0].TextContent),
+                        schedule: i.QuerySelectorAll("b")[k * 2 + 2].TextContent
+                        );
+                    schedule.Add(item);
+                }
+
+            return schedule;
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace GUT.Schedule.Models
+﻿using System.Net.Http;
+
+namespace GUT.Schedule.Models
 {
     public class DataSet
     {
@@ -8,5 +10,6 @@
         public string Group { get; set; }
         public int Reminder { get; set; }
         public bool AddGroupToTitle { get; set; }
+        public HttpClient HttpClient { get; set; }
     }
 }

@@ -75,6 +75,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Models\DataSet.cs" />
+    <Compile Include="Models\ProfessorSubject.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -46,7 +46,7 @@ namespace GUT.Schedule
 
             foreach (Subject item in schedule)
             {
-                Android.Content.ContentValues eventValues = new Android.Content.ContentValues();
+                ContentValues eventValues = new ContentValues();
 
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.CalendarId, data.Calendar);
 
@@ -65,7 +65,7 @@ namespace GUT.Schedule
                 // For some reason Google calendars ignore HasAlarm = false and set reminder for 30 minutes. Local calendars don't seem to have this issue
 
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtstart, item.StartTime.ToUnixTime());
-                eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtend, Extensions.ToUnixTime(item.EndTime));
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtend, item.EndTime.ToUnixTime());
 
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.EventTimezone, TimeZone.Default.ID);
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.EventEndTimezone, TimeZone.Default.ID);
@@ -76,7 +76,51 @@ namespace GUT.Schedule
                 // Settings reminder
                 if(data.Reminder != -5)
                 {
-                    Android.Content.ContentValues reminderValues = new Android.Content.ContentValues();
+                    ContentValues reminderValues = new ContentValues();
+                    reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.EventId, long.Parse(response.LastPathSegment));
+                    reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Minutes, data.Reminder);
+
+                    Application.Context.ContentResolver.Insert(CalendarContract.Reminders.ContentUri, reminderValues);
+                }
+            }
+        }
+        
+        public static void Export(IEnumerable<ProfessorSubject> schedule)
+        {
+            DataSet data = Data.DataSet;
+
+            foreach (ProfessorSubject item in schedule)
+            {
+                ContentValues eventValues = new ContentValues();
+
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.CalendarId, data.Calendar);
+
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.Title, string.Format("{0}. {1} ({2})", 
+                    item.Order, 
+                    item.Name, 
+                    item.Type));
+
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.Description, item.Groups);
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.EventLocation, item.Cabinet);
+
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.Availability, 0);
+
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.HasAlarm, data.Reminder != -5);
+                // For some reason Google calendars ignore HasAlarm = false and set reminder for 30 minutes. Local calendars don't seem to have this issue
+
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtstart, item.StartTime.ToUnixTime());
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtend, item.EndTime.ToUnixTime());
+
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.EventTimezone, TimeZone.Default.ID);
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.EventEndTimezone, TimeZone.Default.ID);
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.CustomAppPackage, Application.Context.PackageName);
+
+                Uri response = Application.Context.ContentResolver.Insert(CalendarContract.Events.ContentUri, eventValues);
+
+                // Settings reminder
+                if(data.Reminder != -5)
+                {
+                    ContentValues reminderValues = new ContentValues();
                     reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.EventId, long.Parse(response.LastPathSegment));
                     reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Minutes, data.Reminder);
 

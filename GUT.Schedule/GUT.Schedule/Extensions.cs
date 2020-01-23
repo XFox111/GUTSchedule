@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using Android.Content;
 using Android.Widget;
 
@@ -45,5 +48,24 @@ namespace GUT.Schedule
         /// <returns><see cref="long"/> which is represented by total milliseconds count passed since 1970</returns>
         public static long ToUnixTime(this DateTime dt) =>
             (long)dt.ToUniversalTime().Subtract(new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+
+        public static void SetContent(this HttpRequestMessage request, params (string key, string value)[] values)
+        {
+            if (request == null)
+                throw new ArgumentNullException(nameof(request));
+
+            Dictionary<string, string> body = new Dictionary<string, string>();
+            foreach ((string key, string value) in values)
+                body.Add(key, value);
+            request.Content = new FormUrlEncodedContent(body);
+        }
+        public static async Task<string> GetString(this HttpResponseMessage response)
+        {
+            if (response == null)
+                throw new ArgumentNullException(nameof(response));
+
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            return Encoding.GetEncoding("Windows-1251").GetString(await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false));
+        }
     }
 }

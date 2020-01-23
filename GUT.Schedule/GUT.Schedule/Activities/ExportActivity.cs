@@ -31,14 +31,29 @@ namespace GUT.Schedule
         {
             try
             {
-                status.Text = "Загрузка расписания";
-                List<Subject> schedule = await Parser.LoadSchedule();
+                if(Data.DataSet.HttpClient != null)
+                {
+                    status.Text = "Загрузка расписания с картофельных серверов Бонча";
+                    List<ProfessorSubject> schedule = new List<ProfessorSubject>();
 
-                schedule = schedule.FindAll(i => i.StartTime.Date >= Data.StartDate && i.StartTime.Date <= Data.EndDate);   // Filtering schedule according to export range
+                    for (DateTime d = Data.StartDate; int.Parse($"{d.Year}{d.Month:00}") <= int.Parse($"{Data.EndDate.Year}{Data.EndDate.Month:00}"); d = d.AddMonths(1))
+                        schedule.AddRange(await Parser.GetProfessorSchedule(Data.DataSet.HttpClient, d));
 
-                status.Text = "Экспортирование в календарь";
-                Calendar.Export(schedule);
+                    schedule = schedule.FindAll(i => i.StartTime.Date >= Data.StartDate && i.StartTime.Date <= Data.EndDate);   // Filtering schedule according to export range
 
+                    status.Text = "Экспортирование в календарь";
+                    Calendar.Export(schedule);
+                }
+                else
+                {
+                    status.Text = "Загрузка расписания";
+                    List<Subject> schedule = await Parser.LoadSchedule();
+
+                    schedule = schedule.FindAll(i => i.StartTime.Date >= Data.StartDate && i.StartTime.Date <= Data.EndDate);   // Filtering schedule according to export range
+
+                    status.Text = "Экспортирование в календарь";
+                    Calendar.Export(schedule);
+                }
 
                 status.Text = "Готово";
                 await Task.Delay(1000);
