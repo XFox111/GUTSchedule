@@ -141,8 +141,13 @@ namespace GUT.Schedule
                 }
                 Data.Groups = null;
 
+                // Если ты это читаешь и у тебя возникли вопросы по типу "А какого хуя творится в коде ниже?!", то во-первых:
                 // According to this SO thread: https://stackoverflow.com/questions/1925486/android-storing-username-and-password
                 // I consider Preferences as safe enough method for storing credentials
+                // А во-вторых, даже такой казалось бы небезопасный метод хранения учетных данных в сто раз надежнее того дерьма,
+                // что творится на серверах Бонча (я не шучу, там все ОЧЕНЬ плохо)
+                // Ну и в-третьих: Андроид - это пиздец и настоящий ад разработчика. И если бы была моя воля, я бы под него никогда не писал #FuckAndroid
+                // З.Ы. Помнишь про второй пункт? Так вот, если ты используешь такой же пароль как в ЛК где-то еще, настоятельно рекомендую его поменять
                 PreferenceManager.GetDefaultSharedPreferences(this).Edit().PutBoolean("email", groupTitle.Checked).Apply();
                 PreferenceManager.GetDefaultSharedPreferences(this).Edit().PutBoolean("password", groupTitle.Checked).Apply();
             }
