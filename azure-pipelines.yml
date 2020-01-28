@@ -24,7 +24,7 @@ steps:
 - task: XamarinAndroid@1
   inputs:
     projectFile: '**/**.csproj'
-    outputDirectory: '$(Build.ArtifactStagingDirectory)'
+    outputDirectory: '$(outputDirectory)'
     configuration: '$(buildConfiguration)'
     msbuildVersionOption: 'latest'
     msbuildArchitectureOption: 'x64'
@@ -32,6 +32,6 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    PathtoPublish: '**/**.apk'
     ArtifactName: 'drop'
     publishLocation: 'Container'
