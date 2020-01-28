@@ -1,4 +1,4 @@
-# Chabgelog file
+# Changelog file
 ## Changelog filling guidelines
 - Update before every merge to master.
 - Fill in English
