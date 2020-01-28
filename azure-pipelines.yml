@@ -30,8 +30,15 @@ steps:
     msbuildArchitectureOption: 'x64'
     jdkOption: 'JDKVersion'
 
+- task: DeleteFiles@1
+  inputs:
+    SourceFolder: '$(outputDirectory)'
+    Contents: |
+      **/**.pdb
+      **/**.dll
+
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(outputDirectory)'
-    ArtifactName: 'drop'
+    ArtifactName: 'bundle'
     publishLocation: 'Container'
