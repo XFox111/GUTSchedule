@@ -21,6 +21,12 @@ steps:
   inputs:
     cwd: '**'
 
+- task: ResharperCli@2
+  inputs:
+    solutionOrProjectPath: '**/*.sln'
+    failBuildLevelSelector: 'Error'
+    failBuildOnCodeIssues: false
+
 - task: XamarinAndroid@1
   inputs:
     projectFile: '**/**.csproj'
@@ -36,14 +42,6 @@ steps:
     Contents: |
       **/**.pdb
       **/**.dll
-
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: '$(Build.Repository.LocalPath)'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(outputDirectory)/Source-$(Build.SourceVersion).zip'
-    replaceExistingArchive: true
 
 - task: PublishBuildArtifacts@1
   inputs:
