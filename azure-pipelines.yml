@@ -30,6 +30,7 @@ steps:
     configuration: '$(buildConfiguration)'
     msbuildVersionOption: 'latest'
     msbuildArchitectureOption: 'x64'
+    msbuildArguments: '-p:AndroidPackageFormat=aab'
     jdkOption: 'JDKVersion'
 
 - task: DeleteFiles@1
