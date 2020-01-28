@@ -37,6 +37,14 @@ steps:
       **/**.pdb
       **/**.dll
 
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.Repository.LocalPath)'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(outputDirectory)/Source-$(Build.SourceVersion).zip'
+    replaceExistingArchive: true
+
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(outputDirectory)'
