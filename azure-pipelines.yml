@@ -3,9 +3,6 @@
 # Add steps that test, sign, and distribute an app, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/xamarin
 
-trigger:
-- master
-
 pool:
   vmImage: 'windows-latest'
 
@@ -20,8 +17,36 @@ steps:
   inputs:
     restoreSolution: '**/*.sln'
 
+- task: ResharperCli@2
+  inputs:
+    solutionOrProjectPath: 'GUT.Schedule/GUT.Schedule.sln'
+    failBuildLevelSelector: 'Error'
+    failBuildOnCodeIssues: false
+
 - task: XamarinAndroid@1
   inputs:
     projectFile: '**/**.csproj'
     outputDirectory: '$(outputDirectory)'
     configuration: '$(buildConfiguration)'
+    msbuildVersionOption: 'latest'
+    msbuildArchitectureOption: 'x64'
+    jdkOption: 'JDKVersion'
+
+- task: DeleteFiles@1
+  inputs:
+    SourceFolder: '$(outputDirectory)'
+    Contents: |
+      **/**.pdb
+      **/**.dll
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: 'changelog.md'
+    TargetFolder: '$(outputDirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(outputDirectory)'
+    ArtifactName: 'bundle'
+    publishLocation: 'Container'
