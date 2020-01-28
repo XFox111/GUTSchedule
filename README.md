@@ -1,4 +1,5 @@
 # GUTSchedule
+[![Build Status](https://dev.azure.com/xfox111/GitHub%20CI/_apis/build/status/XFox111.GUTSchedule?branchName=master)](https://dev.azure.com/xfox111/GitHub%20CI/_build/latest?definitionId=8&branchName=master)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/xfox111/GUTSchedule)
 ![GitHub issues](https://img.shields.io/github/issues/xfox111/GUTSchedule)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)

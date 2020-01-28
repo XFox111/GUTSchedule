@@ -3,9 +3,6 @@
 # Add steps that test, sign, and distribute an app, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/xamarin
 
-trigger:
-- master
-
 pool:
   vmImage: 'windows-latest'
 
@@ -19,9 +16,22 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '**/*.sln'
+    
+- task: WhiteSource Bolt@20
+  inputs:
+    cwd: '**'
 
 - task: XamarinAndroid@1
   inputs:
     projectFile: '**/**.csproj'
     outputDirectory: '$(outputDirectory)'
     configuration: '$(buildConfiguration)'
+    msbuildVersionOption: 'latest'
+    msbuildArchitectureOption: 'x64'
+    jdkOption: 'JDKVersion'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
