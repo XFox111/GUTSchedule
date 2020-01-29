@@ -12,41 +12,54 @@ variables:
 
 steps:
 - task: NuGetToolInstaller@1
+  displayName: 'Install NuGet Tool'
 
 - task: NuGetCommand@2
+  displayName: 'Restore Solution'
   inputs:
     restoreSolution: '**/*.sln'
 
 - task: ResharperCli@2
+  displayName: 'RESharper CLI Code Analyzer'
   inputs:
     solutionOrProjectPath: 'GUT.Schedule/GUT.Schedule.sln'
     failBuildLevelSelector: 'Error'
     failBuildOnCodeIssues: false
 
-- task: XamarinAndroid@1
+- task: MSBuild@1
+  displayName: 'Build Solution'
   inputs:
-    projectFile: '**/**.csproj'
-    outputDirectory: '$(outputDirectory)'
-    configuration: '$(buildConfiguration)'
-    msbuildVersionOption: 'latest'
-    msbuildArchitectureOption: 'x64'
-    msbuildArguments: '-p:AndroidPackageFormat=aab'
-    jdkOption: 'JDKVersion'
+    solution: '**/*.sln'
+    msbuildArchitecture: x64
+    msbuildArguments: '-p:Configuration=Release -p:AndroidPackageFormat=aab -p:AndroidUseAapt2=true'
 
-- task: DeleteFiles@1
-  inputs:
-    SourceFolder: '$(outputDirectory)'
-    Contents: |
-      **/**.pdb
-      **/**.dll
+#- task: XamarinAndroid@1
+#  inputs:
+#    projectFile: '**/**.csproj'
+#    outputDirectory: '$(outputDirectory)'
+#    configuration: '$(buildConfiguration)'
+#    msbuildVersionOption: 'latest'
+#    msbuildArchitectureOption: 'x64'
+#    msbuildArguments: '-p:AndroidPackageFormat=aab -p:AndroidUseAapt2=true'
+#    jdkOption: 'JDKVersion'
+
+#- task: DeleteFiles@1
+#  displayName: 'Delete debug files'
+#  inputs:
+#    SourceFolder: '$(outputDirectory)'
+#    Contents: |
+#      **/**.pdb
+#      **/**.dll
 
 - task: CopyFiles@2
+  displayName: 'Copy changelog to output'
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: 'changelog.md'
     TargetFolder: '$(outputDirectory)'
 
 - task: PublishBuildArtifacts@1
+  displayName: 'Drop Artifact'
   inputs:
     PathtoPublish: '$(outputDirectory)'
     ArtifactName: 'bundle'
