@@ -85,11 +85,11 @@ namespace GUT.Schedule
             }
         }
         
-        public static void Export(IEnumerable<ProfessorSubject> schedule)
+        public static void Export(IEnumerable<CabinetSubject> schedule)
         {
             DataSet data = Data.DataSet;
 
-            foreach (ProfessorSubject item in schedule)
+            foreach (CabinetSubject item in schedule)
             {
                 ContentValues eventValues = new ContentValues();
 
@@ -100,7 +100,7 @@ namespace GUT.Schedule
                     item.Name, 
                     item.Type));
 
-                eventValues.Put(CalendarContract.Events.InterfaceConsts.Description, item.Groups);
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.Description, item.Opponent);
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.EventLocation, item.Cabinet);
 
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.Availability, 0);

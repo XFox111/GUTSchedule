@@ -19,10 +19,11 @@
             android:textStyle="bold"
             android:textSize="16dp"/>
 
-        <Spinner
-            android:id="@+id/user"
+        <CheckBox
+            android:id="@+id/authorization"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="Авторизоваться через Личный кабинет"/>
 
         <LinearLayout
             android:id="@+id/studentParams"

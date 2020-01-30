@@ -11,5 +11,6 @@ namespace GUT.Schedule.Models
         public int Reminder { get; set; }
         public bool AddGroupToTitle { get; set; }
         public HttpClient HttpClient { get; set; }
+        public bool? IsProfessor { get; set; }
     }
 }
