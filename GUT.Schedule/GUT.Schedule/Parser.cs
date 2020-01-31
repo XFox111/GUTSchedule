@@ -4,6 +4,7 @@ using AngleSharp.Html.Parser;
 using GUT.Schedule.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -122,9 +123,9 @@ namespace GUT.Schedule
                 return $"205.{now.Year - 2001}{now.Year - 2000}/2";
         }
 
-        public static async Task<List<ProfessorSubject>> GetProfessorSchedule(HttpClient client, DateTime date)
+        public static async Task<List<CabinetSubject>> GetCabinetSchedule(HttpClient client, DateTime date, bool checkProfSchedule)
         {
-            using HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://cabs.itut.ru/cabinet/project/cabinet/forms/pr_raspisanie_kalendar.php");
+            using HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"https://cabs.itut.ru/cabinet/project/cabinet/forms/{(checkProfSchedule ? "pr_" : "")}raspisanie_kalendar.php");
             request.SetContent(
                 ("month", date.Month.ToString()),
                 ("year", date.Year.ToString()),
@@ -137,21 +138,38 @@ namespace GUT.Schedule
                 throw new HttpRequestException(responseContent);
 
             IHtmlDocument doc = new HtmlParser().ParseDocument(responseContent);
-            List<ProfessorSubject> schedule = new List<ProfessorSubject>();
-            foreach(var i in doc.QuerySelectorAll("td").Where(i => i.GetAttribute("style") == "text-align: center; vertical-align: top"))
+            List<CabinetSubject> schedule = new List<CabinetSubject>();
+
+            if(!checkProfSchedule)
+                Data.DataSet.Group = doc.QuerySelector(".style_gr b").TextContent;
+
+            foreach (var i in doc.QuerySelectorAll("td").Where(i => i.GetAttribute("style") == "text-align: center; vertical-align: top"))
                 for (int k = 0; k < i.QuerySelectorAll("i").Length; k++)
                 {
-                    ProfessorSubject item = new ProfessorSubject(
+                    CabinetSubject item = new CabinetSubject(
                         name: i.QuerySelectorAll("b")[k * 2 + 1].TextContent,
                         type: i.QuerySelectorAll("i")[k].TextContent,
-                        cabinet: i.ChildNodes[k * 13 + 12].TextContent,
-                        groups: i.ChildNodes[k * 13 + 7].TextContent,
+                        cabinet: i.QuerySelectorAll("small")[k].NextSibling.TextContent.Replace("; Б22", ""),
+                        opponent: i.QuerySelectorAll("i")[k].NextSibling.NextSibling.NodeType == NodeType.Text ?
+                            i.QuerySelectorAll("i")[k].NextSibling.NextSibling.TextContent : "",
                         year: date.Year,
                         month: date.Month,
-                        day: int.Parse(i.QuerySelectorAll("b")[0].TextContent),
-                        schedule: i.QuerySelectorAll("b")[k * 2 + 2].TextContent
-                        );
+                        day: int.Parse(i.ChildNodes[0].TextContent),
+                        schedule: i.QuerySelectorAll("b")[k * 2 + 2].TextContent,
+                        checkProfSchedule);
                     schedule.Add(item);
+                }
+
+            // Merge duplicating entries
+            schedule.OrderByDescending(i => i.StartTime);
+            for(int k = 1; k < schedule.Count; k++)
+                if(schedule[k - 1].StartTime == schedule[k].StartTime &&
+                    schedule[k - 1].Name == schedule[k].Name &&
+                    schedule[k - 1].Type == schedule[k].Type)
+                {
+                    schedule[k - 1].Opponent += "\n" + schedule[k].Opponent;
+                    schedule[k - 1].Cabinet += "; " + schedule[k].Cabinet;
+                    schedule.RemoveAt(k--);
                 }
 
             return schedule;

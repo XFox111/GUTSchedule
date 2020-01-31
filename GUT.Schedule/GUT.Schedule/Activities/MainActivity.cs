@@ -22,8 +22,8 @@ namespace GUT.Schedule
     {
         Button start, end, export;
         Button forDay, forWeek, forMonth, forSemester;
-        Spinner faculty, course, group, reminder, calendar, user;
-        CheckBox groupTitle;
+        Spinner faculty, course, group, reminder, calendar;
+        CheckBox groupTitle, authorize;
         TextView error;
         LinearLayout studentParams, profParams;
         EditText email, password;
@@ -50,13 +50,6 @@ namespace GUT.Schedule
             AddEvents();
 
             // Settings spinners' dropdown lists content
-            user.SetList(this, new[] 
-            {
-                "Студент",
-                "Преподаватель" 
-            });
-            user.SetSelection(prefs.GetInt("User", 0));
-
             reminder.SetList(this, new[] 
             {
                 "Нет",
@@ -74,6 +67,7 @@ namespace GUT.Schedule
             start.Text = Data.StartDate.ToShortDateString();
 
             groupTitle.Checked = prefs.GetBoolean("AddGroupToHeader", false);
+            authorize.Checked = prefs.GetBoolean("Authorize", true);
 
             email.Text = prefs.GetString("email", "");
             password.Text = prefs.GetString("password", "");
@@ -91,7 +85,8 @@ namespace GUT.Schedule
             }
 
             HttpClient client = null;
-            if(user.SelectedItemPosition == 1)
+            bool? isProf = null;
+            if(authorize.Checked)
             {
                 Toast.MakeText(ApplicationContext, "Авторизация...", ToastLength.Short).Show();
                 if (string.IsNullOrWhiteSpace(email.Text) || string.IsNullOrWhiteSpace(password.Text))
@@ -133,12 +128,11 @@ namespace GUT.Schedule
                 HttpResponseMessage verificationResponse = await client.GetAsync("https://cabs.itut.ru/cabinet/?login=yes");
                 export.Enabled = true;
                 IHtmlDocument doc = new HtmlParser().ParseDocument(await verificationResponse.GetString());
-                if (!doc.QuerySelectorAll("nobr").Any(i => i.TextContent.Contains("Ведомости")))
-                {
-                    error.Text = "Ошибка авторизации: Необходимо авторизоваться с аккаунтом преподавателя";
-                    error.Visibility = ViewStates.Visible;
-                    return;
-                }
+                if (doc.QuerySelectorAll("option").Any(i => i.TextContent.Contains("Сотрудник")))
+                    isProf = true;
+                else
+                    isProf = false;
+
                 Data.Groups = null;
 
                 // Если ты это читаешь и у тебя возникли вопросы по типу "А какого хуя творится в коде ниже?!", то во-первых:
@@ -148,8 +142,8 @@ namespace GUT.Schedule
                 // что творится на серверах Бонча (я не шучу, там все ОЧЕНЬ плохо)
                 // Ну и в-третьих: Андроид - это пиздец и настоящий ад разработчика. И если бы была моя воля, я бы под него никогда не писал #FuckAndroid
                 // З.Ы. Помнишь про второй пункт? Так вот, если ты используешь такой же пароль как в ЛК где-то еще, настоятельно рекомендую его поменять
-                PreferenceManager.GetDefaultSharedPreferences(this).Edit().PutBoolean("email", groupTitle.Checked).Apply();
-                PreferenceManager.GetDefaultSharedPreferences(this).Edit().PutBoolean("password", groupTitle.Checked).Apply();
+                PreferenceManager.GetDefaultSharedPreferences(this).Edit().PutString("email", email.Text).Apply();
+                PreferenceManager.GetDefaultSharedPreferences(this).Edit().PutString("password", password.Text).Apply();
             }
             else
             {
@@ -170,7 +164,8 @@ namespace GUT.Schedule
                 AddGroupToTitle = groupTitle.Checked,
                 Calendar = Calendar.Calendars[calendar.SelectedItemPosition].Id,
                 Reminder = (reminder.SelectedItemPosition - 1) * 5,
-                HttpClient = client
+                HttpClient = client,
+                IsProfessor = isProf
             };
 
             StartActivity(new Intent(this, typeof(ExportActivity)));
@@ -223,10 +218,11 @@ namespace GUT.Schedule
             group = FindViewById<Spinner>(Resource.Id.group);
             reminder = FindViewById<Spinner>(Resource.Id.reminder);
             calendar = FindViewById<Spinner>(Resource.Id.calendar);
-            user = FindViewById<Spinner>(Resource.Id.user);
 
             error = FindViewById<TextView>(Resource.Id.error);
+
             groupTitle = FindViewById<CheckBox>(Resource.Id.groupTitle);
+            authorize = FindViewById<CheckBox>(Resource.Id.authorization);
 
             studentParams = FindViewById<LinearLayout>(Resource.Id.studentParams);
             profParams = FindViewById<LinearLayout>(Resource.Id.professorParams);
@@ -247,21 +243,18 @@ namespace GUT.Schedule
                 prefs.Edit().PutInt("Course", e.Position).Apply();
                 UpdateGroupsList();
             };
-            user.ItemSelected += (s, e) =>
+            authorize.CheckedChange += (s, e) =>
             {
-                prefs.Edit().PutInt("User", e.Position).Apply();
-                switch (e.Position)
+                prefs.Edit().PutBoolean("Authorize", e.IsChecked).Apply();
+                if (e.IsChecked)
                 {
-                    case 0:
-                        studentParams.Visibility = ViewStates.Visible;
-                        groupTitle.Visibility = ViewStates.Visible;
-                        profParams.Visibility = ViewStates.Gone;
-                        break;
-                    case 1:
-                        studentParams.Visibility = ViewStates.Gone;
-                        groupTitle.Visibility = ViewStates.Gone;
-                        profParams.Visibility = ViewStates.Visible;
-                        break;
+                    studentParams.Visibility = ViewStates.Gone;
+                    profParams.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    studentParams.Visibility = ViewStates.Visible;
+                    profParams.Visibility = ViewStates.Gone;
                 }
             };
             calendar.ItemSelected += (s, e) =>

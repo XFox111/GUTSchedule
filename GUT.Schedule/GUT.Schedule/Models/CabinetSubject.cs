@@ -2,7 +2,7 @@
 
 namespace GUT.Schedule.Models
 {
-    public class ProfessorSubject
+    public class CabinetSubject
     {
         public string Name { get; set; }
         public string Type { get; set; }
@@ -10,14 +10,16 @@ namespace GUT.Schedule.Models
         public string Order { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-        public string Groups { get; set; }
+        public string Opponent { get; set; }
+        public bool ProfessorSchedule { get; set; }
 
-        public ProfessorSubject(string name, string type, string cabinet, string groups, int year, int month, int day, string schedule)
+        public CabinetSubject(string name, string type, string cabinet, string opponent, int year, int month, int day, string schedule, bool profSchedule)
         {
             Name = name;
             Type = type;
             Cabinet = cabinet;
-            Groups = groups;
+            Opponent = opponent;
+            ProfessorSchedule = profSchedule;
 
             string[] time = schedule.Split('-');
 
