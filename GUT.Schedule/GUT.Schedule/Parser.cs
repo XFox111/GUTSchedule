@@ -4,6 +4,7 @@ using AngleSharp.Html.Parser;
 using GUT.Schedule.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -148,8 +149,9 @@ namespace GUT.Schedule
                     CabinetSubject item = new CabinetSubject(
                         name: i.QuerySelectorAll("b")[k * 2 + 1].TextContent,
                         type: i.QuerySelectorAll("i")[k].TextContent,
-                        cabinet: i.ChildNodes[checkProfSchedule ? (k * 13 + 12) : (k * 12 + 11)].TextContent,
-                        opponent: i.ChildNodes[checkProfSchedule ? (k * 13 + 7) : (k * 12 + 6)].TextContent,
+                        cabinet: i.QuerySelectorAll("small")[k].NextSibling.TextContent.Replace("; Б22", ""),
+                        opponent: i.QuerySelectorAll("i")[k].NextSibling.NextSibling.NodeType == NodeType.Text ?
+                            i.QuerySelectorAll("i")[k].NextSibling.NextSibling.TextContent : "",
                         year: date.Year,
                         month: date.Month,
                         day: int.Parse(i.ChildNodes[0].TextContent),
@@ -165,7 +167,7 @@ namespace GUT.Schedule
                     schedule[k - 1].Name == schedule[k].Name &&
                     schedule[k - 1].Type == schedule[k].Type)
                 {
-                    schedule[k - 1].Opponent += ";\n" + schedule[k].Opponent;
+                    schedule[k - 1].Opponent += "\n" + schedule[k].Opponent;
                     schedule[k - 1].Cabinet += "; " + schedule[k].Cabinet;
                     schedule.RemoveAt(k--);
                 }
