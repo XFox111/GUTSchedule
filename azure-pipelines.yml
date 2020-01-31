@@ -26,30 +26,30 @@ steps:
     failBuildLevelSelector: 'Error'
     failBuildOnCodeIssues: false
 
-- task: MSBuild@1
-  displayName: 'Build Solution'
+#- task: MSBuild@1
+#  displayName: 'Build Solution'
+#  inputs:
+#    solution: '**/*.sln'
+#    msbuildArchitecture: x64
+#    msbuildArguments: '-p:Configuration=Release -p:AndroidPackageFormat=aab -p:AndroidUseAapt2=true'
+
+- task: XamarinAndroid@1
   inputs:
-    solution: '**/*.sln'
-    msbuildArchitecture: x64
-    msbuildArguments: '-p:Configuration=Release -p:AndroidPackageFormat=aab -p:AndroidUseAapt2=true'
+    projectFile: '**/**.csproj'
+    outputDirectory: '$(outputDirectory)'
+    configuration: '$(buildConfiguration)'
+    msbuildVersionOption: 'latest'
+    msbuildArchitectureOption: 'x64'
+    msbuildArguments: ' /t:PackageForAndroid -t:SignAndroidPackage -p:AndroidPackageFormat=aab /p:Configuration=Release'
+    jdkOption: 'JDKVersion'
 
-#- task: XamarinAndroid@1
-#  inputs:
-#    projectFile: '**/**.csproj'
-#    outputDirectory: '$(outputDirectory)'
-#    configuration: '$(buildConfiguration)'
-#    msbuildVersionOption: 'latest'
-#    msbuildArchitectureOption: 'x64'
-#    msbuildArguments: '-p:AndroidPackageFormat=aab -p:AndroidUseAapt2=true'
-#    jdkOption: 'JDKVersion'
-
-#- task: DeleteFiles@1
-#  displayName: 'Delete debug files'
-#  inputs:
-#    SourceFolder: '$(outputDirectory)'
-#    Contents: |
-#      **/**.pdb
-#      **/**.dll
+- task: DeleteFiles@1
+  displayName: 'Delete debug files'
+  inputs:
+    SourceFolder: '$(outputDirectory)'
+    Contents: |
+      **/**.pdb
+      **/**.dll
 
 - task: CopyFiles@2
   displayName: 'Copy changelog to output'
