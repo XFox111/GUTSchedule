@@ -2,14 +2,14 @@
 [![Build Status](https://dev.azure.com/xfox111/GitHub%20CI/_apis/build/status/XFox111.GUTSchedule?branchName=master)](https://dev.azure.com/xfox111/GitHub%20CI/_build/latest?definitionId=8&branchName=master)
 ![Continious Delivery Pipeline](https://vsrm.dev.azure.com/xfox111/_apis/public/Release/badge/e42c572c-a3cd-4aac-bbb1-f720d9ccb5ea/1/5)
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/xfox111/GUTSchedule)
-![GitHub issues](https://img.shields.io/github/issues/xfox111/GUTSchedule)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/xfox111/GUTSchedule)](https://github.com/xfox111/gutschedule/releases/latest)
+[![GitHub issues](https://img.shields.io/github/issues/xfox111/GUTSchedule)](https://github.com/xfox111/GUTSchedule/issues)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![GitHub repo size](https://img.shields.io/github/repo-size/xfox111/GUTSchedule?label=Repository%20size)
 ![Platforms](https://img.shields.io/badge/platforms-android-lightgrey)
 
-![Twitter Follow](https://img.shields.io/twitter/follow/xfox111?style=social)
-![GitHub followers](https://img.shields.io/github/followers/xfox111?label=Follow%20@xfox111&style=social)
+[![Twitter Follow](https://img.shields.io/twitter/follow/xfox111?style=social)](https://twitter.com/xfox111)
+[![GitHub followers](https://img.shields.io/github/followers/xfox111?label=Follow%20@xfox111&style=social)](https://github.com/xfox111)
 
 ## Overview
 Android application which exports SPbSUT timetable to calendar
@@ -25,12 +25,12 @@ There are many ways in which you can participate in the project, for example:
 - Review documentation and make pull requests for anything from typos to new content
 
 If you are interested in fixing issues and contributing directly to the code base, please see the [Contribution Guidelines](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTION.md), which covers the following:
-- [How to build and run from source](https://github.com/XFox111/GUTSchedule/CONTRIBUTION.md#build-and-run-project)
-- [The development workflow](https://github.com/XFox111/GUTSchedule/CONTRIBUTION.md#development-workflow), including debugging and running tests
-- [Coding guidelines](https://github.com/XFox111/GUTSchedule/CONTRIBUTION.md#coding-guidelines)
-- [Submitting pull requests](https://github.com/XFox111/GUTSchedule/CONTRIBUTION.md#submitting-pull-requests)
-- [Finding an issue to work on](https://github.com/XFox111/GUTSchedule/CONTRIBUTION.md#finding-an-issue-to-work-on)
-- [Contributing to translations](https://github.com/XFox111/GUTSchedule/CONTRIBUTION.md#contributing-to-translations)
+- [How to build and run from source](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTION.md#build-and-run-project)
+- [The development workflow](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTION.md#development-workflow), including debugging and running tests
+- [Coding guidelines](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTION.md#coding-guidelines)
+- [Submitting pull requests](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTION.md#submitting-pull-requests)
+- [Finding an issue to work on](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTION.md#finding-an-issue-to-work-on)
+- [Contributing to translations](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTION.md#contributing-to-translations)
 
 ## Code of Conduct
 This project has adopted the Contributor Covenant. For more information see the [GUTSchedule Code of Conduct](https://github.com/XFox111/GUTSchedule/blob/master/CODE_OF_CONDUCT.md)
