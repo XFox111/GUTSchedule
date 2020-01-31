@@ -128,7 +128,7 @@ namespace GUT.Schedule
                 HttpResponseMessage verificationResponse = await client.GetAsync("https://cabs.itut.ru/cabinet/?login=yes");
                 export.Enabled = true;
                 IHtmlDocument doc = new HtmlParser().ParseDocument(await verificationResponse.GetString());
-                if (doc.QuerySelectorAll("nobr").Any(i => i.TextContent.Contains("Ведомости")))
+                if (doc.QuerySelectorAll("option").Any(i => i.TextContent.Contains("Сотрудник")))
                     isProf = true;
                 else
                     isProf = false;
@@ -142,8 +142,8 @@ namespace GUT.Schedule
                 // что творится на серверах Бонча (я не шучу, там все ОЧЕНЬ плохо)
                 // Ну и в-третьих: Андроид - это пиздец и настоящий ад разработчика. И если бы была моя воля, я бы под него никогда не писал #FuckAndroid
                 // З.Ы. Помнишь про второй пункт? Так вот, если ты используешь такой же пароль как в ЛК где-то еще, настоятельно рекомендую его поменять
-                PreferenceManager.GetDefaultSharedPreferences(this).Edit().PutBoolean("email", groupTitle.Checked).Apply();
-                PreferenceManager.GetDefaultSharedPreferences(this).Edit().PutBoolean("password", groupTitle.Checked).Apply();
+                PreferenceManager.GetDefaultSharedPreferences(this).Edit().PutString("email", email.Text).Apply();
+                PreferenceManager.GetDefaultSharedPreferences(this).Edit().PutString("password", password.Text).Apply();
             }
             else
             {
@@ -249,13 +249,11 @@ namespace GUT.Schedule
                 if (e.IsChecked)
                 {
                     studentParams.Visibility = ViewStates.Gone;
-                    groupTitle.Visibility = ViewStates.Gone;
                     profParams.Visibility = ViewStates.Visible;
                 }
                 else
                 {
                     studentParams.Visibility = ViewStates.Visible;
-                    groupTitle.Visibility = ViewStates.Visible;
                     profParams.Visibility = ViewStates.Gone;
                 }
             };

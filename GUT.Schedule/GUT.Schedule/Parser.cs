@@ -126,7 +126,7 @@ namespace GUT.Schedule
         {
             using HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"https://cabs.itut.ru/cabinet/project/cabinet/forms/{(checkProfSchedule ? "pr_" : "")}raspisanie_kalendar.php");
             request.SetContent(
-                ("month", date.Month.ToString("0:00")),
+                ("month", date.Month.ToString()),
                 ("year", date.Year.ToString()),
                 ("type_z", "0"));
 
@@ -138,19 +138,23 @@ namespace GUT.Schedule
 
             IHtmlDocument doc = new HtmlParser().ParseDocument(responseContent);
             List<CabinetSubject> schedule = new List<CabinetSubject>();
-            foreach(var i in doc.QuerySelectorAll("td").Where(i => i.GetAttribute("style") == "text-align: center; vertical-align: top"))
+
+            if(!checkProfSchedule)
+                Data.DataSet.Group = doc.QuerySelector(".style_gr b").TextContent;
+
+            foreach (var i in doc.QuerySelectorAll("td").Where(i => i.GetAttribute("style") == "text-align: center; vertical-align: top"))
                 for (int k = 0; k < i.QuerySelectorAll("i").Length; k++)
                 {
                     CabinetSubject item = new CabinetSubject(
                         name: i.QuerySelectorAll("b")[k * 2 + 1].TextContent,
                         type: i.QuerySelectorAll("i")[k].TextContent,
-                        cabinet: i.ChildNodes[k * 13 + 11].TextContent,
-                        opponent: i.ChildNodes[k * 13 + 6].TextContent,
+                        cabinet: i.ChildNodes[checkProfSchedule ? (k * 13 + 12) : (k * 12 + 11)].TextContent,
+                        opponent: i.ChildNodes[checkProfSchedule ? (k * 13 + 7) : (k * 12 + 6)].TextContent,
                         year: date.Year,
                         month: date.Month,
                         day: int.Parse(i.ChildNodes[0].TextContent),
-                        schedule: i.QuerySelectorAll("b")[k * 2 + 2].TextContent
-                        );
+                        schedule: i.QuerySelectorAll("b")[k * 2 + 2].TextContent,
+                        checkProfSchedule);
                     schedule.Add(item);
                 }
 
@@ -161,8 +165,8 @@ namespace GUT.Schedule
                     schedule[k - 1].Name == schedule[k].Name &&
                     schedule[k - 1].Type == schedule[k].Type)
                 {
-                    schedule[k - 1].Opponent += "; " + schedule[k].Opponent;
-                    schedule[k - 1].Cabinet += ";\n" + schedule[k].Cabinet;
+                    schedule[k - 1].Opponent += ";\n" + schedule[k].Opponent;
+                    schedule[k - 1].Cabinet += "; " + schedule[k].Cabinet;
                     schedule.RemoveAt(k--);
                 }
 

@@ -95,7 +95,8 @@ namespace GUT.Schedule
 
                 eventValues.Put(CalendarContract.Events.InterfaceConsts.CalendarId, data.Calendar);
 
-                eventValues.Put(CalendarContract.Events.InterfaceConsts.Title, string.Format("{0}. {1} ({2})", 
+                eventValues.Put(CalendarContract.Events.InterfaceConsts.Title, string.Format("{0}{1}. {2} ({3})", 
+                    item.ProfessorSchedule ? "📚 " : (data.AddGroupToTitle ? $"[{data.Group}] " : ""),
                     item.Order, 
                     item.Name, 
                     item.Type));

@@ -40,11 +40,11 @@ namespace GUT.Schedule
                 {
                     List<CabinetSubject> schedule = new List<CabinetSubject>();
 
-                    for (DateTime d = Data.StartDate; int.Parse($"{d.Year}{d.Month:00}") <= int.Parse($"{Data.EndDate.Year}{Data.EndDate.Month:00}"); d = d.AddMonths(1))
+                    for(DateTime d = Data.StartDate; d <= Data.EndDate; d = d.AddMonths(1))
                         schedule.AddRange(await Parser.GetCabinetSchedule(Data.DataSet.HttpClient, d, false));      // Even though the user can be professor he can be also PhD student (and have his student schedule)
 
                     if(Data.DataSet.IsProfessor == true)
-                        for (DateTime d = Data.StartDate; int.Parse($"{d.Year}{d.Month:00}") <= int.Parse($"{Data.EndDate.Year}{Data.EndDate.Month:00}"); d = d.AddMonths(1))
+                        for (DateTime d = Data.StartDate; d <= Data.EndDate; d = d.AddMonths(1))
                             schedule.AddRange(await Parser.GetCabinetSchedule(Data.DataSet.HttpClient, d, true));
 
                     schedule = schedule.FindAll(i => i.StartTime.Date >= Data.StartDate && i.StartTime.Date <= Data.EndDate);   // Filtering schedule according to export range

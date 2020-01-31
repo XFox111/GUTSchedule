@@ -190,6 +190,12 @@
             android:layout_height="wrap_content"
             android:text="Добавить номер группы в заголовок"/>
 
+        
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="(i) Не касается расписания преподавателя"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
