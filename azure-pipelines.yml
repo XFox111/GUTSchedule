@@ -27,7 +27,7 @@ steps:
     failBuildOnCodeIssues: false
 
 - task: XamarinAndroid@1
-  displayName: 'Build Solution'
+  displayName: 'Build Solution (AppBundle)'
   inputs:
     projectFile: '**/**.csproj'
     outputDirectory: '$(outputDirectory)'
@@ -35,6 +35,17 @@ steps:
     msbuildVersionOption: 'latest'
     msbuildArchitectureOption: 'x64'
     msbuildArguments: ' /t:PackageForAndroid -t:SignAndroidPackage -p:AndroidPackageFormat=aab /p:Configuration=Release'
+    jdkOption: 'JDKVersion'
+
+- task: XamarinAndroid@1
+  displayName: 'Build Solution (APK)'
+  inputs:
+    projectFile: '**/**.csproj'
+    outputDirectory: '$(outputDirectory)'
+    configuration: 'Release (APK)'
+    msbuildVersionOption: 'latest'
+    msbuildArchitectureOption: 'x64'
+    msbuildArguments: ' /t:PackageForAndroid -t:SignAndroidPackage -p:AndroidPackageFormat=apk /p:Configuration="Release (APK)"'
     jdkOption: 'JDKVersion'
 
 - task: DeleteFiles@1
@@ -56,7 +67,7 @@ steps:
   displayName: 'Update package name'
   inputs:
     targetType: 'inline'
-    script: 'get-childitem *-Signed.aab | foreach { rename-item $_ $_.Name.Replace("-Signed", "") }'
+    script: 'get-childitem *-Signed.* | foreach { rename-item $_ $_.Name.Replace("-Signed", "") }'
     workingDirectory: '$(outputDirectory)'
 
 - task: PublishBuildArtifacts@1
