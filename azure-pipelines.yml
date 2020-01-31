@@ -12,27 +12,43 @@ variables:
 
 steps:
 - task: NuGetToolInstaller@1
+  displayName: 'Install NuGet Tool'
 
 - task: NuGetCommand@2
+  displayName: 'Restore Solution'
   inputs:
     restoreSolution: '**/*.sln'
 
 - task: ResharperCli@2
+  displayName: 'RESharper CLI Code Analyzer'
   inputs:
     solutionOrProjectPath: 'GUT.Schedule/GUT.Schedule.sln'
     failBuildLevelSelector: 'Error'
     failBuildOnCodeIssues: false
 
 - task: XamarinAndroid@1
+  displayName: 'Build Solution (AppBundle)'
   inputs:
     projectFile: '**/**.csproj'
     outputDirectory: '$(outputDirectory)'
     configuration: '$(buildConfiguration)'
     msbuildVersionOption: 'latest'
     msbuildArchitectureOption: 'x64'
+    msbuildArguments: ' /t:PackageForAndroid -t:SignAndroidPackage -p:AndroidPackageFormat=aab /p:Configuration=Release'
+    jdkOption: 'JDKVersion'
+
+- task: XamarinAndroid@1
+  displayName: 'Build Solution (APK)'
+  inputs:
+    projectFile: '**/**.csproj'
+    outputDirectory: '$(outputDirectory)'
+    configuration: 'Release (APK)'
+    msbuildVersionOption: 'latest'
+    msbuildArchitectureOption: 'x64'
     jdkOption: 'JDKVersion'
 
 - task: DeleteFiles@1
+  displayName: 'Delete debug files'
   inputs:
     SourceFolder: '$(outputDirectory)'
     Contents: |
@@ -40,12 +56,21 @@ steps:
       **/**.dll
 
 - task: CopyFiles@2
+  displayName: 'Copy changelog to output'
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: 'changelog.md'
     TargetFolder: '$(outputDirectory)'
 
+- task: PowerShell@2
+  displayName: 'Update package name'
+  inputs:
+    targetType: 'inline'
+    script: 'get-childitem *-Signed.* | foreach { rename-item $_ $_.Name.Replace("-Signed", "") }'
+    workingDirectory: '$(outputDirectory)'
+
 - task: PublishBuildArtifacts@1
+  displayName: 'Drop Artifact'
   inputs:
     PathtoPublish: '$(outputDirectory)'
     ArtifactName: 'bundle'
