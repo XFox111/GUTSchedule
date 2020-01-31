@@ -26,14 +26,8 @@ steps:
     failBuildLevelSelector: 'Error'
     failBuildOnCodeIssues: false
 
-#- task: MSBuild@1
-#  displayName: 'Build Solution'
-#  inputs:
-#    solution: '**/*.sln'
-#    msbuildArchitecture: x64
-#    msbuildArguments: '-p:Configuration=Release -p:AndroidPackageFormat=aab -p:AndroidUseAapt2=true'
-
 - task: XamarinAndroid@1
+  displayName: 'Build Solution'
   inputs:
     projectFile: '**/**.csproj'
     outputDirectory: '$(outputDirectory)'
@@ -57,6 +51,13 @@ steps:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: 'changelog.md'
     TargetFolder: '$(outputDirectory)'
+
+- task: PowerShell@2
+  displayName: 'Update package name'
+  inputs:
+    targetType: 'inline'
+    script: 'get-childitem *-Signed.aab | foreach { rename-item $_ $_.Name.Replace("-Signed", "") }'
+    workingDirectory: '$(outputDirectory)'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Drop Artifact'
