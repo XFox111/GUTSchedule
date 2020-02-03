@@ -5,29 +5,30 @@ There are many ways in which you can contribute, beyond writing code. The goal o
 
 ## Table of Contents
 - [GUTSchedule Contribution Guidelines](#gutschedule-contribution-guidelines)
-    - [Table of Contents](#table-of-contents)
-    - [Asking Questions](#asking-questions)
-    - [Providing Feedback](#providing-feedback)
-    - [Reporting Issues](#reporting-issues)
-        - [Look For an Existing Issue](#look-for-an-existing-issue)
-        - [Writing Good Bug Reports and Feature Requests](#writing-good-bug-reports-and-feature-requests)
-        - [Final Checklist](#final-checklist)
-        - [Follow Your Issue](#follow-your-issue)
-    - [Contributing to codebase](#contributing-to-codebase)
-        - [Build and run project](#build-and-run-project)
-        - [Development workflow](#development-workflow)
-        - [Coding guidelines](#coding-guidelines)
-            - [Indentation](#indentation)
-            - [Names](#names)
-            - [Comments](#comments)
-            - [Strings](#strings)
-            - [Style](#style)
-        - [Finding an issue to work on](#finding-an-issue-to-work-on)
-        - [Contributing to translations](#contributing-to-translations)
-        - [Submitting pull requests](#submitting-pull-requests)
-            - [Spell check errors](#spell-check-errors)
-    - [Thank You!](#thank-you)
-    - [Attribution](#attribution)
+  - [Table of Contents](#table-of-contents)
+  - [Asking Questions](#asking-questions)
+  - [Providing Feedback](#providing-feedback)
+  - [Reporting Issues](#reporting-issues)
+    - [Look For an Existing Issue](#look-for-an-existing-issue)
+    - [Writing Good Bug Reports and Feature Requests](#writing-good-bug-reports-and-feature-requests)
+    - [Final Checklist](#final-checklist)
+    - [Follow Your Issue](#follow-your-issue)
+  - [Contributing to codebase](#contributing-to-codebase)
+    - [Build and run project](#build-and-run-project)
+    - [Development workflow](#development-workflow)
+      - [Release](#release)
+    - [Coding guidelines](#coding-guidelines)
+      - [Indentation](#indentation)
+      - [Names](#names)
+      - [Comments](#comments)
+      - [Strings](#strings)
+      - [Style](#style)
+    - [Finding an issue to work on](#finding-an-issue-to-work-on)
+    - [Contributing to translations](#contributing-to-translations)
+    - [Submitting pull requests](#submitting-pull-requests)
+      - [Spell check errors](#spell-check-errors)
+  - [Thank You!](#thank-you)
+  - [Attribution](#attribution)
 
 ## Asking Questions
 Have a question? Rather than opening an issue, please ask me directly on opensource@xfox111.net.
@@ -101,7 +102,11 @@ This section represents how contributors should interact with codebase implement
 3. Making changes to codebase
 4. Updating [changelog.md](changelog.md)
 5. Creating a pull request to `master`
-6. Done!
+6. Validating PR with CI build
+7. Completing PR
+8. Done
+#### Release
+Next stage is release. Release performs on every push to master (which makes functional changes to application source code). Release performs via Azure Pipelines and triggers manually by pipeline owner ([@xfox111](https://github.com/xfox111)).
 
 ### Coding guidelines
 #### Indentation

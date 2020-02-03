@@ -29,6 +29,15 @@ steps:
     failBuildLevelSelector: 'Error'
     failBuildOnCodeIssues: false
 
+- task: PowerShell@2
+  displayName: 'Update version number'
+  inputs:
+    targetType: 'inline'
+    script: |
+      (Get-Content AndroidManifest.xml -encoding UTF8 | Out-String) -replace '(?<=\bandroid:versionCode=")[^"]*', $(Build.BuildId) | set-content AndroidManifest.xml -encoding UTF8
+      (Get-Content AndroidManifest.xml -encoding UTF8 | Out-String) -replace '(?<=\bandroid:versionName=")[^"]*', $(Build.BuildNumber) | set-content AndroidManifest.xml -encoding UTF8
+    workingDirectory: '$(Build.SourcesDirectory)\GUT.Schedule\GUT.Schedule\Properties'
+
 - task: XamarinAndroid@1
   displayName: 'Build Solution (AppBundle)'
   inputs:
