@@ -5,29 +5,29 @@ There are many ways in which you can contribute, beyond writing code. The goal o
 
 ## Table of Contents
 - [GUTSchedule Contribution Guidelines](#gutschedule-contribution-guidelines)
-  - [Table of Contents](#table-of-contents)
-  - [Asking Questions](#asking-questions)
-  - [Providing Feedback](#providing-feedback)
-  - [Reporting Issues](#reporting-issues)
-    - [Look For an Existing Issue](#look-for-an-existing-issue)
-    - [Writing Good Bug Reports and Feature Requests](#writing-good-bug-reports-and-feature-requests)
-    - [Final Checklist](#final-checklist)
-    - [Follow Your Issue](#follow-your-issue)
-  - [Contributing to codebase](#contributing-to-codebase)
-    - [Build and run project](#build-and-run-project)
-    - [Development workflow](#development-workflow)
-    - [Coding guidelines](#coding-guidelines)
-      - [Indentation](#indentation)
-      - [Names](#names)
-      - [Comments](#comments)
-      - [Strings](#strings)
-      - [Style](#style)
-    - [Finding an issue to work on](#finding-an-issue-to-work-on)
-    - [Contributing to translations](#contributing-to-translations)
-    - [Submitting pull requests](#submitting-pull-requests)
-      - [Spell check errors](#spell-check-errors)
-  - [Thank You!](#thank-you)
-  - [Attribution](#attribution)
+    - [Table of Contents](#table-of-contents)
+    - [Asking Questions](#asking-questions)
+    - [Providing Feedback](#providing-feedback)
+    - [Reporting Issues](#reporting-issues)
+        - [Look For an Existing Issue](#look-for-an-existing-issue)
+        - [Writing Good Bug Reports and Feature Requests](#writing-good-bug-reports-and-feature-requests)
+        - [Final Checklist](#final-checklist)
+        - [Follow Your Issue](#follow-your-issue)
+    - [Contributing to codebase](#contributing-to-codebase)
+        - [Build and run project](#build-and-run-project)
+        - [Development workflow](#development-workflow)
+        - [Coding guidelines](#coding-guidelines)
+            - [Indentation](#indentation)
+            - [Names](#names)
+            - [Comments](#comments)
+            - [Strings](#strings)
+            - [Style](#style)
+        - [Finding an issue to work on](#finding-an-issue-to-work-on)
+        - [Contributing to translations](#contributing-to-translations)
+        - [Submitting pull requests](#submitting-pull-requests)
+            - [Spell check errors](#spell-check-errors)
+    - [Thank You!](#thank-you)
+    - [Attribution](#attribution)
 
 ## Asking Questions
 Have a question? Rather than opening an issue, please ask me directly on opensource@xfox111.net.
@@ -67,9 +67,9 @@ Please include the following with each issue:
 
 ### Final Checklist
 Please remember to do the following:
-* [ ] Search the issue repository to ensure your report is a new issue
-* [ ] Separate issues reports
-* [ ] Include as much information as you can to your report
+- [ ] Search the issue repository to ensure your report is a new issue
+- [ ] Separate issues reports
+- [ ] Include as much information as you can to your report
 
 Don't feel bad if the developers can't reproduce the issue right away. They will simply ask for more information!
 
@@ -81,39 +81,58 @@ If you are interested in writing code to fix issues or implement new awesome fea
 
 ### Build and run project
 1. Clone repository to local storage using [Git command prompt](https://guides.github.com/introduction/git-handbook/) or [Visual Studio](https://docs.microsoft.com/en-us/visualstudio/get-started/tutorial-open-project-from-repo?view=vs-2019)
+    - Git clone command:
+    ```
+    git clone https://github.com/xfox111/GUTSchedule.git
+    ```
 2. Open `GUT.Schedule/GUT.Schedule.sln` using [Microsoft Visual Studio](https://visualstudio.microsoft.com/) 2019 or later
+    - Make sure you have properly installed and congigured [Xamarin.Android](https://docs.microsoft.com/en-us/xamarin/android/get-started/installation/) environment
 3. On the VS toolbar choose build configuration:
     - `Debug` for building and deploying test version of the app
     - `Release` for building final version of application and creating AppBundle package (.aab)
     - `Release (APK)` for building final version of application and creating Android package fike (.apk)
 4. To ensure that code compiles go to `Build -> Build Solution`
-5. To deploy and run application on a device or emulator 
-6. To build and create new package go to `Build -> Archive...`
-> TODO
+5. [Debug application](https://docs.microsoft.com/en-us/xamarin/android/deploy-test/debugging/) on an actual device or Android Emulator
 
 ### Development workflow
-> TODO
+This section represents how contributors should interact with codebase implementing features and fixing bugs
+1. Getting assigned to the issue
+2. Creating a repository fork
+3. Making changes to codebase
+4. Updating [changelog.md](changelog.md)
+5. Creating a pull request to `master`
+6. Done!
 
 ### Coding guidelines
 #### Indentation
 We use tabs, not spaces.
 
 #### Names
-- PascalCase
-    - Type names
-    - Enum values
-    - Method names
-    - Properties
-    - File names (recommended, but optional)
-- camelCase
-    - Variables
-- snake_case, kebab-case and other
-    - Nope
-    - Not on my watch
-    - Never in your life
-    - Over my dead body
-
-Use whole words in names when possible
+The project naming rules inherit [.NET Naming Guidelines](https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/naming-guidelines). Nevertheless there'is some distinction with the guidelines as well as additions to the one:
+- Use `camelCase` for fields instead of `CamelCase` stated in [Capitalization Conventions](https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/capitalization-conventions#capitalization-rules-for-identifiers)
+- `camelCase` for resource keys is allowed but not recommeded. Consider using a `PascalCase`
+- Private fields for properties should always start with underscore `_`
+    - Wrong:
+        ```
+        private int year = 1984;
+        public int Year 
+        {
+            get => year;
+            set => year = value;
+        }
+        ```
+    - Correct:
+        ```
+        private int _year = 1984;
+        public int Year 
+        {
+            get => _year;
+            set => _year = value;
+        }
+        ```
+> **Note:** underscores `_` before generic **private** fields are allowed but not recommended
+- Use `PascalCase` for file names
+> **Note:** `snake_case` is allowed only for XML files and media resource files (`.png, .svg, .mp3, etc`), but still not recommended
 
 #### Comments
 Read [XML documentation comments](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/xmldoc/) and try to use all stated methods. Remember: the more detailed documentation your code has the less programmers will curse you in the future
@@ -204,7 +223,7 @@ Use "double quotes" wherever it's possible
 - Use `#region` tags to separate code which does routine work (e.g. assigns Android layout controls or subscribes them to events)
 
 ### Finding an issue to work on
-Check out the [full issues list](https://github.com/XFox111/GUTSchedule/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue) for a list of all potential areas for contributions. Note that just because an issue exists in the repository does not mean we will accept a contribution to the core editor for it. There are several reasons we may not accept a pull request like:
+Check out the [full issues list](https://github.com/XFox111/GUTSchedule/issues?utf8=%E2%9C%93&q=is%3Aopen+is%3Aissue) for a list of all potential areas for contributions. **Note** that just because an issue exists in the repository does not mean we will accept a contribution to the core editor for it. There are several reasons we may not accept a pull request like:
 
 - Performance - One of GUT.Schedule core values is to deliver a lightweight application, that means it should perform well in both real and perceived performance.
 - User experience - Since we want to deliver a lightweight application, the UX should feel lightweight as well and not be cluttered. Most changes to the UI should go through the issue owner and.
@@ -224,7 +243,7 @@ Folder name examples:
     - `values-be` for Belarusian
     - `values-ru` for Russian
 
-    **Note** that we only accept region neutral localizations (e.g. pull request with `values-en-rUS` (English (United States)) folder will be rejected whether PR with `values-en` (English (Invarian Country)) folder will be accepted).
+    > **Note** that we only accept region neutral localizations (e.g. pull request with `values-en-rUS` (English (United States)) folder will be rejected whether PR with `values-en` (English (Invarian Country)) folder will be accepted).
     For reference, here is a [list of Java locales](https://www.oracle.com/technetwork/java/javase/locales-137662.html) and [Android-supported locales via StackOverflow](https://stackoverflow.com/questions/7973023/what-is-the-list-of-supported-languages-locales-on-android).
 3. In the folder copy `strings.xml` file from `GUT.Schedule/GUT.Schedule/Resources/values`
 4. Edit localization strings
