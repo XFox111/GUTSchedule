@@ -4,21 +4,30 @@ Welcome, and thank you for your interest in contributing to my app!
 There are many ways in which you can contribute, beyond writing code. The goal of this document is to provide a high-level overview of how you can get involved.
 
 ## Table of Contents
-- [Introduction](#gutschedule-contribution-guidelines)
-- [Asking Questions](#asking-questions)
-- [Providing Feedback](#providing-feedback)
-- [Reporting Issues](#reporting-issues)
+- [GUTSchedule Contribution Guidelines](#gutschedule-contribution-guidelines)
+  - [Table of Contents](#table-of-contents)
+  - [Asking Questions](#asking-questions)
+  - [Providing Feedback](#providing-feedback)
+  - [Reporting Issues](#reporting-issues)
     - [Look For an Existing Issue](#look-for-an-existing-issue)
-    - [Writing Good Bug Reports and Feature Requests](#Writing-Good-Bug-Reports-and-Feature-Requests)
-    - [Final Checklist](#Final-Checklist)
-- [Contributing to codebase](#Contributing-to-codebase)
-    - [Build and run project](#Build-and-run-project)
-    - [Development workflow](#Development-workflow)
-    - **[Coding guidelines](#Coding-guidelines)**
-- [Finding an issue to work on](#Finding-an-issue-to-work-on)
-- [Contributing to translations](#Contributing-to-translations)
-- **[Submitting pull requests](#Submitting-pull-requests)**
-- [Attribution](#Attribution)
+    - [Writing Good Bug Reports and Feature Requests](#writing-good-bug-reports-and-feature-requests)
+    - [Final Checklist](#final-checklist)
+    - [Follow Your Issue](#follow-your-issue)
+  - [Contributing to codebase](#contributing-to-codebase)
+    - [Build and run project](#build-and-run-project)
+    - [Development workflow](#development-workflow)
+    - [Coding guidelines](#coding-guidelines)
+      - [Indentation](#indentation)
+      - [Names](#names)
+      - [Comments](#comments)
+      - [Strings](#strings)
+      - [Style](#style)
+    - [Finding an issue to work on](#finding-an-issue-to-work-on)
+    - [Contributing to translations](#contributing-to-translations)
+    - [Submitting pull requests](#submitting-pull-requests)
+      - [Spell check errors](#spell-check-errors)
+  - [Thank You!](#thank-you)
+  - [Attribution](#attribution)
 
 ## Asking Questions
 Have a question? Rather than opening an issue, please ask me directly on opensource@xfox111.net.
@@ -71,6 +80,15 @@ Once your report is submitted, be sure to stay in touch with the devs in case th
 If you are interested in writing code to fix issues or implement new awesome features you can follow this guidelines to get a better result
 
 ### Build and run project
+1. Clone repository to local storage using [Git command prompt](https://guides.github.com/introduction/git-handbook/) or [Visual Studio](https://docs.microsoft.com/en-us/visualstudio/get-started/tutorial-open-project-from-repo?view=vs-2019)
+2. Open `GUT.Schedule/GUT.Schedule.sln` using [Microsoft Visual Studio](https://visualstudio.microsoft.com/) 2019 or later
+3. On the VS toolbar choose build configuration:
+    - `Debug` for building and deploying test version of the app
+    - `Release` for building final version of application and creating AppBundle package (.aab)
+    - `Release (APK)` for building final version of application and creating Android package fike (.apk)
+4. To ensure that code compiles go to `Build -> Build Solution`
+5. To deploy and run application on a device or emulator 
+6. To build and create new package go to `Build -> Archive...`
 > TODO
 
 ### Development workflow
@@ -218,7 +236,7 @@ To enable us to quickly review and accept your pull requests, always create one 
 #### Spell check errors
 Pull requests that fix spell check errors in translatable strings (strings in nls.localize(...) calls) are welcomed but please make sure it doesn't touch multiple feature areas, otherwise it will be difficult to review. Pull requests only fixing spell check errors in source code are not recommended.
 
-# Thank You!
+## Thank You!
 
 Your contributions to open source, large or small, make great projects like this possible. Thank you for taking the time to contribute.
 
