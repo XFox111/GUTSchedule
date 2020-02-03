@@ -24,13 +24,13 @@ There are many ways in which you can participate in the project, for example:
 - Review [source code changes](https://github.com/xfox111/gutschedule/pulls)
 - Review documentation and make pull requests for anything from typos to new content
 
-If you are interested in fixing issues and contributing directly to the code base, please see the [Contribution Guidelines](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTION.md), which covers the following:
-- [How to build and run from source](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTION.md#build-and-run-project)
-- [The development workflow](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTION.md#development-workflow), including debugging and running tests
-- [Coding guidelines](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTION.md#coding-guidelines)
-- [Submitting pull requests](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTION.md#submitting-pull-requests)
-- [Finding an issue to work on](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTION.md#finding-an-issue-to-work-on)
-- [Contributing to translations](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTION.md#contributing-to-translations)
+If you are interested in fixing issues and contributing directly to the code base, please see the [Contribution Guidelines](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTING.md), which covers the following:
+- [How to build and run from source](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTING.md#build-and-run-project)
+- [The development workflow](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTING.md#development-workflow), including debugging and running tests
+- [Coding guidelines](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTING.md#coding-guidelines)
+- [Submitting pull requests](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTING.md#submitting-pull-requests)
+- [Finding an issue to work on](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTING.md#finding-an-issue-to-work-on)
+- [Contributing to translations](https://github.com/XFox111/GUTSchedule/blob/master/CONTRIBUTING.md#contributing-to-translations)
 
 ## Code of Conduct
 This project has adopted the Contributor Covenant. For more information see the [GUTSchedule Code of Conduct](https://github.com/XFox111/GUTSchedule/blob/master/CODE_OF_CONDUCT.md)
