@@ -16,7 +16,7 @@ using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
 using GUT.Schedule.Models;
 
-namespace GUT.Schedule
+namespace GUT.Schedule.Activities
 {
     [Activity]
     public class MainActivity : AppCompatActivity
@@ -34,7 +34,7 @@ namespace GUT.Schedule
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.activity_main);
+            SetContentView(Resource.Layout.Main);
             PackageInfo version = PackageManager.GetPackageInfo(PackageName, PackageInfoFlags.MatchAll);
             FindViewById<TextView>(Resource.Id.version).Text = $"v{version.VersionName} (ci-id #{version.VersionCode})";
 
@@ -321,16 +321,7 @@ namespace GUT.Schedule
             switch (item.ItemId)
             {
                 case Resource.Id.about:
-                    builder = new Android.Support.V7.App.AlertDialog.Builder(this);
-                    builder.SetMessage(HtmlCompat.FromHtml(new StreamReader(Assets.Open("About.html")).ReadToEnd(), HtmlCompat.FromHtmlModeLegacy))
-                        .SetTitle("ГУТ.Расписание")
-                        .SetPositiveButton("ОК", (IDialogInterfaceOnClickListener)null);
-
-                    dialog = builder.Create();
-                    dialog.Show();
-
-                    // Making links clickable
-                    dialog.FindViewById<TextView>(Android.Resource.Id.Message).MovementMethod = LinkMovementMethod.Instance;
+                    StartActivity(new Intent(this, typeof(AboutActivity)));
                     return true;
                 case Resource.Id.email:
                     StartActivity(new Intent(Intent.ActionView, Android.Net.Uri.Parse("mailto:feedback@xfox111.net")));

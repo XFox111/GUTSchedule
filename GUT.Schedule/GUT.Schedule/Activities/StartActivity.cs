@@ -12,7 +12,7 @@ using System;
 using System.Linq;
 using System.Net.Http;
 
-namespace GUT.Schedule
+namespace GUT.Schedule.Activities
 {
     /// <summary>
     /// Splash screen activity. Loads init data
@@ -24,7 +24,7 @@ namespace GUT.Schedule
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            SetContentView(Resource.Layout.splash_screen);
+            SetContentView(Resource.Layout.SplashScreen);
             base.OnCreate(savedInstanceState);
 
             status = FindViewById<TextView>(Resource.Id.status);

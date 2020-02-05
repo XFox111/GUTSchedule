@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace GUT.Schedule
+namespace GUT.Schedule.Activities
 {
     /// <summary>
     /// Shows status of schedule export process
@@ -20,7 +20,7 @@ namespace GUT.Schedule
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.export_progress);
+            SetContentView(Resource.Layout.Export);
 
             status = FindViewById<TextView>(Resource.Id.status);
 
