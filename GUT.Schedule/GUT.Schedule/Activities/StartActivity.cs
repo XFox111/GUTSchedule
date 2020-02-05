@@ -31,12 +31,12 @@ namespace GUT.Schedule.Activities
             PackageInfo version = PackageManager.GetPackageInfo(PackageName, PackageInfoFlags.MatchAll);
             FindViewById<TextView>(Resource.Id.version).Text = $"v{version.VersionName} (ci-id #{version.VersionCode})";
 
-            status.Text = "Проверка наличия разрешений";
+            status.Text = Resources.GetText(Resource.String.permissionsCheckStatus);
 
             if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteCalendar) != Permission.Granted)
             {
                 if (ActivityCompat.ShouldShowRequestPermissionRationale(this, Manifest.Permission.WriteCalendar))
-                    ShowDialog("Доступ к календарю", "Разрешите приложению получать доступ к календарю. Без этого разрешения приложение не сможет добавлять расписание в ваш календарь", RequestPermissions);
+                    ShowDialog(Resources.GetText(Resource.String.calendarAccessTitle), Resources.GetText(Resource.String.calendarAccessRationale), RequestPermissions);
                 else
                     RequestPermissions();
             }
@@ -48,24 +48,24 @@ namespace GUT.Schedule.Activities
         {
             try
             {
-                status.Text = "Загрузка списка календарей";
+                status.Text = Resources.GetText(Resource.String.calendarLoadingStatus);
                 Calendar.LoadCalendars();
                 if (Calendar.Calendars.Count == 0)
                 {
-                    ShowDialog("Создайте новый календарь", "На вашем устройстве нет календарей пригодных для записи расписания");
+                    ShowDialog(Resources.GetText(Resource.String.createCalendarTitle), Resources.GetText(Resource.String.createCalendarMessage));
                     return;
                 }
 
-                status.Text = "Загрузка списка факультетов";
+                status.Text = Resources.GetText(Resource.String.facultiesLoadingStatus);
                 await Parser.LoadFaculties();
 
-                status.Text = "Загрузка дат смещения";
+                status.Text = Resources.GetText(Resource.String.offsetDatesLoadingStatus);
                 using HttpClient client = new HttpClient();
                 Data.FirstWeekDay = int.Parse(await client.GetStringAsync("https://xfox111.net/schedule_offset.txt"));
             }
             catch(HttpRequestException e)
             {
-                ShowDialog(e.Message, "Невозможно загрузить расписание. Проверьте интернет-соединение или попробуйте позже", Proceed, FinishAndRemoveTask, "Повторить", "Выйти");
+                ShowDialog(e.Message, Resources.GetText(Resource.String.connectionFailMessage), Proceed, FinishAndRemoveTask, Resources.GetText(Resource.String.repeat), Resources.GetText(Resource.String.quit));
                 return;
             } 
             catch (Exception e)
@@ -83,7 +83,7 @@ namespace GUT.Schedule.Activities
             if (grantResults.All(i => i == Permission.Granted))
                 Proceed();
             else
-                ShowDialog("Доступ к календарю", "Разрешите приложению получать доступ к календарю. Без этого разрешения приложение не сможет добавлять расписание в ваш календарь", RequestPermissions);
+                ShowDialog(Resources.GetText(Resource.String.calendarAccessTitle), Resources.GetText(Resource.String.calendarAccessRationale), RequestPermissions);
         }
 
         private void RequestPermissions() =>
@@ -101,7 +101,7 @@ namespace GUT.Schedule.Activities
                 .SetTitle(title).SetPositiveButton(posActionLabel ?? "OK", (s, e) => posAction?.Invoke());
 
             if (negAction != null)
-                builder.SetNegativeButton(negActionLabel ?? "Close", (s, e) => negAction.Invoke());
+                builder.SetNegativeButton(negActionLabel ?? Resources.GetText(Resource.String.close), (s, e) => negAction.Invoke());
 
             Android.Support.V7.App.AlertDialog dialog = builder.Create();
             dialog.Show();

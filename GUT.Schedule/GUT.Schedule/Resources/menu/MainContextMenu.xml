@@ -4,14 +4,14 @@
 
   <item
       android:id="@+id/clear"
-      android:title="Очистить расписание"
+      android:title="@string/clearCalendarOption"
       android:showAsAction="never"/>
   <item
       android:id="@+id/email"
-      android:title="Сообщить об ошибке"
+      android:title="@string/reportErrorOption"
       app:showAsAction="never" />
   <item
       android:id="@+id/about"
-      android:title="О приложении"
+      android:title="@string/aboutTitle"
       app:showAsAction="never" />
 </menu>

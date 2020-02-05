@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+  <string name="appName">ГУТ.Расписание</string>
+
+  <!-- StartActivity -->
+  <string name="initializationStatus">Инициализация</string>
+  <string name="permissionsCheckStatus">Проверка наличия разрешений</string>
+  <string name="calendarLoadingStatus">Загрузка списка календарей</string>
+  <string name="facultiesLoadingStatus">Загрузка списка факультативов</string>
+  <string name="offsetDatesLoadingStatus">Загрузка дат смещения</string>
+  
+  <string name="calendarAccessTitle">Доступ к календарю</string>
+  <string name="calendarAccessRationale">Разрешите приложению получать доступ к календарю. Без этого разрешения приложение не сможет добавлять расписание в ваш календарь</string>
+  
+  <string name="createCalendarTitle">Создайте новый календарь</string>
+  <string name="createCalendarMessage">На вашем устройстве нет календарей пригодных для записи расписания</string>
+
+  <string name="connectionFailMessage">Невозможно загрузить расписание. Проверьте интернет-соединение или попробуйте позже</string>
+  <string name="repeat">Повторить</string>
+  <string name="quit">Выйти</string>
+  <string name="close">Закрыть</string>
+
+  <!-- MainActivity -->
+  <string name="scheduleParametersTitle">Параметры расписания</string>
+  <string name="authorizeCheckbox">Авторизоваться через Личный кабинет</string>
+  <string name="facultySpinner">Факультет</string>
+  <string name="courseSpinner">Курс</string>
+  <string name="groupSpinner">Группа</string>
+
+  <string name="passwordField">Пароль</string>
+
+  <string name="exportParametersTitle">Параметры экспорта</string>
+  <string name="dateRange">Диапазон экспорта</string>
+
+  <string name="forDayButton">На день</string>
+  <string name="forWeekButton">На неделю</string>
+  <string name="forMonthButton">На месяц</string>
+  <string name="forSemesterButton">На семестр</string>
+
+  <string name="reminderSpinner">Напоминать за</string>
+  <string name="reminderNote">(i) Внимание, при экспорте в облачный Google-календарь, Google автоматически ставит уведомление за пол часа, если его не поставил пользователь</string>
+  <string name="noReminderOption">Нет</string>
+  <string name="inTimeReminderOption">Во время начала</string>
+  <string name="fiveMinuteReminderOption">За 5 минут</string>
+  <string name="tenMinuteReminderOption">За 10 минут</string>
+
+  <string name="addGroupToTitleCheckbox">Добавить номер группы в заголовок</string>
+  <string name="titleNote">(i) Не касается преподавательского расписания</string>
+
+  <string name="destinationCalendarSpinner">Конечый календарь</string>
+
+  <string name="addScheduleButton">Добавить расписание</string>
+
+  <string name="copyrights">©2020 Михаил Гордеев, ИКСС, ИКТ-907</string>
+
+  <string name="clearCalendarOption">Очистить расписание</string>
+  <string name="reportErrorOption">Сообщить об ошибке</string>
+
+  <string name="invalidDateRangeError">Ошибка: Неправильный диапазон дат</string>
+  <string name="authorizationState">Авторизация...</string>
+  <string name="invalidAuthorizationError">Ошибка: Введите корректные учетные данные</string>
+  <string name="authorizationError">Ошибка авторизации</string>
+  <string name="invalidCredentialError">Ошибка авторизации: Неверный e-mail и/или пароль</string>
+  <string name="groupSelectionError">Ошибка: Не выбрана группа</string>
+
+  <string name="clearScheduleTitle">Очистка расписания</string>
+  <string name="clearScheduleMessage">Это действие удалит экспортированное расписание из всех доступных календарей. \nДанное действие затронет только расписание, экспортированное этим приложением \n\'Все\' - удалит все события расписания, включая прошедшие \n\'Только новые\' - удалит будущие события расписания
+  </string>
+  <string name="clearAllOption">Все</string>
+  <string name="clearUpcomingOption">Только новые</string>
+  <string name="cancelOption">Отмена</string>
+  <string name="clearingStatus">Очистка...</string>
+
+  <!-- ExportActivity -->
+  <string name="loadingStatus">Загрузка</string>
+  <string name="potatoLoadingStatus">Загрузка расписания с картофельных серверов Бонча</string>
+  <string name="scheduleLoadingStatus">Загрузка расписания</string>
+  <string name="calendarExportStatus">Экспортирование в календарь</string>
+  <string name="doneStatus">Готово</string>
+  
+  <!-- AboutActivity -->
+  <string name="aboutTitle">О приложении</string>
+  <string name="appDescription">Приложение для экспорта перподавательского и учебного расписаний Санкт-Петербургского Государственного Университета Телекоммуникаций им. проф. М.А. Бонч-Бруевича</string>
+  <string name="developedBy">Разработано Михаилом Гордеевым, ИКТ-907, ИКСС в Научно-образовательном центре \"Технологии информационных образовательных систем\"</string>
+  <string name="contributorsTitle">Свой вклад в разработку внесли</string>
+  
+  <string name="specialThanksTitle">Особые благодарности</string>
+  <string name="specialThanksPeople">Виталий Мошков, Анастасия Годунова</string>
+  
+  <string name="contactsTitle">Контакты</string>
+  <string name="websiteContact">Веб-сайт</string>
+  <string name="twitterContact">Твиттер</string>
+  <string name="vkontakteContact">ВКонтакте</string>
+  
+  <string name="linksTitle">Полезные ссылки</string>
+  <string name="privacyPolicyLink">Политика конфиденциальности</string>
+  <string name="repositoryLink">Репозиторий GitHub</string>
+  <string name="notsLink">НОЦ \"ТИОС\"</string>
+  <string name="sutLink">СПбГУТ</string>
+  
+  <string name="feedbackButton">Оставить отзыв</string>
+</resources>

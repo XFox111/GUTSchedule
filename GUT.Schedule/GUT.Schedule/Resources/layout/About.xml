@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.AppCompat.Headline"
-            android:text="ГУТ.Расписание"/>
+            android:text="@string/appName"/>
         <TextView
             android:id="@+id/version"
             android:layout_width="match_parent"
@@ -28,13 +28,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Приложение для экспорта перподавательского и учебного расписаний Санкт-Петербургского Государственного Университета Телекоммуникаций им. проф. М.А. Бонч-Бруевича"/>
+            android:text="@string/appDescription"/>
         
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="Разработано Михаилом Гордеевым, ИКТ-907, ИКСС в Научно-образовательном центре &#x22;Технологии информационных образовательных систем&#x22;"/>
+            android:text="@string/developedBy"/>
 
         <TextView
             android:id="@+id/contributorsTitle"
@@ -43,7 +43,7 @@
             android:layout_marginTop="10dp"
             style="@style/TextAppearance.AppCompat.Subhead"
             android:visibility="gone"
-            android:text="Свой вклад в разработку внесли"/>
+            android:text="@string/contributorsTitle"/>
         
         <TextView
             android:id="@+id/contributors"
@@ -56,19 +56,19 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             style="@style/TextAppearance.AppCompat.Subhead"
-            android:text="Особые благодарности"/>
+            android:text="@string/specialThanksTitle"/>
         
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Виталий Мошков, Анастасия Годунова"/>
+            android:text="@string/specialThanksPeople"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             style="@style/TextAppearance.AppCompat.Subhead"
-            android:text="Контакты"/>
+            android:text="@string/contactsTitle"/>
         
         <TextView
             android:id="@+id/contacts"
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             style="@style/TextAppearance.AppCompat.Subhead"
-            android:text="Полезные ссылки"/>
+            android:text="@string/linksTitle"/>
         
         <TextView
             android:id="@+id/links"
@@ -97,6 +97,6 @@
             android:id="@+id/feedback"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Оставить отзыв"/>
+            android:text="@string/feedbackButton"/>
     </LinearLayout>
 </ScrollView>

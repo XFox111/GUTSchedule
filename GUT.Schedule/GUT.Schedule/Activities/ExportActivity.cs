@@ -32,9 +32,9 @@ namespace GUT.Schedule.Activities
             try
             {
                 if(Data.DataSet.IsProfessor == true)
-                    status.Text = "Загрузка расписания с картофельных серверов Бонча";
+                    status.Text = Resources.GetText(Resource.String.potatoLoadingStatus);  // For some reason professors' schedule loads much slower
                 else
-                    status.Text = "Загрузка расписания";
+                    status.Text = Resources.GetText(Resource.String.loadingStatus);
 
                 if (Data.DataSet.HttpClient != null)
                 {
@@ -49,7 +49,7 @@ namespace GUT.Schedule.Activities
 
                     schedule = schedule.FindAll(i => i.StartTime.Date >= Data.StartDate && i.StartTime.Date <= Data.EndDate);   // Filtering schedule according to export range
 
-                    status.Text = "Экспортирование в календарь";
+                    status.Text = Resources.GetText(Resource.String.calendarExportStatus);
                     Calendar.Export(schedule);
                 }
                 else
@@ -58,20 +58,20 @@ namespace GUT.Schedule.Activities
 
                     schedule = schedule.FindAll(i => i.StartTime.Date >= Data.StartDate && i.StartTime.Date <= Data.EndDate);   // Filtering schedule according to export range
 
-                    status.Text = "Экспортирование в календарь";
+                    status.Text = Resources.GetText(Resource.String.calendarExportStatus);
                     Calendar.Export(schedule);
                 }
 
-                status.Text = "Готово";
+                status.Text = Resources.GetText(Resource.String.doneStatus);
                 await Task.Delay(1000);
             }
             catch (HttpRequestException e)
             {
                 Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(this);
-                builder.SetMessage("Невозможно загрузить расписание. Проверьте интернет-соединение или попробуйте позже")
+                builder.SetMessage(Resources.GetText(Resource.String.connectionFailMessage))
                     .SetTitle(e.Message)
                     .SetPositiveButton("ОК", (s, e) => base.OnBackPressed())
-                    .SetNegativeButton("Повторить", (s, e) => Export());
+                    .SetNegativeButton(Resources.GetText(Resource.String.repeat), (s, e) => Export());
 
                 Android.Support.V7.App.AlertDialog dialog = builder.Create();
                 dialog.Show();
