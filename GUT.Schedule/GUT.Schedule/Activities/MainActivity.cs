@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
 using Android.Support.V4.Text;
@@ -15,9 +16,9 @@ using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
 using GUT.Schedule.Models;
 
-namespace GUT.Schedule
+namespace GUT.Schedule.Activities
 {
-    [Activity(Theme = "@style/AppTheme")]
+    [Activity]
     public class MainActivity : AppCompatActivity
     {
         Button start, end, export;
@@ -33,7 +34,9 @@ namespace GUT.Schedule
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.activity_main);
+            SetContentView(Resource.Layout.Main);
+            PackageInfo version = PackageManager.GetPackageInfo(PackageName, PackageInfoFlags.MatchAll);
+            FindViewById<TextView>(Resource.Id.version).Text = $"v{version.VersionName} (ci-id #{version.VersionCode})";
 
             prefs = PreferenceManager.GetDefaultSharedPreferences(this);
 
@@ -52,10 +55,10 @@ namespace GUT.Schedule
             // Settings spinners' dropdown lists content
             reminder.SetList(this, new[] 
             {
-                "Нет",
-                "Во время начала",
-                "За 5 мин",
-                "За 10 мин"
+                Resources.GetText(Resource.String.noReminderOption),
+                Resources.GetText(Resource.String.inTimeReminderOption),
+                Resources.GetText(Resource.String.fiveMinuteReminderOption),
+                Resources.GetText(Resource.String.tenMinuteReminderOption)
             });
             reminder.SetSelection(prefs.GetInt("Reminder", 0));
 
@@ -79,7 +82,7 @@ namespace GUT.Schedule
 
             if (Data.StartDate > Data.EndDate)
             {
-                error.Text = "Ошибка: Неправильный диапазон дат";
+                error.Text = Resources.GetText(Resource.String.invalidDateRangeError);
                 error.Visibility = ViewStates.Visible;
                 return;
             }
@@ -88,10 +91,10 @@ namespace GUT.Schedule
             bool? isProf = null;
             if(authorize.Checked)
             {
-                Toast.MakeText(ApplicationContext, "Авторизация...", ToastLength.Short).Show();
+                Toast.MakeText(ApplicationContext, Resources.GetText(Resource.String.authorizationState), ToastLength.Short).Show();
                 if (string.IsNullOrWhiteSpace(email.Text) || string.IsNullOrWhiteSpace(password.Text))
                 {
-                    error.Text = "Ошибка: Введите корректные учетные данные";
+                    error.Text = Resources.GetText(Resource.String.invalidAuthorizationError);
                     error.Visibility = ViewStates.Visible;
                     return;
                 }
@@ -112,14 +115,14 @@ namespace GUT.Schedule
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    error.Text = $"Ошибка авторизации: {response.StatusCode}: {responseContent}";
+                    error.Text = $"{Resources.GetText(Resource.String.authorizationError)}: {response.StatusCode}: {responseContent}";
                     error.Visibility = ViewStates.Visible;
                     return;
                 }
 
                 if (!responseContent.StartsWith("1", StringComparison.OrdinalIgnoreCase))
                 {
-                    error.Text = $"Ошибка авторизации: Неверный e-mail и/или пароль ({string.Join("; ", responseContent.Replace("error=", "", StringComparison.OrdinalIgnoreCase).Split('|'))})";
+                    error.Text = $"{Resources.GetText(Resource.String.invalidCredentialError)} ({string.Join("; ", responseContent.Replace("error=", "", StringComparison.OrdinalIgnoreCase).Split('|'))})";
                     error.Visibility = ViewStates.Visible;
                     return;
                 }
@@ -149,7 +152,7 @@ namespace GUT.Schedule
             {
                 if(Data.Groups.Count < 1)
                 {
-                    error.Text = "Ошибка: Не выбрана группа";
+                    error.Text = Resources.GetText(Resource.String.groupSelectionError);
                     error.Visibility = ViewStates.Visible;
                     return;
                 }
@@ -287,7 +290,7 @@ namespace GUT.Schedule
         #region Menu stuff
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            MenuInflater.Inflate(Resource.Menu.menu_main, menu);
+            MenuInflater.Inflate(Resource.Menu.MainContextMenu, menu);
             return true;
         }
 
@@ -295,9 +298,9 @@ namespace GUT.Schedule
         {
             try
             {
-                Toast.MakeText(ApplicationContext, "Очистка...", ToastLength.Short).Show();
+                Toast.MakeText(ApplicationContext, Resources.GetText(Resource.String.clearingStatus), ToastLength.Short).Show();
                 Calendar.Clear(keepPrevious);
-                Toast.MakeText(ApplicationContext, "Готово!", ToastLength.Short).Show();
+                Toast.MakeText(ApplicationContext, Resources.GetText(Resource.String.doneStatus), ToastLength.Short).Show();
             }
             catch (Exception e)
             {
@@ -318,16 +321,7 @@ namespace GUT.Schedule
             switch (item.ItemId)
             {
                 case Resource.Id.about:
-                    builder = new Android.Support.V7.App.AlertDialog.Builder(this);
-                    builder.SetMessage(HtmlCompat.FromHtml(new StreamReader(Assets.Open("About.html")).ReadToEnd(), HtmlCompat.FromHtmlModeLegacy))
-                        .SetTitle("ГУТ.Расписание")
-                        .SetPositiveButton("ОК", (IDialogInterfaceOnClickListener)null);
-
-                    dialog = builder.Create();
-                    dialog.Show();
-
-                    // Making links clickable
-                    dialog.FindViewById<TextView>(Android.Resource.Id.Message).MovementMethod = LinkMovementMethod.Instance;
+                    StartActivity(new Intent(this, typeof(AboutActivity)));
                     return true;
                 case Resource.Id.email:
                     StartActivity(new Intent(Intent.ActionView, Android.Net.Uri.Parse("mailto:feedback@xfox111.net")));
@@ -335,14 +329,11 @@ namespace GUT.Schedule
 
                 case Resource.Id.clear:
                     builder = new Android.Support.V7.App.AlertDialog.Builder(this);
-                    builder.SetMessage("Это действие удалит экспортированное расписание из всех доступных календарей.\n" +
-                        "Данное действие затронет только расписание, экспортированное этим приложением\n" +
-                        "'Все' - удалит все события расписания, включая прошедшие\n" +
-                        "'Только новые' - удалит будущие события расписания")
-                        .SetTitle("Очистка календарей")
-                        .SetPositiveButton("Только новые", (s, e) => Clear())
-                        .SetNegativeButton("Все", (s, e) => Clear(false))
-                        .SetNeutralButton("Отмена", (IDialogInterfaceOnClickListener)null);
+                    builder.SetMessage(Resources.GetText(Resource.String.clearScheduleMessage))
+                        .SetTitle(Resources.GetText(Resource.String.clearScheduleTitle))
+                        .SetPositiveButton(Resources.GetText(Resource.String.clearUpcomingOption), (s, e) => Clear())
+                        .SetNegativeButton(Resources.GetText(Resource.String.clearAllOption), (s, e) => Clear(false))
+                        .SetNeutralButton(Resources.GetText(Resource.String.cancelOption), (IDialogInterfaceOnClickListener)null);
 
                     dialog = builder.Create();
                     dialog.Show();

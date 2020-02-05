@@ -1,21 +1,19 @@
-
+<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:theme="@style/AppTheme.Light">
     
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="10dp">
+        android:padding="10dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Параметры расписания"
+            android:text="@string/scheduleParametersTitle"
             android:textStyle="bold"
             android:textSize="16dp"/>
 
@@ -23,19 +21,18 @@
             android:id="@+id/authorization"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Авторизоваться через Личный кабинет"/>
+            android:text="@string/authorizeCheckbox"/>
 
         <LinearLayout
             android:id="@+id/studentParams"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Факультет"/>
+                android:text="@string/facultySpinner"/>
 
             <Spinner
                 android:id="@+id/faculty"
@@ -45,7 +42,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Курс"/>
+                android:text="@string/courseSpinner"/>
 
             <Spinner
                 android:id="@+id/course"
@@ -55,7 +52,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Группа"/>
+                android:text="@string/groupSpinner"/>
 
             <Spinner
                 android:id="@+id/group"
@@ -84,7 +81,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Пароль"/>
+                android:text="@string/passwordField"/>
 
             <EditText
                 android:id="@+id/password"
@@ -96,14 +93,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Параметры экспорта"
+            android:text="@string/exportParametersTitle"
             android:textStyle="bold"
             android:textSize="16dp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Диапазон экспорта"/>
+            android:text="@string/dateRange"/>
 
         <TableLayout
             android:layout_width="match_parent"
@@ -142,12 +139,12 @@
                             android:id="@+id/forDay"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="На день"/>
+                            android:text="@string/forDayButton"/>
                         <Button
                             android:id="@+id/forWeek"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="На неделю"/>
+                            android:text="@string/forWeekButton"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -159,12 +156,12 @@
                             android:id="@+id/forMonth"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="На месяц"/>
+                            android:text="@string/forMonthButton"/>
                         <Button
                             android:id="@+id/forSemester"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="На семестр"/>
+                            android:text="@string/forSemesterButton"/>
                 </LinearLayout>
             </TableRow>
         </TableLayout>
@@ -172,7 +169,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Напоминать за"/>
+            android:text="@string/reminderSpinner"/>
 
         <Spinner
             android:id="@+id/reminder"
@@ -182,24 +179,24 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="(i) При экспорте расписания в Google календарь (не локальный) с отключенными уведомлениями, Google автоматически поставит уведомление за 30 минут"/>
+            android:text="@string/reminderNote"/>
 
         <CheckBox
             android:id="@+id/groupTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Добавить номер группы в заголовок"/>
+            android:text="@string/addGroupToTitleCheckbox"/>
 
         
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="(i) Не касается расписания преподавателя"/>
+            android:text="@string/titleNote"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Конечный календарь"/>
+            android:text="@string/destinationCalendarSpinner"/>
 
         <Spinner
             android:id="@+id/calendar"
@@ -219,12 +216,16 @@
             android:id="@+id/export"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Добавить расписание"/>
+            android:text="@string/addScheduleButton"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="©2020 Михаил Гордеев ИКСС, ИКТ-907"
-            android:layout_marginBottom="50dp"/>
+            android:text="@string/copyrights"/>
+        <TextView
+            android:id="@+id/version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="v$(Build.BuildNumber) (ci-id #$(Build.BuildId))"/>
     </LinearLayout>
 </ScrollView>
