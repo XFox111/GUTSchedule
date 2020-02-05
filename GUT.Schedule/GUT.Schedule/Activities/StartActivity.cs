@@ -17,7 +17,7 @@ namespace GUT.Schedule
     /// <summary>
     /// Splash screen activity. Loads init data
     /// </summary>
-    [Activity(MainLauncher = true)]
+    [Activity(MainLauncher = true, Theme = "@style/AppTheme.Light.SplashScreen")]
     public class StartActivity : AppCompatActivity
     {
         TextView status;
@@ -28,6 +28,8 @@ namespace GUT.Schedule
             base.OnCreate(savedInstanceState);
 
             status = FindViewById<TextView>(Resource.Id.status);
+            PackageInfo version = PackageManager.GetPackageInfo(PackageName, PackageInfoFlags.MatchAll);
+            FindViewById<TextView>(Resource.Id.version).Text = $"v{version.VersionName} (ci-id #{version.VersionCode})";
 
             status.Text = "Проверка наличия разрешений";
 

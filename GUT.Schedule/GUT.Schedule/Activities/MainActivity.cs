@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
 using Android.Support.V4.Text;
@@ -17,7 +18,7 @@ using GUT.Schedule.Models;
 
 namespace GUT.Schedule
 {
-    [Activity(Theme = "@style/AppTheme")]
+    [Activity]
     public class MainActivity : AppCompatActivity
     {
         Button start, end, export;
@@ -34,6 +35,8 @@ namespace GUT.Schedule
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
+            PackageInfo version = PackageManager.GetPackageInfo(PackageName, PackageInfoFlags.MatchAll);
+            FindViewById<TextView>(Resource.Id.version).Text = $"v{version.VersionName} (ci-id #{version.VersionCode})";
 
             prefs = PreferenceManager.GetDefaultSharedPreferences(this);
 

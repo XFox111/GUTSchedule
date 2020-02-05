@@ -1,17 +1,21 @@
 <resources>
-  <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+  <style name="AppTheme.Light" parent="Theme.AppCompat.Light.DarkActionBar">
     <item name="colorPrimary">@color/colorPrimary</item>
-    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-    <item name="colorAccent">@color/colorAccent</item>
-    <item name="android:navigationBarColor">#00000000</item>
+    <item name="colorPrimaryDark">@color/colorPrimary</item>
+    <item name="colorAccent">@color/colorPrimary</item>
+    <item name="android:navigationBarColor">@android:color/transparent</item>
     <item name="android:windowLightNavigationBar">true</item>
+    
+    <item name="android:fitsSystemWindows">true</item>
   </style>
 
-  <style name="AppTheme.NoActionBar">
+  <style name="AppTheme.Light.SplashScreen" parent="AppTheme.Light">
     <item name="windowActionBar">false</item>
     <item name="windowNoTitle">true</item>
-    <item name="android:navigationBarColor">#ff8000</item>
+    <item name="android:navigationBarColor">@color/colorPrimary</item>
     <item name="android:windowLightNavigationBar">false</item>
     <item name="android:windowBackground">@color/colorPrimary</item>
+    <item name="android:textColor">@android:color/white</item>
+    <item name="android:indeterminateTint">@android:color/white</item>
   </style>
 </resources>
