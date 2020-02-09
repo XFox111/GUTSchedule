@@ -62,8 +62,7 @@
     <AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
     <AndroidPackageFormat>aab</AndroidPackageFormat>
     <MandroidI18n>CJK;Mideast;Rare;West;Other</MandroidI18n>
-    <AndroidDexTool>d8</AndroidDexTool>
-    <AndroidLinkTool>r8</AndroidLinkTool>
+    <AndroidDexTool>dx</AndroidDexTool>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release %28APK%29|AnyCPU'">
     <OutputPath>bin\Release %28APK%29\</OutputPath>
