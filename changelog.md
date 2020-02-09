@@ -1,4 +1,1 @@
-- Added version number to loading screen and main page
-- Updated "About" page
-- Changed version numbering system
-- Added English localization
+- Исправлена проблема с отображением английского языка на русскоязычных устройствах
