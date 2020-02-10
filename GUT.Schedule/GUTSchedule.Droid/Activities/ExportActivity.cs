@@ -54,7 +54,7 @@ namespace GUTSchedule.Droid.Activities
 				}
 				else
 				{
-					List<Subject> schedule = await Parser.LoadSchedule();
+					List<Occupation> schedule = await Parser.LoadSchedule();
 
 					schedule = schedule.FindAll(i => i.StartTime.Date >= Data.StartDate && i.StartTime.Date <= Data.EndDate);   // Filtering schedule according to export range
 

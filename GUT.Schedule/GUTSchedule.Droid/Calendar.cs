@@ -40,11 +40,11 @@ namespace GUTSchedule.Droid
 			cursor.Close();
 		}
 
-		public static void Export(IEnumerable<Subject> schedule)
+		public static void Export(IEnumerable<Occupation> schedule)
 		{
 			DataSet data = Data.DataSet;
 
-			foreach (Subject item in schedule)
+			foreach (Occupation item in schedule)
 			{
 				ContentValues eventValues = new ContentValues();
 
