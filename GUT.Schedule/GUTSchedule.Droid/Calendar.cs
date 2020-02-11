@@ -4,6 +4,7 @@ using Android.Content;
 using Android.Database;
 using Android.Net;
 using Android.Provider;
+using GUTSchedule.Droid.Activities;
 using GUTSchedule.Models;
 using Java.Util;
 
@@ -42,62 +43,15 @@ namespace GUTSchedule.Droid
 
 		public static void Export(IEnumerable<Occupation> schedule)
 		{
-			DataSet data = Data.DataSet;
-
 			foreach (Occupation item in schedule)
 			{
 				ContentValues eventValues = new ContentValues();
 
-				eventValues.Put(CalendarContract.Events.InterfaceConsts.CalendarId, data.Calendar);
+				eventValues.Put(CalendarContract.Events.InterfaceConsts.CalendarId, Calendars[MainActivity.SelectedCalendarIndex].Id);
 
 				eventValues.Put(CalendarContract.Events.InterfaceConsts.Title, string.Format("{0}.{1} {2} ({3})",
 					item.Order,
-					data.AddGroupToTitle ? $" [{item.Group}]" : "",
-					item.Name,
-					item.Type));
-
-				eventValues.Put(CalendarContract.Events.InterfaceConsts.Description, item.Professor);
-				eventValues.Put(CalendarContract.Events.InterfaceConsts.EventLocation, string.Join(';', item.Cabinets));
-
-				eventValues.Put(CalendarContract.Events.InterfaceConsts.Availability, 0);
-
-				eventValues.Put(CalendarContract.Events.InterfaceConsts.HasAlarm, data.Reminder != -5);
-				// For some reason Google calendars ignore HasAlarm = false and set reminder for 30 minutes. Local calendars don't seem to have this issue
-
-				eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtstart, item.StartTime.ToUnixTime());
-				eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtend, item.EndTime.ToUnixTime());
-
-				eventValues.Put(CalendarContract.Events.InterfaceConsts.EventTimezone, TimeZone.Default.ID);
-				eventValues.Put(CalendarContract.Events.InterfaceConsts.EventEndTimezone, TimeZone.Default.ID);
-				eventValues.Put(CalendarContract.Events.InterfaceConsts.CustomAppPackage, Application.Context.PackageName);
-
-				Uri response = Application.Context.ContentResolver.Insert(CalendarContract.Events.ContentUri, eventValues);
-
-				// Settings reminder
-				if (data.Reminder != -5)
-				{
-					ContentValues reminderValues = new ContentValues();
-					reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.EventId, long.Parse(response.LastPathSegment));
-					reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Minutes, data.Reminder);
-
-					Application.Context.ContentResolver.Insert(CalendarContract.Reminders.ContentUri, reminderValues);
-				}
-			}
-		}
-
-		public static void Export(IEnumerable<CabinetSubject> schedule)
-		{
-			DataSet data = Data.DataSet;
-
-			foreach (CabinetSubject item in schedule)
-			{
-				ContentValues eventValues = new ContentValues();
-
-				eventValues.Put(CalendarContract.Events.InterfaceConsts.CalendarId, data.Calendar);
-
-				eventValues.Put(CalendarContract.Events.InterfaceConsts.Title, string.Format("{0}{1}. {2} ({3})",
-					item.ProfessorSchedule ? "📚 " : (data.AddGroupToTitle ? $"[{data.Group}] " : ""),
-					item.Order,
+					MainActivity.AddGroupToTitle && !string.IsNullOrWhiteSpace(item.Group) ? $" [{item.Group}]" : "",
 					item.Name,
 					item.Type));
 
@@ -106,7 +60,7 @@ namespace GUTSchedule.Droid
 
 				eventValues.Put(CalendarContract.Events.InterfaceConsts.Availability, 0);
 
-				eventValues.Put(CalendarContract.Events.InterfaceConsts.HasAlarm, data.Reminder != -5);
+				eventValues.Put(CalendarContract.Events.InterfaceConsts.HasAlarm, MainActivity.Reminder != -5);
 				// For some reason Google calendars ignore HasAlarm = false and set reminder for 30 minutes. Local calendars don't seem to have this issue
 
 				eventValues.Put(CalendarContract.Events.InterfaceConsts.Dtstart, item.StartTime.ToUnixTime());
@@ -119,11 +73,11 @@ namespace GUTSchedule.Droid
 				Uri response = Application.Context.ContentResolver.Insert(CalendarContract.Events.ContentUri, eventValues);
 
 				// Settings reminder
-				if (data.Reminder != -5)
+				if (MainActivity.Reminder != -5)
 				{
 					ContentValues reminderValues = new ContentValues();
 					reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.EventId, long.Parse(response.LastPathSegment));
-					reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Minutes, data.Reminder);
+					reminderValues.Put(CalendarContract.Reminders.InterfaceConsts.Minutes, MainActivity.Reminder);
 
 					Application.Context.ContentResolver.Insert(CalendarContract.Reminders.ContentUri, reminderValues);
 				}

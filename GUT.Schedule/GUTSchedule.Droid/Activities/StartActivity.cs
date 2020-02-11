@@ -59,11 +59,7 @@ namespace GUT.Schedule.Droid.Activities
 				}
 
 				status.Text = Resources.GetText(Resource.String.facultiesLoadingStatus);
-				await Parser.LoadFaculties();
-
-				status.Text = Resources.GetText(Resource.String.offsetDatesLoadingStatus);
-				using HttpClient client = new HttpClient();
-				Data.FirstWeekDay = int.Parse(await client.GetStringAsync("https://xfox111.net/schedule_offset.txt"));
+				MainActivity.Faculties = await Parser.GetFaculties();
 			}
 			catch (HttpRequestException e)
 			{

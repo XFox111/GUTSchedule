@@ -8,22 +8,6 @@ namespace GUTSchedule
 {
 	public static class Extensions
 	{
-		/// <summary>
-		/// Returns <see cref="DateTime"/> instance based on study week number, weekday and semester start day number
-		/// </summary>
-		/// <param name="week">Number of the study week</param>
-		/// <param name="weekday">Weekday</param>
-		/// <returns><see cref="DateTime"/> instance based on study week number, weekday and semester start day number</returns>
-		public static DateTime GetDateFromWeeks(int week, int weekday)
-		{
-			DateTime dt = new DateTime(DateTime.Today.Year, DateTime.Today.Month >= 8 ? 9 : 2, Data.FirstWeekDay);
-
-			dt = dt.AddDays(--week * 7);
-			dt = dt.AddDays(--weekday);
-
-			return dt;
-		}
-
 		public static void SetContent(this HttpRequestMessage request, params (string key, string value)[] values)
 		{
 			if (request == null)

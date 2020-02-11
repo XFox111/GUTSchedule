@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Net.Http;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -10,17 +9,26 @@ using Android.Support.V7.App;
 using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
-using AngleSharp.Html.Dom;
-using AngleSharp.Html.Parser;
 using GUTSchedule.Models;
-using GUTSchedule;
 using GUTSchedule.Droid.Fragments;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace GUTSchedule.Droid.Activities
 {
 	[Activity]
 	public class MainActivity : AppCompatActivity
 	{
+		public static ExportParameters ExportParameters { get; set; }
+		public static List<(string id, string name)> Faculties { get; set; }
+		public static List<(string id, string name)> Groups { get; set; }
+		public static bool AddGroupToTitle { get; set; }
+		public static int SelectedCalendarIndex { get; set; }
+		public static int Reminder { get; set; }
+
+		DateTime startDate = DateTime.Today;
+		DateTime endDate = DateTime.Today.AddDays(7);
+
 		Button start, end, export;
 		Button forDay, forWeek, forMonth, forSemester;
 		Spinner faculty, course, group, reminder, calendar;
@@ -31,7 +39,7 @@ namespace GUTSchedule.Droid.Activities
 
 		ISharedPreferences prefs;
 
-		protected override void OnCreate(Bundle savedInstanceState)
+		protected override async void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
 			SetContentView(Resource.Layout.Main);
@@ -42,13 +50,16 @@ namespace GUTSchedule.Droid.Activities
 
 			AssignVariables();
 
-			faculty.SetList(this, Data.Faculties.Select(i => i.Name));
-			int s = Data.Faculties.FindIndex(i => i.Id == prefs.GetString("Faculty", "-123"));
+			faculty.SetList(this, Faculties.Select(i => i.name));
+			int s = Faculties.FindIndex(i => i.id == prefs.GetString("Faculty", "-123"));
 			faculty.SetSelection(s == -1 ? 0 : s);
 
 			course.SetList(this, "1234".ToCharArray());
 			course.SetSelection(prefs.GetInt("Course", 0)); // IDK why but this shit triggers events anyway (even if they are set in the next line. It seem to be that there's some asynchronous shit somewhere there)
 															// P.S. Fuck Android
+
+			await Task.Delay(100);
+			UpdateGroupsList();
 
 			AddEvents();
 
@@ -66,8 +77,8 @@ namespace GUTSchedule.Droid.Activities
 			s = Calendar.Calendars.FindIndex(i => i.Id == prefs.GetString("Calendar", "-123"));
 			calendar.SetSelection(s == -1 ? 0 : s);
 
-			end.Text = Data.EndDate.ToShortDateString();
-			start.Text = Data.StartDate.ToShortDateString();
+			end.Text = endDate.ToShortDateString();
+			start.Text = startDate.ToShortDateString();
 
 			groupTitle.Checked = prefs.GetBoolean("AddGroupToHeader", false);
 			authorize.Checked = prefs.GetBoolean("Authorize", true);
@@ -76,22 +87,19 @@ namespace GUTSchedule.Droid.Activities
 			password.Text = prefs.GetString("password", "");
 		}
 
-		private async void Export_Click(object sender, EventArgs e)
+		private void Export_Click(object sender, EventArgs e)
 		{
 			error.Visibility = ViewStates.Gone;
 
-			if (Data.StartDate > Data.EndDate)
+			if (startDate > endDate)
 			{
 				error.Text = Resources.GetText(Resource.String.invalidDateRangeError);
 				error.Visibility = ViewStates.Visible;
 				return;
 			}
 
-			HttpClient client = null;
-			bool? isProf = null;
 			if (authorize.Checked)
 			{
-				Toast.MakeText(ApplicationContext, Resources.GetText(Resource.String.authorizationState), ToastLength.Short).Show();
 				if (string.IsNullOrWhiteSpace(email.Text) || string.IsNullOrWhiteSpace(password.Text))
 				{
 					error.Text = Resources.GetText(Resource.String.invalidAuthorizationError);
@@ -99,44 +107,13 @@ namespace GUTSchedule.Droid.Activities
 					return;
 				}
 
-				export.Enabled = false;
-				client = new HttpClient();
-
-				await client.GetAsync("https://cabs.itut.ru/cabinet/");
-
-				using HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://cabs.itut.ru/cabinet/lib/autentificationok.php");
-				request.SetContent(
-					("users", email.Text),
-					("parole", password.Text));
-
-				HttpResponseMessage response = await client.SendAsync(request);
-				string responseContent = await response.GetString();
-				export.Enabled = true;
-
-				if (!response.IsSuccessStatusCode)
+				ExportParameters = new CabinetExportParameters
 				{
-					error.Text = $"{Resources.GetText(Resource.String.authorizationError)}: {response.StatusCode}: {responseContent}";
-					error.Visibility = ViewStates.Visible;
-					return;
-				}
-
-				if (!responseContent.StartsWith("1", StringComparison.OrdinalIgnoreCase))
-				{
-					error.Text = $"{Resources.GetText(Resource.String.invalidCredentialError)} ({string.Join("; ", responseContent.Replace("error=", "", StringComparison.OrdinalIgnoreCase).Split('|'))})";
-					error.Visibility = ViewStates.Visible;
-					return;
-				}
-
-				export.Enabled = false;
-				HttpResponseMessage verificationResponse = await client.GetAsync("https://cabs.itut.ru/cabinet/?login=yes");
-				export.Enabled = true;
-				IHtmlDocument doc = new HtmlParser().ParseDocument(await verificationResponse.GetString());
-				if (doc.QuerySelectorAll("option").Any(i => i.TextContent.Contains("Сотрудник")))
-					isProf = true;
-				else
-					isProf = false;
-
-				Data.Groups = null;
+					Email = email.Text,
+					Password = password.Text,
+					EndDate = endDate,
+					StartDate = startDate
+				};
 
 				// Если ты это читаешь и у тебя возникли вопросы по типу "А какого хуя творится в коде ниже?!", то во-первых:
 				// According to this SO thread: https://stackoverflow.com/questions/1925486/android-storing-username-and-password
@@ -150,40 +127,40 @@ namespace GUTSchedule.Droid.Activities
 			}
 			else
 			{
-				if (Data.Groups.Count < 1)
+				if (Groups.Count < 1)
 				{
 					error.Text = Resources.GetText(Resource.String.groupSelectionError);
 					error.Visibility = ViewStates.Visible;
 					return;
 				}
+
+				ExportParameters = new DefaultExportParameters
+				{
+					EndDate = endDate,
+					StartDate = startDate,
+					Course = (course.SelectedItemPosition + 1).ToString(),
+					FacultyId = Faculties[faculty.SelectedItemPosition].id,
+					GroupId = Groups[group.SelectedItemPosition].id,
+				};
 			}
 
-			// Forming export parameters
-			Data.DataSet = new DataSet
-			{
-				Faculty = Data.Faculties[faculty.SelectedItemPosition].Id,
-				Group = Data.Groups?[group.SelectedItemPosition].Id,
-				Course = course.SelectedItemPosition + 1,
-				AddGroupToTitle = groupTitle.Checked,
-				Calendar = Calendar.Calendars[calendar.SelectedItemPosition].Id,
-				Reminder = (reminder.SelectedItemPosition - 1) * 5,
-				HttpClient = client,
-				IsProfessor = isProf
-			};
+			AddGroupToTitle = groupTitle.Checked;
+			SelectedCalendarIndex = calendar.SelectedItemPosition;
+			Reminder = (reminder.SelectedItemPosition - 1) * 5;
 
 			StartActivity(new Intent(this, typeof(ExportActivity)));
 		}
 
 		private async void End_Click(object sender, EventArgs e)
 		{
-			Data.EndDate = await new DatePickerFragment().GetDate(SupportFragmentManager, Data.EndDate);
-			end.Text = Data.EndDate.ToShortDateString();
+			endDate = await new DatePickerFragment().GetDate(SupportFragmentManager, endDate);
+			end.Text = endDate.ToShortDateString();
 		}
 
 		private async void Start_Click(object sender, EventArgs e)
 		{
-			Data.StartDate = await new DatePickerFragment().GetDate(SupportFragmentManager, Data.StartDate);
-			start.Text = Data.StartDate.ToShortDateString();
+			startDate = await new DatePickerFragment().GetDate(SupportFragmentManager, startDate);
+			start.Text = startDate.ToShortDateString();
 		}
 
 		private async void UpdateGroupsList()
@@ -191,17 +168,17 @@ namespace GUTSchedule.Droid.Activities
 			if (course.SelectedItem == null)
 				return;
 
-			await Parser.LoadGroups(Data.Faculties[faculty.SelectedItemPosition].Id, course.SelectedItemPosition + 1);
-			group.SetList(this, Data.Groups.Select(i => i.Name));
+			Groups = await Parser.GetGroups(Faculties[faculty.SelectedItemPosition].id, (course.SelectedItemPosition + 1).ToString());
+			group.SetList(this, Groups.Select(i => i.name));
 
-			int s = Data.Groups?.FindIndex(i => i.Id == prefs.GetString("Group", "-123")) ?? 0;
+			int s = Groups?.FindIndex(i => i.id == prefs.GetString("Group", "-123")) ?? 0;
 			group.SetSelection(s == -1 ? 0 : s);
 		}
 
 		private void SetDate(int days)
 		{
-			Data.EndDate = Data.StartDate.AddDays(days);
-			end.Text = Data.EndDate.ToShortDateString();
+			endDate = startDate.AddDays(days);
+			end.Text = endDate.ToShortDateString();
 		}
 
 		#region Init stuff
@@ -238,7 +215,7 @@ namespace GUTSchedule.Droid.Activities
 		{
 			faculty.ItemSelected += (s, e) =>
 			{
-				prefs.Edit().PutString("Faculty", Data.Faculties[e.Position].Id).Apply();
+				prefs.Edit().PutString("Faculty", Faculties[e.Position].id).Apply();
 				UpdateGroupsList();
 			};
 			course.ItemSelected += (s, e) =>
@@ -265,7 +242,7 @@ namespace GUTSchedule.Droid.Activities
 			reminder.ItemSelected += (s, e) =>
 				prefs.Edit().PutInt("Reminder", e.Position).Apply();
 			group.ItemSelected += (s, e) =>
-				prefs.Edit().PutString("Group", Data.Groups[e.Position].Id).Apply();
+				prefs.Edit().PutString("Group", Groups[e.Position].id).Apply();
 
 			groupTitle.Click += (s, e) =>
 				prefs.Edit().PutBoolean("AddGroupToHeader", groupTitle.Checked).Apply();
@@ -276,8 +253,8 @@ namespace GUTSchedule.Droid.Activities
 			forMonth.Click += (s, e) => SetDate(30);
 			forSemester.Click += (s, e) =>
 			{
-				Data.EndDate = DateTime.Today.Month > 8 ? new DateTime(DateTime.Today.Year + 1, 1, 1) : new DateTime(DateTime.Today.Year, 8, 31);
-				end.Text = Data.EndDate.ToShortDateString();
+				endDate = DateTime.Today.Month > 8 ? new DateTime(DateTime.Today.Year + 1, 1, 1) : new DateTime(DateTime.Today.Year, 8, 31);
+				end.Text = endDate.ToShortDateString();
 			};
 
 			start.Click += Start_Click;

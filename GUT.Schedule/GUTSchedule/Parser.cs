@@ -4,6 +4,7 @@ using AngleSharp.Html.Parser;
 using GUTSchedule.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -11,15 +12,9 @@ using System.Threading.Tasks;
 
 namespace GUTSchedule
 {
-	public enum ScheduleType
-	{
-		Default = 1,
-		Session = 2
-	}
-
 	public static class Parser
 	{
-		public static async Task VaildateAuthorization(string email, string password)
+		private static async Task<HttpClient> VaildateAuthorization(string email, string password)
 		{
 			if (string.IsNullOrWhiteSpace(email))
 				throw new ArgumentNullException(nameof(email));
@@ -49,25 +44,31 @@ namespace GUTSchedule
 
 				throw new System.Security.VerificationException(responseQuery["error"].Replace("|", "; "));
 			}
+
+			return client;
 		}
 
 		public static async Task<List<Occupation>> GetSchedule(ExportParameters exportParameters)
 		{
 			List<Occupation> schedule = new List<Occupation>();
 
-			if (exportParameters is CabinetExportParameters)
+			if (exportParameters is CabinetExportParameters cabinetArgs)
 			{
-
-			}
-			else if (exportParameters is DefaultExportParameters arg)
-			{
-				if (arg.Session)
-					schedule.AddRange(await GetSessionSchedule());
-				else
+				HttpClient client = await VaildateAuthorization(cabinetArgs.Email, cabinetArgs.Password);
+				for (DateTime d = exportParameters.StartDate; d <= exportParameters.EndDate; d = d.AddMonths(1))
 				{
-					int offsetDay = int.Parse(await new HttpClient().GetStringAsync("https://xfox111.net/schedule_offset.txt"));
-					schedule.AddRange(await GetRegularSchedule(offsetDay, arg.FacultyId, arg.Course, arg.GroupId));
+					schedule.AddRange(await GetCabinetSchedule(client, d, false));
+					schedule.AddRange(await GetCabinetSchedule(client, d, true));
 				}
+			}
+			else if (exportParameters is DefaultExportParameters args)
+			{
+				int offsetDay = int.Parse(await new HttpClient().GetStringAsync("https://xfox111.net/schedule_offset.txt"));
+				IHtmlDocument[] rawSchedule = await GetRawSchedule(args.FacultyId, args.Course, args.GroupId);
+				if(rawSchedule[0] != null)
+					schedule.AddRange(ParseRegularSchedule(offsetDay, rawSchedule[0]));
+				if(rawSchedule[1] != null)
+					schedule.AddRange(ParseSessionSchedule(rawSchedule[1]));
 			}
 			else
 				throw new ArgumentException("Invaild argument instance", nameof(exportParameters));
@@ -84,21 +85,41 @@ namespace GUTSchedule
 					schedule.RemoveAt(k--);
 				}
 
-			return schedule.FindAll(i => i.StartTime.Date >= exportParameters.StartDate && i.StartTime.Date <= exportParameters.EndDate);
+			schedule = schedule.FindAll(i => i.StartTime.Date >= exportParameters.StartDate && i.StartTime.Date <= exportParameters.EndDate);
+			if (schedule.Count < 1)
+				throw new NullReferenceException("Не удалось найти расписание соответствующее критериям. Ничего не экспортировано");
+
+			return schedule;
 		}
 
-		public static async Task<List<(string id, string name)>> GetFaculties(ScheduleType scheduleType) =>
-			await GetList(
+		public static async Task<List<(string id, string name)>> GetFaculties()
+		{
+			List<(string, string)> list = await GetList(
 				("choice", "1"),
 				("kurs", "0"),
-				("type_z", ((int)scheduleType).ToString()),
+				("type_z", "1"),
 				("schet", GetCurrentSemester()));
 
-		public static async Task<List<(string id, string name)>> GetGroups(ScheduleType scheduleType, string facultyId, string course = "0") =>
+			if (list.Count < 1)
+				list = await GetList(
+				("choice", "1"),
+				("kurs", "0"),
+				("type_z", "2"),
+				("schet", GetCurrentSemester()));
+			else
+				return list;
+
+			if (list.Count < 1)
+				list = new List<(string, string)>();
+
+			return list;
+		}
+
+		public static async Task<List<(string id, string name)>> GetGroups(string facultyId, string course = "0") =>
 			await GetList(
 				("choice", "1"),
 				("kurs", course),
-				("type_z", ((int)scheduleType).ToString()),
+				("type_z", "1"),
 				("schet", GetCurrentSemester()),
 				("faculty", facultyId));
 
@@ -127,10 +148,10 @@ namespace GUTSchedule
 		{
 			DateTime now = DateTime.Today;
 
-			if (now.Month > 8)
-				return $"205.{now.Year - 2000}{now.Year - 1999}/1";
-			else
+			if (now.Month > 1 && now.Month < 9)
 				return $"205.{now.Year - 2001}{now.Year - 2000}/2";
+			else
+				return $"205.{now.Year - 2000}{now.Year - 1999}/1";
 		}
 
 		private static DateTime[] GetDatesFromWeeks(int offsetDay, int weekday, string[] weeks)
@@ -150,7 +171,7 @@ namespace GUTSchedule
 			return dates.ToArray();
 		}
 
-		private static async Task<List<Occupation>> GetRegularSchedule(int offsetDay, string facultyId, string course, string groupId)
+		private static async Task<IHtmlDocument[]> GetRawSchedule(string facultyId, string course, string groupId)
 		{
 			if (string.IsNullOrWhiteSpace(facultyId))
 				throw new ArgumentNullException(nameof(facultyId));
@@ -159,72 +180,146 @@ namespace GUTSchedule
 			if (string.IsNullOrWhiteSpace(groupId))
 				throw new ArgumentNullException(nameof(groupId));
 
-			List<Occupation> schedule = new List<Occupation>();
+			IHtmlDocument[] docs = new IHtmlDocument[2];
 			using (HttpClient client = new HttpClient())
-			{
-				HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://cabinet.sut.ru/raspisanie_all_new");
-				request.SetContent(
-					("group_el", "0"),
-					("kurs", course),
-					("type_z", "1"),
-					("faculty", facultyId),
-					("group", groupId),
-					("ok", "Показать"),
-					("schet", GetCurrentSemester()));
-
-				request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
-
-				HttpResponseMessage response = await client.SendAsync(request);
-				string responseContent = await response.Content.ReadAsStringAsync();
-				if (string.IsNullOrWhiteSpace(responseContent))
-					return schedule;
-
-				IHtmlDocument doc = new HtmlParser().ParseDocument(responseContent);
-
-				string groupName = doc.QuerySelector("#group").Children.FirstOrDefault(i => i.HasAttribute("selected")).TextContent;
-
-				IHtmlCollection<IElement> pairs = doc.QuerySelectorAll(".pair");
-				foreach (IElement item in pairs)
+				for(int k = 1; k < 3; k++)
 				{
-					DateTime[] dates = GetDatesFromWeeks(
-						offsetDay,
-						int.Parse(item.GetAttribute("weekday")),
-						item.QuerySelector(".weeks").TextContent.Replace("(", "").Replace("н)", "").Replace(" ", "").Split(','));
+					HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://cabinet.sut.ru/raspisanie_all_new");
+					request.SetContent(
+						("group_el", "0"),
+						("kurs", course),
+						("type_z", k.ToString()),
+						("faculty", facultyId),
+						("group", groupId),
+						("ok", "Показать"),
+						("schet", GetCurrentSemester()));
 
-					foreach(DateTime date in dates)
+					request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+
+					HttpResponseMessage response = await client.SendAsync(request);
+					string responseContent = await response.Content.ReadAsStringAsync();
+					if (string.IsNullOrWhiteSpace(responseContent))
+						docs[k - 1] = null;
+
+					docs[k - 1] = new HtmlParser().ParseDocument(responseContent);
+				}
+
+			return docs;
+		}
+
+		private static List<Occupation> ParseRegularSchedule(int offsetDay, IHtmlDocument raw)
+		{
+			if (raw == null)
+				throw new ArgumentNullException(nameof(raw));
+
+			List<Occupation> schedule = new List<Occupation>();
+			string groupName = raw.QuerySelector("#group").Children.FirstOrDefault(i => i.HasAttribute("selected")).TextContent;
+
+			IHtmlCollection<IElement> pairs = raw.QuerySelectorAll(".pair");
+			foreach (IElement item in pairs)
+			{
+				DateTime[] dates = GetDatesFromWeeks(
+					offsetDay,
+					int.Parse(item.GetAttribute("weekday")),
+					item.QuerySelector(".weeks").TextContent.Replace("(", "").Replace("н)", "").Replace(" ", "").Split(','));
+
+				foreach (DateTime date in dates)
+				{
+					int order = int.Parse(item.GetAttribute("pair")) - 1;
+					Occupation occupation = new Occupation
 					{
-						schedule.Add(new Occupation
-						{
-							Name = item.QuerySelector(".subect").TextContent,
-							Type = item.QuerySelector(".type").TextContent,
-							Group = groupName
-						});
+						Name = item.QuerySelector(".subect").TextContent,
+						Type = item.QuerySelector(".type").TextContent.Replace("(", "").Replace(")", ""),
+						Group = groupName,
+						Opponent = item.QuerySelector(".teacher")?.GetAttribute("title").Replace("; ", "\n") ?? "",
+						Cabinet = item.QuerySelector(".aud")?.TextContent.Replace("ауд.: ", "").Replace("; Б22", "") ?? "СПбГУТ",
+						Order = order > 50 ? $"Ф{order - 81}" : order.ToString()
+					};
+
+					string startTime;
+					switch (order)
+					{
+						case 1:
+							startTime = "9:00"; break;
+						case 2:
+							startTime = "10:45"; break;
+						case 3:
+							startTime = "13:00"; break;
+						case 4:
+							startTime = "14:45"; break;
+						case 5:
+							startTime = "16:30"; break;
+						case 6:
+							startTime = "18:15"; break;
+						case 7:
+							startTime = "20:00"; break;
+						case 29:
+							startTime = "20:00";
+							occupation.Order = "7";
+							break;
+						case 82:
+							startTime = "9:00"; break;
+						case 83:
+							startTime = "10:30"; break;
+						case 84:
+							startTime = "12:00"; break;
+						case 85:
+							startTime = "13:30"; break;
+						case 86:
+							startTime = "15:00"; break;
+						case 87:
+							startTime = "16:30"; break;
+						case 88:
+							startTime = "18:00"; break;
+						default:
+							startTime = "9:00"; break;
 					}
-					string name, type, professor, place;
-					int order, weekday;
-					string[] weeks;
 
-					name = item.QuerySelector(".subect")?.TextContent ?? "Неизвестный предмет (см. Расписание)";
-					type = item.QuerySelector(".type").TextContent.Replace("(", "").Replace(")", "");
-					professor = item.QuerySelector(".teacher")?.GetAttribute("title").Replace(";", "") ?? "";
-					place = item.QuerySelector(".aud")?.TextContent ?? "СПбГУТ";
-					order = int.Parse(item.GetAttribute("pair")) - 1;
-					weeks = item.QuerySelector(".weeks").TextContent.Replace("(", "").Replace("н)", "").Replace(" ", "").Split(',');
-					weekday = int.Parse(item.GetAttribute("weekday"));
+					occupation.StartTime = date.Add(TimeSpan.Parse(startTime));
+					occupation.EndTime = occupation.StartTime.AddMinutes(order > 10 ? 90 : 95);
 
-					schedule.AddRange(Occupation.GetSubject(name, type, professor, place, order, weeks, weekday, groupName));
+					schedule.Add(occupation);
 				}
 			}
-			
+
 			return schedule;
 		}
 
-		private static async Task<List<Occupation>> GetSessionSchedule()
+		private static List<Occupation> ParseSessionSchedule(IHtmlDocument raw)
 		{
+			if (raw == null)
+				throw new ArgumentNullException(nameof(raw));
 
+			List<Occupation> schedule = new List<Occupation>();
+			string groupName = raw.QuerySelector("#group").Children.FirstOrDefault(i => i.HasAttribute("selected"))?.TextContent;
+
+			IHtmlCollection<IElement> pairs = raw.QuerySelectorAll(".pair");
+			foreach (IElement item in pairs)
+			{
+				Occupation occupation = new Occupation
+				{
+					Name = item.QuerySelector(".subect").TextContent,
+					Type = item.QuerySelector(".type").TextContent,
+					Group = groupName,
+					Cabinet = item.QuerySelector(".aud").TextContent,
+					Opponent = item.QuerySelector(".teacher")?.GetAttribute("title"),
+					Order = "Сессия"
+				};
+
+				DateTime date = DateTime.Parse(item.FirstChild.FirstChild.TextContent, new CultureInfo("ru-RU"));
+				string rawTime = item.ChildNodes[2].TextContent;
+				rawTime = rawTime.Substring(rawTime.IndexOf('(')).Replace(")", "").Replace('.', ':');
+
+				occupation.StartTime = date.Add(TimeSpan.Parse(rawTime.Split('-')[0]));
+				occupation.EndTime = date.Add(TimeSpan.Parse(rawTime.Split('-')[1]));
+
+				schedule.Add(occupation);
+			}
+
+			return schedule;
 		}
 
-		private static async Task<List<CabinetSubject>> GetCabinetSchedule(HttpClient client, DateTime date, bool checkProfSchedule)
+		private static async Task<List<Occupation>> GetCabinetSchedule(HttpClient client, DateTime date, bool checkProfSchedule)
 		{
 			HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"https://cabs.itut.ru/cabinet/project/cabinet/forms/{(checkProfSchedule ? "pr_" : "")}raspisanie_kalendar.php");
 			request.SetContent(
@@ -239,38 +334,100 @@ namespace GUTSchedule
 				throw new HttpRequestException(responseContent);
 
 			IHtmlDocument doc = new HtmlParser().ParseDocument(responseContent);
-			List<CabinetSubject> schedule = new List<CabinetSubject>();
+			List<Occupation> schedule = new List<Occupation>();
 
-			if (!checkProfSchedule)
-				Data.DataSet.Group = doc.QuerySelector(".style_gr b").TextContent;
+			string groupName = checkProfSchedule ? null : doc.QuerySelector(".style_gr b").TextContent;
 
 			foreach (var i in doc.QuerySelectorAll("td").Where(i => i.GetAttribute("style") == "text-align: center; vertical-align: top"))
 				for (int k = 0; k < i.QuerySelectorAll("i").Length; k++)
 				{
-					CabinetSubject item = new CabinetSubject(
-						name: i.QuerySelectorAll("b")[k * 2 + 1].TextContent,
-						type: i.QuerySelectorAll("i")[k].TextContent,
-						cabinet: i.QuerySelectorAll("small")[k].NextSibling.TextContent.Replace("; Б22", ""),
-						opponent: i.QuerySelectorAll("i")[k].NextSibling.NextSibling.NodeType == NodeType.Text ?
+					Occupation item = new Occupation
+					{
+						Name = i.QuerySelectorAll("b")[k * 2 + 1].TextContent,
+						Type = i.QuerySelectorAll("i")[k].TextContent,
+						Group = groupName,
+						Opponent = i.QuerySelectorAll("i")[k].NextSibling.NextSibling?.NodeType == NodeType.Text ?
 							i.QuerySelectorAll("i")[k].NextSibling.NextSibling.TextContent : "",
+					};
+
+					if (string.IsNullOrWhiteSpace(item.Opponent))
+						item.Opponent = i.QuerySelectorAll("i")[k].NextSibling.NextSibling.NextSibling?.NodeType == NodeType.Text ?
+							i.QuerySelectorAll("i")[k].NextSibling.NextSibling.NextSibling.TextContent : "";
+
+					try { item.Cabinet = i.QuerySelectorAll("small")[k].NextSibling.TextContent.Replace("; Б22", ""); }
+					catch { item.Cabinet = "СПбГУТ"; }
+
+					string rawTime = i.QuerySelectorAll("b")[k * 2 + 2].TextContent;
+					item.StartTime = new DateTime(
 						year: date.Year,
 						month: date.Month,
 						day: int.Parse(i.ChildNodes[0].TextContent),
-						schedule: i.QuerySelectorAll("b")[k * 2 + 2].TextContent,
-						checkProfSchedule);
-					schedule.Add(item);
-				}
+						hour: int.Parse(rawTime.Split('-')[0].Split('.')[0]),
+						minute: int.Parse(rawTime.Split('-')[0].Split('.')[1]),
+						second: 0);
 
-			// Merge duplicating entries
-			schedule.OrderByDescending(i => i.StartTime);
-			for (int k = 1; k < schedule.Count; k++)
-				if (schedule[k - 1].StartTime == schedule[k].StartTime &&
-					schedule[k - 1].Name == schedule[k].Name &&
-					schedule[k - 1].Type == schedule[k].Type)
-				{
-					schedule[k - 1].Opponent += "\n" + schedule[k].Opponent;
-					schedule[k - 1].Cabinet += "; " + schedule[k].Cabinet;
-					schedule.RemoveAt(k--);
+					item.EndTime = new DateTime(
+						year: date.Year,
+						month: date.Month,
+						day: int.Parse(i.ChildNodes[0].TextContent),
+						hour: int.Parse(rawTime.Split('-')[1].Split('.')[0]),
+						minute: int.Parse(rawTime.Split('-')[1].Split('.')[1]),
+						second: 0);
+
+					switch(rawTime.Split('-')[1])
+					{
+						case "10.35":
+							item.Order = "1";
+							break;
+						case "12.20":
+							item.Order = "2";
+							break;
+						case "14.35":
+							item.Order = "3";
+							break;
+						case "16.20":
+							item.Order = "4";
+							break;
+						case "18.05":
+							item.Order = "5";
+							break;
+						case "19.50":
+							item.Order = "6";
+							break;
+						case "21.35":
+							item.Order = "7";
+							break;
+						case "10.30":
+							item.Order = "Ф1";
+							break;
+						case "12.00":
+							item.Order = "Ф2";
+							break;
+						case "13.30":
+							item.Order = "Ф3";
+							break;
+						case "15.00":
+							item.Order = "Ф4";
+							break;
+						case "16.30":
+							item.Order = "Ф5";
+							break;
+						case "18.00":
+							item.Order = "Ф6";
+							break;
+						case "19.30":
+							item.Order = "Ф7";
+							break;
+
+						default:
+							item.Order = "0";
+							break;
+					}
+
+					if (checkProfSchedule)
+						item.Order = item.Order.Insert(0, "📚 ");
+
+					schedule.Add(item);
 				}
 
 			return schedule;

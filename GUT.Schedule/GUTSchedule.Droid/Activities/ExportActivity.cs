@@ -31,36 +31,12 @@ namespace GUTSchedule.Droid.Activities
 		{
 			try
 			{
-				if (Data.DataSet.IsProfessor == true)
-					status.Text = Resources.GetText(Resource.String.potatoLoadingStatus);  // For some reason professors' schedule loads much slower
-				else
-					status.Text = Resources.GetText(Resource.String.loadingStatus);
+				status.Text = Resources.GetText(Resource.String.loadingStatus);
 
-				if (Data.DataSet.HttpClient != null)
-				{
-					List<CabinetSubject> schedule = new List<CabinetSubject>();
+				List<Occupation> schedule = await Parser.GetSchedule(MainActivity.ExportParameters);
 
-					for (DateTime d = Data.StartDate; d <= Data.EndDate; d = d.AddMonths(1))
-						schedule.AddRange(await Parser.GetCabinetSchedule(Data.DataSet.HttpClient, d, false));      // Even though the user can be professor he can be also PhD student (and have his student schedule)
-
-					if (Data.DataSet.IsProfessor == true)
-						for (DateTime d = Data.StartDate; d <= Data.EndDate; d = d.AddMonths(1))
-							schedule.AddRange(await Parser.GetCabinetSchedule(Data.DataSet.HttpClient, d, true));
-
-					schedule = schedule.FindAll(i => i.StartTime.Date >= Data.StartDate && i.StartTime.Date <= Data.EndDate);   // Filtering schedule according to export range
-
-					status.Text = Resources.GetText(Resource.String.calendarExportStatus);
-					Calendar.Export(schedule);
-				}
-				else
-				{
-					List<Occupation> schedule = await Parser.LoadSchedule();
-
-					schedule = schedule.FindAll(i => i.StartTime.Date >= Data.StartDate && i.StartTime.Date <= Data.EndDate);   // Filtering schedule according to export range
-
-					status.Text = Resources.GetText(Resource.String.calendarExportStatus);
-					Calendar.Export(schedule);
-				}
+				status.Text = Resources.GetText(Resource.String.calendarExportStatus);
+				Calendar.Export(schedule);
 
 				status.Text = Resources.GetText(Resource.String.doneStatus);
 				await Task.Delay(1000);
