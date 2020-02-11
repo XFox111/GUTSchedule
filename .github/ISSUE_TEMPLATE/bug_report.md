@@ -25,9 +25,10 @@ If applicable, add screenshots to help explain your problem.
 
 ### Environment
 Please complete the following information:
- - Device: [e.g. Google Pixel 3 XL]
- - Android OS version: [e.g. 7.1]
- - Application version: [e.g. 1.0.1]
+ - Platform: [e.g. Windows 10 Pro]
+ - Device: [e.g. Microsoft Surface Pro 6]
+ - OS version: [e.g. 1909 (10.0.18363)]
+ - Application version: [e.g. 20200202.1]
 
 ### Additional context
 Add any other context about the problem here.
