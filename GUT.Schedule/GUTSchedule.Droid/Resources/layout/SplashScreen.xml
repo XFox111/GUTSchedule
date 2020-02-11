@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:text="@string/appName"
             android:layout_gravity="center_horizontal"
+            android:textColor="@android:color/white"
             android:textSize="36dp"/>
 
         <ProgressBar
@@ -35,6 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:textColor="@android:color/white"
             android:text="@string/initializationStatus"
             android:textSize="20dp"/>
     </LinearLayout>
@@ -45,6 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:textColor="@android:color/white"
         android:text="v$(Build.BuildNumber) (ci-id #$(Build.BuildId))"/>
 
 </RelativeLayout>

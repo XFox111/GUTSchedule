@@ -14,7 +14,6 @@
         <ProgressBar
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:indeterminateTint="#fff"
             android:layout_gravity="center_horizontal"
             android:layout_margin="20dp"/>
 
@@ -23,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/loadingStatus"
-            android:textColor="#fff"
+            android:textColor="@android:color/white"
             android:layout_gravity="center_horizontal"
         />
     </LinearLayout>
