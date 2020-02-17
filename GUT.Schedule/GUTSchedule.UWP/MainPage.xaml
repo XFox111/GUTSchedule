@@ -1,0 +1,125 @@
+﻿<Page
+    x:Class="GUTSchedule.UWP.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GUTSchedule.UWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+	<Page.Background>
+		<ImageBrush ImageSource="https://cabs.itut.ru/cabinet/ini/general/0/cabinet/img/bg_n.jpg" Stretch="UniformToFill"/>
+	</Page.Background>
+
+	<VisualStateManager.VisualStateGroups>
+		<VisualStateGroup>
+			<VisualState>
+				<VisualState.StateTriggers>
+					<AdaptiveTrigger MinWindowWidth="400"/>
+				</VisualState.StateTriggers>
+				<VisualState.Setters>
+					<Setter Target="emptyColumn.Width" Value="*"/>
+				</VisualState.Setters>
+			</VisualState>
+		</VisualStateGroup>
+	</VisualStateManager.VisualStateGroups>
+
+	<Page.TopAppBar>
+		<CommandBar ClosedDisplayMode="Compact" Background="{StaticResource SystemAccentColor}" RequestedTheme="Dark">
+			<CommandBar.Content>
+				<TextBlock Text="GUT.Schedule" Style="{StaticResource TitleTextBlockStyle}" Margin="10,6"/>
+			</CommandBar.Content>
+			<CommandBar.SecondaryCommands>
+				<AppBarButton Icon="Delete" Label="Clear schedule" Tag="clear" Click="AppBarButton_Click"/>
+				<AppBarButton Label="Report error" Tag="report" Click="AppBarButton_Click">
+					<AppBarButton.Icon>
+						<FontIcon Glyph="&#xEBE8;"/>
+					</AppBarButton.Icon>
+				</AppBarButton>
+				<AppBarButton Label="About application" Tag="about" Click="AppBarButton_Click">
+					<AppBarButton.Icon>
+						<FontIcon Glyph="&#xE946;"/>
+					</AppBarButton.Icon>
+				</AppBarButton>
+			</CommandBar.SecondaryCommands>
+		</CommandBar>
+	</Page.TopAppBar>
+
+	<Grid>
+		<ScrollViewer>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition x:Name="emptyColumn" Width="0"/>
+				</Grid.ColumnDefinitions>
+				<StackPanel Padding="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+					<TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Schedule parameters"/>
+
+					<CheckBox Content="Authorize via personal cabinet" Checked="ChangeAuthorizationMethod" IsChecked="True" x:Name="authorize"/>
+					<StackPanel x:Name="credentialMethod">
+						<TextBox PlaceholderText="E-mail" x:Name="email"/>
+						<PasswordBox PlaceholderText="Password" x:Name="password"/>
+						<CheckBox Content="Remember" x:Name="rememberCredential" IsChecked="True"/>
+					</StackPanel>
+					<StackPanel x:Name="defaultMethod" Visibility="Collapsed">
+						<ComboBox x:Name="faculty" PlaceholderText="No schedule is available" Header="Course" SelectionChanged="Faculty_SelectionChanged"/>
+						<ComboBox x:Name="course" SelectedIndex="0" Header="Course" SelectionChanged="Course_SelectionChanged">
+							<ComboBoxItem Content="1"/>
+							<ComboBoxItem Content="2"/>
+							<ComboBoxItem Content="3"/>
+							<ComboBoxItem Content="4"/>
+						</ComboBox>
+						<ComboBox x:Name="group" PlaceholderText="No schedule is available" Header="Group"/>
+					</StackPanel>
+
+					<TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Export parameters"/>
+
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition/>
+							<ColumnDefinition/>
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+						</Grid.RowDefinitions>
+
+						<CalendarDatePicker Header="Export from" x:Name="startDate"/>
+						<CalendarDatePicker Grid.Row="1" Header="Export to" VerticalAlignment="Top" x:Name="endDate"/>
+
+						<Button Content="Today" Grid.Column="1" VerticalAlignment="Bottom" Click="SetTodayDate" />
+						<StackPanel Grid.Column="1" Grid.Row="1" Margin="0,28,0,0">
+							<Button Content="For day" Click="SetEndDate" Tag="0"/>
+							<Button Content="For week" Click="SetEndDate" Tag="6"/>
+							<Button Content="For month" Click="SetEndDate" Tag="30"/>
+							<Button Content="For semester" Click="SetForSemester"/>
+						</StackPanel>
+					</Grid>
+
+					<ComboBox Header="Set reminder for:" x:Name="reminder" SelectedIndex="0">
+						<ComboBoxItem Content="None"/>
+						<ComboBoxItem Content="None"/>
+						<ComboBoxItem Content="None"/>
+					</ComboBox>
+
+					<CheckBox Content="Add group number to event title" x:Name="addGroupToTitle"/>
+
+					<ComboBox Header="Destination calendar" x:Name="calendar" SelectedIndex="0" PlaceholderText="No calendar is available"/>
+
+					<TextBlock Foreground="Red" Visibility="Collapsed" Text="Error" x:Name="errorPlaceholder"/>
+					<Button Content="Add schedule" Background="{StaticResource SystemAccentColor}" RequestedTheme="Dark" FontWeight="Bold" Margin="0,10" Click="Export"/>
+
+					<TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="©2020 Michael Gordeev, INS, ICT-907"/>
+					<TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="v$(Build.BuildNumber) (ci-id #$(Build.BuildId))"/>
+				</StackPanel>
+			</Grid>
+		</ScrollViewer>
+
+		<Grid Background="{StaticResource SystemAccentColor}" x:Name="loading" Visibility="Collapsed">
+			<StackPanel VerticalAlignment="Center">
+				<ProgressRing Width="100" Height="100" Foreground="White" IsActive="True" HorizontalAlignment="Center"/>
+				<TextBlock Style="{StaticResource TitleTextBlockStyle}" x:Name="status" Text="Processing..." HorizontalAlignment="Center" Foreground="White"/>
+			</StackPanel>
+		</Grid>
+	</Grid>
+</Page>

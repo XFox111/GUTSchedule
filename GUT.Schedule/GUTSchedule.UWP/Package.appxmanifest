@@ -15,7 +15,7 @@
 
   <Properties>
     <DisplayName>GUT.Schedule.UWP</DisplayName>
-    <PublisherDisplayName>Michael Gordeev</PublisherDisplayName>
+    <PublisherDisplayName>Michael &quot;XFox&quot; Gordeev</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -32,10 +32,10 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="GUT.Schedule.UWP.App">
       <uap:VisualElements
-        DisplayName="GUT.Schedule.UWP"
+        DisplayName="GUT.Schedule"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="GUT.Schedule.UWP"
+        Description="Application which exports SPbSUT timetable to calendar"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
@@ -45,5 +45,6 @@
 
   <Capabilities>
     <Capability Name="internetClient" />
+    <uap:Capability Name="appointments"/>
   </Capabilities>
 </Package>

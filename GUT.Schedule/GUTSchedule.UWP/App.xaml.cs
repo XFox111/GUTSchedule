@@ -1,6 +1,7 @@
 ﻿using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -20,6 +21,14 @@ namespace GUTSchedule.UWP
 		{
 			InitializeComponent();
 			Suspending += OnSuspending;
+			UnhandledException += OnError;
+		}
+
+		private async void OnError(object sender, UnhandledExceptionEventArgs e)
+		{
+			e.Handled = true;
+
+			await new MessageDialog(e.Message, e.GetType().ToString()).ShowAsync();
 		}
 
 		/// <summary>
