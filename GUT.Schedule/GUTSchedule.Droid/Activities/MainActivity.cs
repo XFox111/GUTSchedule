@@ -253,7 +253,12 @@ namespace GUTSchedule.Droid.Activities
 			forMonth.Click += (s, e) => SetDate(30);
 			forSemester.Click += (s, e) =>
 			{
-				endDate = DateTime.Today.Month > 8 ? new DateTime(DateTime.Today.Year + 1, 1, 1) : new DateTime(DateTime.Today.Year, 8, 31);
+				if (DateTime.Today.Month == 1)
+					endDate = new DateTime(DateTime.Today.Year, 1, 31);
+				else if (DateTime.Today.Month > 8)
+					endDate = new DateTime(DateTime.Today.Year + 1, 1, 31);
+				else
+					endDate = new DateTime(DateTime.Today.Year, 8, 31);
 				end.Text = endDate.ToShortDateString();
 			};
 
