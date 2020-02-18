@@ -5,13 +5,14 @@
     xmlns:local="using:GUTSchedule.UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+	Loaded="Page_Loaded">
 
 	<Page.Background>
 		<ImageBrush ImageSource="https://cabs.itut.ru/cabinet/ini/general/0/cabinet/img/bg_n.jpg" Stretch="UniformToFill"/>
 	</Page.Background>
 
-	<VisualStateManager.VisualStateGroups>
+	<!--<VisualStateManager.VisualStateGroups>
 		<VisualStateGroup>
 			<VisualState>
 				<VisualState.StateTriggers>
@@ -22,7 +23,7 @@
 				</VisualState.Setters>
 			</VisualState>
 		</VisualStateGroup>
-	</VisualStateManager.VisualStateGroups>
+	</VisualStateManager.VisualStateGroups>-->
 
 	<Page.TopAppBar>
 		<CommandBar ClosedDisplayMode="Compact" Background="{StaticResource SystemAccentColor}" RequestedTheme="Dark">
@@ -55,21 +56,21 @@
 				<StackPanel Padding="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 					<TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Schedule parameters"/>
 
-					<CheckBox Content="Authorize via personal cabinet" Checked="ChangeAuthorizationMethod" IsChecked="True" x:Name="authorize"/>
+					<CheckBox Content="Authorize via personal cabinet" Checked="ChangeAuthorizationMethod" Unchecked="ChangeAuthorizationMethod" IsChecked="True" x:Name="authorize"/>
 					<StackPanel x:Name="credentialMethod">
 						<TextBox PlaceholderText="E-mail" x:Name="email"/>
 						<PasswordBox PlaceholderText="Password" x:Name="password"/>
-						<CheckBox Content="Remember" x:Name="rememberCredential" IsChecked="True"/>
+						<CheckBox Content="Remember" x:Name="rememberCredential" Checked="RememberCredential_Checked" Unchecked="RememberCredential_Checked"/>
 					</StackPanel>
 					<StackPanel x:Name="defaultMethod" Visibility="Collapsed">
 						<ComboBox x:Name="faculty" PlaceholderText="No schedule is available" Header="Course" SelectionChanged="Faculty_SelectionChanged"/>
-						<ComboBox x:Name="course" SelectedIndex="0" Header="Course" SelectionChanged="Course_SelectionChanged">
+						<ComboBox x:Name="course" Header="Course" SelectionChanged="Course_SelectionChanged">
 							<ComboBoxItem Content="1"/>
 							<ComboBoxItem Content="2"/>
 							<ComboBoxItem Content="3"/>
 							<ComboBoxItem Content="4"/>
 						</ComboBox>
-						<ComboBox x:Name="group" PlaceholderText="No schedule is available" Header="Group"/>
+						<ComboBox x:Name="group" PlaceholderText="No schedule is available" Header="Group" SelectionChanged="Group_SelectionChanged"/>
 					</StackPanel>
 
 					<TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Export parameters"/>
@@ -96,21 +97,22 @@
 						</StackPanel>
 					</Grid>
 
-					<ComboBox Header="Set reminder for:" x:Name="reminder" SelectedIndex="0">
+					<ComboBox Header="Set reminder for:" x:Name="reminder" SelectionChanged="Reminder_SelectionChanged">
 						<ComboBoxItem Content="None"/>
-						<ComboBoxItem Content="None"/>
-						<ComboBoxItem Content="None"/>
+						<ComboBoxItem Content="At the begining of event"/>
+						<ComboBoxItem Content="5 minutes"/>
+						<ComboBoxItem Content="10 minutes"/>
 					</ComboBox>
 
-					<CheckBox Content="Add group number to event title" x:Name="addGroupToTitle"/>
+					<CheckBox Content="Add group number to event title" x:Name="addGroupToTitle" Checked="AddGroupToTitle_Checked" Unchecked="AddGroupToTitle_Checked"/>
 
-					<ComboBox Header="Destination calendar" x:Name="calendar" SelectedIndex="0" PlaceholderText="No calendar is available"/>
+					<ComboBox Header="Destination calendar" x:Name="calendar" SelectionChanged="Calendar_SelectionChanged"/>
 
 					<TextBlock Foreground="Red" Visibility="Collapsed" Text="Error" x:Name="errorPlaceholder"/>
-					<Button Content="Add schedule" Background="{StaticResource SystemAccentColor}" RequestedTheme="Dark" FontWeight="Bold" Margin="0,10" Click="Export"/>
+					<Button Content="Add schedule" Background="{StaticResource SystemAccentColor}" Foreground="White" FontWeight="Bold" Margin="0,10" Click="Export"/>
 
 					<TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="©2020 Michael Gordeev, INS, ICT-907"/>
-					<TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="v$(Build.BuildNumber) (ci-id #$(Build.BuildId))"/>
+					<TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="v$(Build.BuildNumber) (ci-id #$(Build.BuildId))" x:Name="version"/>
 				</StackPanel>
 			</Grid>
 		</ScrollViewer>
@@ -118,7 +120,7 @@
 		<Grid Background="{StaticResource SystemAccentColor}" x:Name="loading" Visibility="Collapsed">
 			<StackPanel VerticalAlignment="Center">
 				<ProgressRing Width="100" Height="100" Foreground="White" IsActive="True" HorizontalAlignment="Center"/>
-				<TextBlock Style="{StaticResource TitleTextBlockStyle}" x:Name="status" Text="Processing..." HorizontalAlignment="Center" Foreground="White"/>
+				<TextBlock Style="{StaticResource TitleTextBlockStyle}" x:Name="status" Text="Processing..." HorizontalAlignment="Center" Foreground="White" Margin="0,20"/>
 			</StackPanel>
 		</Grid>
 	</Grid>

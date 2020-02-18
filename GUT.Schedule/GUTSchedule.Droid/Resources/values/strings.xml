@@ -79,7 +79,7 @@
   <!-- AboutActivity -->
   <string name="aboutTitle">About application</string>
   <string name="appDescription">Application for SPbSUT professors\' and students\' schedule export</string>
-  <string name="developedBy">Developed by Michael Gordeev (IS-907, INS) in the \"Technologies of Informational and Educational Systems\" Research Facility</string>
+  <string name="developedBy">Developed by Michael Gordeev (ICT-907, INS) in the \"Technologies of Informational and Educational Systems\" Research Facility</string>
   <string name="contributorsTitle">Contributors</string>
 
   <string name="specialThanksTitle">Special thanks</string>

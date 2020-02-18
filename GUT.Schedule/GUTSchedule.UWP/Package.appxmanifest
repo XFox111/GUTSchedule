@@ -4,47 +4,49 @@
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+	xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
   IgnorableNamespaces="uap mp">
 
-  <Identity
+	<Identity
     Name="3f032359-f68f-4a46-b88c-113efc87b82b"
     Publisher="CN=Michael Gordeev"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="3f032359-f68f-4a46-b88c-113efc87b82b" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+	<mp:PhoneIdentity PhoneProductId="3f032359-f68f-4a46-b88c-113efc87b82b" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
-  <Properties>
-    <DisplayName>GUT.Schedule.UWP</DisplayName>
-    <PublisherDisplayName>Michael &quot;XFox&quot; Gordeev</PublisherDisplayName>
-    <Logo>Assets\StoreLogo.png</Logo>
-  </Properties>
+	<Properties>
+		<DisplayName>GUT.Schedule.UWP</DisplayName>
+		<PublisherDisplayName>Michael &quot;XFox&quot; Gordeev</PublisherDisplayName>
+		<Logo>Assets\StoreLogo.png</Logo>
+	</Properties>
 
-  <Dependencies>
-    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
-  </Dependencies>
+	<Dependencies>
+		<TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+	</Dependencies>
 
-  <Resources>
-    <Resource Language="x-generate"/>
-  </Resources>
+	<Resources>
+		<Resource Language="x-generate"/>
+	</Resources>
 
-  <Applications>
-    <Application Id="App"
+	<Applications>
+		<Application Id="App"
       Executable="$targetnametoken$.exe"
       EntryPoint="GUT.Schedule.UWP.App">
-      <uap:VisualElements
+			<uap:VisualElements
         DisplayName="GUT.Schedule"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="Application which exports SPbSUT timetable to calendar"
-        BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
-        <uap:SplashScreen Image="Assets\SplashScreen.png" />
-      </uap:VisualElements>
-    </Application>
-  </Applications>
+        BackgroundColor="#FF8000">
+				<uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
+				<uap:SplashScreen Image="Assets\SplashScreen.png"  BackgroundColor="#FF8000"/>
+			</uap:VisualElements>
+		</Application>
+	</Applications>
 
-  <Capabilities>
-    <Capability Name="internetClient" />
-    <uap:Capability Name="appointments"/>
-  </Capabilities>
+	<Capabilities>
+		<Capability Name="internetClient" />
+		<uap:Capability Name="appointments"/>
+		<rescap:Capability Name="appointmentSystem"/>
+	</Capabilities>
 </Package>

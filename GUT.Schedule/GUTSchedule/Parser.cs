@@ -85,7 +85,7 @@ namespace GUTSchedule
 					schedule.RemoveAt(k--);
 				}
 
-			schedule = schedule.FindAll(i => i.StartTime.Date >= exportParameters.StartDate && i.StartTime.Date <= exportParameters.EndDate);
+			schedule = schedule.FindAll(i => i.StartTime.Date >= exportParameters.StartDate.Date && i.EndTime.Date <= exportParameters.EndDate.Date);
 			if (schedule.Count < 1)
 				throw new NullReferenceException("Не удалось найти расписание соответствующее критериям. Ничего не экспортировано");
 
@@ -163,7 +163,7 @@ namespace GUTSchedule
 				DateTime date = new DateTime(DateTime.Today.Year, DateTime.Today.Month >= 8 ? 9 : 2, offsetDay);
 
 				date = date.AddDays(--week * 7);
-				date = date.AddDays(--weekday);
+				date = date.AddDays(weekday - 1);
 
 				dates.Add(date);
 			}
