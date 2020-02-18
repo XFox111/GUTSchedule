@@ -13,6 +13,7 @@ using Windows.ApplicationModel.Resources;
 using Windows.Storage;
 using Microsoft.Services.Store.Engagement;
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.Core;
 
 namespace GUTSchedule.UWP
 {
@@ -65,6 +66,13 @@ namespace GUTSchedule.UWP
 					IsSelected = (string)settings.Values["Calendar"] == i.LocalId
 				}).ToList();
 				calendar.SelectedIndex = (calendar.ItemsSource as List<ComboBoxItem>).FindIndex(i => i.IsSelected);
+				if((calendar.ItemsSource as List<ComboBoxItem>).Count < 1)
+				{
+					MessageDialog dialog = new MessageDialog(resources.GetString("createCalendarMessage"), resources.GetString("createCalendarTitle"));
+					dialog.Commands.Add(new UICommand("OK", (command) => CoreApplication.Exit()));
+
+					await dialog.ShowAsync();
+				}
 				if (calendar.SelectedIndex < 0)
 					calendar.SelectedIndex = 0;
 			}
@@ -76,7 +84,7 @@ namespace GUTSchedule.UWP
 			catch (Exception e)
 			{
 				MessageDialog dialog = new MessageDialog(e.Message, e.GetType().ToString());
-				dialog.Commands.Add(new UICommand("OK", (command) => loading.Visibility = Visibility.Collapsed));
+				dialog.Commands.Add(new UICommand("OK", (command) => CoreApplication.Exit()));
 
 				await dialog.ShowAsync();
 			}

@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="aboutOption.Label" xml:space="preserve">
+    <value>О приложении</value>
+  </data>
+  <data name="aboutTitle.Text" xml:space="preserve">
+    <value>О приложении</value>
+  </data>
+  <data name="addGroupToTitle.Content" xml:space="preserve">
+    <value>Добавить номер группы в заголовок</value>
+  </data>
+  <data name="addScheduleButton.Content" xml:space="preserve">
+    <value>Добавить расписание</value>
+  </data>
+  <data name="appDescription.Text" xml:space="preserve">
+    <value>Приложение для экспорта перподавательского и учебного расписаний Санкт-Петербургского Государственного Университета Телекоммуникаций им. проф. М.А. Бонч-Бруевича</value>
+  </data>
+  <data name="appDisplayDescription" xml:space="preserve">
+    <value>Приложение для  экспорта расписания СПбГУТ в календарь</value>
+  </data>
+  <data name="appDisplayName" xml:space="preserve">
+    <value>ГУТ.Расписание</value>
+  </data>
+  <data name="appName.Text" xml:space="preserve">
+    <value>ГУТ.Расписание</value>
+  </data>
+  <data name="authorizeCheckbox.Content" xml:space="preserve">
+    <value>Авторизоваться через Личный кабинет</value>
+  </data>
+  <data name="calendarExportStatus" xml:space="preserve">
+    <value>Экспортирование в календарь</value>
+  </data>
+  <data name="cancelOption" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="clearAllOption" xml:space="preserve">
+    <value>Все</value>
+  </data>
+  <data name="clearCalendarOption.Label" xml:space="preserve">
+    <value>Очистить расписание</value>
+  </data>
+  <data name="clearScheduleDone" xml:space="preserve">
+    <value>Расписание очищено</value>
+  </data>
+  <data name="clearScheduleMessage" xml:space="preserve">
+    <value>Это действие удалит экспортированное расписание из всех доступных календарей.Данное действие затронет только расписание, экспортированное этим приложением'Все' - удалит все события расписания, включая прошедшие'Только новые' - удалит будущие события расписания</value>
+  </data>
+  <data name="clearScheduleTitle" xml:space="preserve">
+    <value>Очистка расписания</value>
+  </data>
+  <data name="clearUpcomingOption" xml:space="preserve">
+    <value>Только новые</value>
+  </data>
+  <data name="connectionFailMessage" xml:space="preserve">
+    <value>Невозможно загрузить расписание. Проверьте интернет-соединение или попробуйте позже</value>
+  </data>
+  <data name="contactsTitle.Text" xml:space="preserve">
+    <value>Контакты</value>
+  </data>
+  <data name="contributorsTitle.Text" xml:space="preserve">
+    <value>Свой вклад в разработку внесли</value>
+  </data>
+  <data name="copyrights.Text" xml:space="preserve">
+    <value>©2020 Михаил Гордеев, ИКСС, ИКТ-907</value>
+  </data>
+  <data name="courseSpinner.Header" xml:space="preserve">
+    <value>Курс</value>
+  </data>
+  <data name="createCalendarMessage" xml:space="preserve">
+    <value>На вашем устройстве нет календарей пригодных для записи расписания</value>
+  </data>
+  <data name="createCalendarTitle" xml:space="preserve">
+    <value>Создайте новый календарь</value>
+  </data>
+  <data name="dateRangeFrom.Header" xml:space="preserve">
+    <value>Брать расписание с</value>
+  </data>
+  <data name="dateRangeTo.Header" xml:space="preserve">
+    <value>По</value>
+  </data>
+  <data name="destinationCalendar.Header" xml:space="preserve">
+    <value>Конечный календарь</value>
+  </data>
+  <data name="developedBy.Text" xml:space="preserve">
+    <value>Разработано Михаилом Гордеевым, ИКТ-907, ИКСС в Научно-образовательном центре "Технологии информационных образовательных систем"</value>
+  </data>
+  <data name="doneStatus" xml:space="preserve">
+    <value>Готово</value>
+  </data>
+  <data name="email.PlaceholderText" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="exportParametersTitle.Text" xml:space="preserve">
+    <value>Параметры экспорта</value>
+  </data>
+  <data name="facultySpinner.Header" xml:space="preserve">
+    <value>Факультет</value>
+  </data>
+  <data name="facultySpinner.PlaceholderText" xml:space="preserve">
+    <value>Нет доступного расписания</value>
+  </data>
+  <data name="fiveMinuteReminder.Content" xml:space="preserve">
+    <value>5 минут</value>
+  </data>
+  <data name="forDay.Content" xml:space="preserve">
+    <value>На день</value>
+  </data>
+  <data name="forMonth.Content" xml:space="preserve">
+    <value>На месяц</value>
+  </data>
+  <data name="forSemester.Content" xml:space="preserve">
+    <value>На семестр</value>
+  </data>
+  <data name="forWeek.Content" xml:space="preserve">
+    <value>На неделю</value>
+  </data>
+  <data name="groupSelectionError" xml:space="preserve">
+    <value>Ошибка: Не выбрана группа</value>
+  </data>
+  <data name="groupSpinner.Header" xml:space="preserve">
+    <value>Группа</value>
+  </data>
+  <data name="groupSpinner.PlaceholderText" xml:space="preserve">
+    <value>Нет доступного расписания</value>
+  </data>
+  <data name="inTimeReminder.Content" xml:space="preserve">
+    <value>Во время начала</value>
+  </data>
+  <data name="invalidAuthorizationError" xml:space="preserve">
+    <value>Ошибка авторизации</value>
+  </data>
+  <data name="invalidDateRangeError" xml:space="preserve">
+    <value>Ошибка: Неправильный диапазон дат</value>
+  </data>
+  <data name="leaveFeedback.Content" xml:space="preserve">
+    <value>Оставить отзыв</value>
+  </data>
+  <data name="linksTitle.Text" xml:space="preserve">
+    <value>Полезные ссылки</value>
+  </data>
+  <data name="loadingStatus" xml:space="preserve">
+    <value>Загрузка</value>
+  </data>
+  <data name="noReminder.Content" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="notsLink.Text" xml:space="preserve">
+    <value>НОЦ "ТИОС"</value>
+  </data>
+  <data name="password.PlaceholderText" xml:space="preserve">
+    <value>Пароль</value>
+  </data>
+  <data name="privacyPolicyLink.Text" xml:space="preserve">
+    <value>Политика конфиденциальности</value>
+  </data>
+  <data name="remember.Content" xml:space="preserve">
+    <value>Запомнить</value>
+  </data>
+  <data name="reminderSpinner.Header" xml:space="preserve">
+    <value>Напоминать за</value>
+  </data>
+  <data name="repeat" xml:space="preserve">
+    <value>Повторить</value>
+  </data>
+  <data name="reportErrorOption.Label" xml:space="preserve">
+    <value>Сообщить об ошибке</value>
+  </data>
+  <data name="repositoryLink.Text" xml:space="preserve">
+    <value>Репозиторий GitHub</value>
+  </data>
+  <data name="scheduleParametersTitle.Text" xml:space="preserve">
+    <value>Параметры расписания</value>
+  </data>
+  <data name="specialThanksPeople.Text" xml:space="preserve">
+    <value>Виталий Мошков, Анастасия Годунова</value>
+  </data>
+  <data name="specialThanksTitle.Text" xml:space="preserve">
+    <value>Особые благодарности</value>
+  </data>
+  <data name="sutLink.Text" xml:space="preserve">
+    <value>СПбГУТ</value>
+  </data>
+  <data name="tenMinuteReminder.Content" xml:space="preserve">
+    <value>10 минут</value>
+  </data>
+  <data name="titleNote.Text" xml:space="preserve">
+    <value>(i) Не касается преподавательского расписания</value>
+  </data>
+  <data name="today.Content" xml:space="preserve">
+    <value>Сегодня</value>
+  </data>
+  <data name="twitterContact.Text" xml:space="preserve">
+    <value>Твиттер</value>
+  </data>
+  <data name="vkontakteContact.Text" xml:space="preserve">
+    <value>ВКонтакте</value>
+  </data>
+  <data name="websiteContact.Text" xml:space="preserve">
+    <value>Веб-сайт</value>
+  </data>
+</root>

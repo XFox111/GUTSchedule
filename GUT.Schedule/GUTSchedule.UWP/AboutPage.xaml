@@ -19,7 +19,7 @@
 					<Button Width="48" Height="48" Margin="0" Background="Transparent" Click="BackRequested">
 						<SymbolIcon Symbol="Back"/>
 					</Button>
-					<TextBlock Text="About application" Style="{StaticResource TitleTextBlockStyle}" Margin="10,6" Grid.Column="1"/>
+					<TextBlock x:Uid="aboutTitle" Text="About application" Style="{StaticResource TitleTextBlockStyle}" Margin="10,6" Grid.Column="1"/>
 				</Grid>
 			</CommandBar.Content>
 		</CommandBar>
@@ -27,39 +27,39 @@
 
 	<ScrollViewer>
 		<StackPanel Margin="10">
-			<TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="GUT.Schedule"/>
+			<TextBlock x:Uid="appName" Style="{StaticResource TitleTextBlockStyle}" Text="GUT.Schedule"/>
 			<TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="v$(Build.BuildNumber) (ci-id #$(Build.BuildId))" Foreground="DarkGray" Margin="0,0,0,10" x:Name="version"/>
 
-			<TextBlock Text="appDescription"/>
+			<TextBlock x:Uid="appDescription" Text="appDescription"/>
 
-			<TextBlock Text="developedBy"/>
+			<TextBlock x:Uid="developedBy" Text="developedBy"/>
 
-			<TextBlock x:Name="contributorsTitle" Style="{StaticResource SubtitleTextBlockStyle}" Text="Contributors" Margin="0,10,0,0" Visibility="Collapsed"/>
+			<TextBlock x:Uid="contributorsTitle" x:Name="contributorsTitle" Style="{StaticResource SubtitleTextBlockStyle}" Text="Contributors" Margin="0,10,0,0" Visibility="Collapsed"/>
 			<TextBlock x:Name="contributors" Visibility="Collapsed"/>
 
-			<TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Special thanks" Margin="0,10,0,0"/>
-			<TextBlock Text="specialThanksPeople"/>
+			<TextBlock x:Uid="specialThanksTitle" Style="{StaticResource SubtitleTextBlockStyle}" Text="Special thanks" Margin="0,10,0,0"/>
+			<TextBlock x:Uid="specialThanksPeople"/>
 
-			<TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Contacts" Margin="0,10,0,0"/>
+			<TextBlock x:Uid="contactsTitle" Style="{StaticResource SubtitleTextBlockStyle}" Text="Contacts" Margin="0,10,0,0"/>
 			<TextBlock>
-				<Run>Website</Run>: <Hyperlink NavigateUri="https://xfox111.net">https://xfox111.net</Hyperlink><LineBreak/>
-				<Run>Twitter</Run>: <Hyperlink NavigateUri="https://twitter.com/xfox111">@xfox111</Hyperlink><LineBreak/>
-				<Run>VKontakte</Run>: <Hyperlink NavigateUri="https://vk.com/xfox.mike">@xfox.mike</Hyperlink><LineBreak/>
+				<Run x:Uid="websiteContact">Website</Run>: <Hyperlink NavigateUri="https://xfox111.net">https://xfox111.net</Hyperlink><LineBreak/>
+				<Run x:Uid="twitterContact">Twitter</Run>: <Hyperlink NavigateUri="https://twitter.com/xfox111">@xfox111</Hyperlink><LineBreak/>
+				<Run x:Uid="vkontakteContact">VKontakte</Run>: <Hyperlink NavigateUri="https://vk.com/xfox.mike">@xfox.mike</Hyperlink><LineBreak/>
 				<Run>LinkedIn</Run>: <Hyperlink NavigateUri="https://linkedin.com/in/xfox">@xfox</Hyperlink><LineBreak/>
 				<Run>GitHub</Run>: <Hyperlink NavigateUri="https://github.com/xfox111">@xfox111</Hyperlink>
 			</TextBlock>
 			
-			<TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Useful links" Margin="0,10,0,0"/>
+			<TextBlock x:Uid="linksTitle" Style="{StaticResource SubtitleTextBlockStyle}" Text="Useful links" Margin="0,10,0,0"/>
 			<TextBlock>
-				<Hyperlink NavigateUri="https://xfox111.net/Projects/GUTSchedule/PrivacyPolicy.txt">Privacy policy</Hyperlink><LineBreak/>
+				<Hyperlink NavigateUri="https://xfox111.net/Projects/GUTSchedule/PrivacyPolicy.txt"><Run x:Uid="privacyPolicyLink">Privacy policy</Run></Hyperlink><LineBreak/>
 				<Hyperlink NavigateUri="https://www.gnu.org/licenses/gpl-3.0">General Public License v3</Hyperlink><LineBreak/>
-				<Hyperlink NavigateUri="https://github.com/xfox111/gutschedule">GitHub repository</Hyperlink><LineBreak/>
-				<Hyperlink NavigateUri="http://tios.spbgut.ru/index.php">"TIES" RF</Hyperlink><LineBreak/>
-				<Hyperlink NavigateUri="https://sut.ru">SPbSUT</Hyperlink><LineBreak/>
+				<Hyperlink NavigateUri="https://github.com/xfox111/gutschedule"><Run x:Uid="repositoryLink">GitHub repository</Run></Hyperlink><LineBreak/>
+				<Hyperlink NavigateUri="http://tios.spbgut.ru/index.php"><Run x:Uid="notsLink">"TIES" RF</Run></Hyperlink><LineBreak/>
+				<Hyperlink NavigateUri="https://sut.ru"><Run x:Uid="sutLink">SPbSUT</Run></Hyperlink>
 			</TextBlock>
 
 			<TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="©2020 Michael &#x22;XFox&#x22; Gordeev" Margin="0,10,0,0"/>
-			<Button Content="Leave feedback" HorizontalAlignment="Left" Margin="5" Click="Feedback_Click"/>
+			<Button x:Uid="leaveFeedback" Content="Leave feedback" HorizontalAlignment="Left" Margin="5" Click="Feedback_Click"/>
 		</StackPanel>
 	</ScrollViewer>
 </Page>

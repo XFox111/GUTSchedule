@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="aboutOption.Label" xml:space="preserve">
+    <value>About application</value>
+  </data>
+  <data name="aboutTitle.Text" xml:space="preserve">
+    <value>About application</value>
+  </data>
+  <data name="addGroupToTitle.Content" xml:space="preserve">
+    <value>Add group number to event title</value>
+  </data>
+  <data name="addScheduleButton.Content" xml:space="preserve">
+    <value>Add schedule</value>
+  </data>
+  <data name="appDescription.Text" xml:space="preserve">
+    <value>Application for SPbSUT professors' and students' schedule export</value>
+  </data>
+  <data name="appDisplayDescription" xml:space="preserve">
+    <value>Application which exports SPbSUT timetable to calendar</value>
+  </data>
+  <data name="appDisplayName" xml:space="preserve">
+    <value>GUT.Schedule</value>
+  </data>
+  <data name="appName.Text" xml:space="preserve">
+    <value>GUT.Schedule</value>
+  </data>
+  <data name="authorizeCheckbox.Content" xml:space="preserve">
+    <value>Authorize via Personal cabinet</value>
+  </data>
+  <data name="calendarExportStatus" xml:space="preserve">
+    <value>Exporting to calendar</value>
+  </data>
+  <data name="cancelOption" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="clearAllOption" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="clearCalendarOption.Label" xml:space="preserve">
+    <value>Clear schedule</value>
+  </data>
+  <data name="clearScheduleDone" xml:space="preserve">
+    <value>Schedule is cleared</value>
+  </data>
+  <data name="clearScheduleMessage" xml:space="preserve">
+    <value>This action will purge exported schedule from all available calendars.It will affect only events created by the app.'All' - will purge all timetable events including the past ones'Upcoming' - will affect only upcoming timetable events</value>
+  </data>
+  <data name="clearScheduleTitle" xml:space="preserve">
+    <value>Clear schedule</value>
+  </data>
+  <data name="clearUpcomingOption" xml:space="preserve">
+    <value>Upcoming</value>
+  </data>
+  <data name="connectionFailMessage" xml:space="preserve">
+    <value>Unable to load schedule. Check your internet connection or try again later</value>
+  </data>
+  <data name="contactsTitle.Text" xml:space="preserve">
+    <value>Contacts</value>
+  </data>
+  <data name="contributorsTitle.Text" xml:space="preserve">
+    <value>Contributors</value>
+  </data>
+  <data name="copyrights.Text" xml:space="preserve">
+    <value>©2020 Michael Gordeev, INS, ICT-907</value>
+  </data>
+  <data name="courseSpinner.Header" xml:space="preserve">
+    <value>Course</value>
+  </data>
+  <data name="createCalendarMessage" xml:space="preserve">
+    <value>There's no calendars on your device we can write schedule to</value>
+  </data>
+  <data name="createCalendarTitle" xml:space="preserve">
+    <value>Create new calendar</value>
+  </data>
+  <data name="dateRangeFrom.Header" xml:space="preserve">
+    <value>Export from</value>
+  </data>
+  <data name="dateRangeTo.Header" xml:space="preserve">
+    <value>Export to</value>
+  </data>
+  <data name="destinationCalendar.Header" xml:space="preserve">
+    <value>Destination calendar</value>
+  </data>
+  <data name="developedBy.Text" xml:space="preserve">
+    <value>Developed by Michael Gordeev (ICT-907, INS) in the "Technologies of Informational and Educational Systems" Research Facility</value>
+  </data>
+  <data name="doneStatus" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="email.PlaceholderText" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="exportParametersTitle.Text" xml:space="preserve">
+    <value>Export parameters</value>
+  </data>
+  <data name="facultySpinner.Header" xml:space="preserve">
+    <value>Faculty</value>
+  </data>
+  <data name="facultySpinner.PlaceholderText" xml:space="preserve">
+    <value>No schedule is available</value>
+  </data>
+  <data name="fiveMinuteReminder.Content" xml:space="preserve">
+    <value>5 minutes</value>
+  </data>
+  <data name="forDay.Content" xml:space="preserve">
+    <value>For day</value>
+  </data>
+  <data name="forMonth.Content" xml:space="preserve">
+    <value>For month</value>
+  </data>
+  <data name="forSemester.Content" xml:space="preserve">
+    <value>For semester</value>
+  </data>
+  <data name="forWeek.Content" xml:space="preserve">
+    <value>For week</value>
+  </data>
+  <data name="groupSelectionError" xml:space="preserve">
+    <value>Error: no group was selected</value>
+  </data>
+  <data name="groupSpinner.Header" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="groupSpinner.PlaceholderText" xml:space="preserve">
+    <value>No schedule is available</value>
+  </data>
+  <data name="inTimeReminder.Content" xml:space="preserve">
+    <value>At the start of event</value>
+  </data>
+  <data name="invalidAuthorizationError" xml:space="preserve">
+    <value>Error: Invalid credential</value>
+  </data>
+  <data name="invalidDateRangeError" xml:space="preserve">
+    <value>Error: Invalid date range</value>
+  </data>
+  <data name="leaveFeedback.Content" xml:space="preserve">
+    <value>Leave feedback</value>
+  </data>
+  <data name="linksTitle.Text" xml:space="preserve">
+    <value>Useful links</value>
+  </data>
+  <data name="loadingStatus" xml:space="preserve">
+    <value>Loading</value>
+  </data>
+  <data name="noReminder.Content" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="notsLink.Text" xml:space="preserve">
+    <value>"TIES" RF</value>
+  </data>
+  <data name="password.PlaceholderText" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="privacyPolicyLink.Text" xml:space="preserve">
+    <value>Privacy policy</value>
+  </data>
+  <data name="remember.Content" xml:space="preserve">
+    <value>Remember</value>
+  </data>
+  <data name="reminderSpinner.Header" xml:space="preserve">
+    <value>Set reminder for:</value>
+  </data>
+  <data name="repeat" xml:space="preserve">
+    <value>Try again</value>
+  </data>
+  <data name="reportErrorOption.Label" xml:space="preserve">
+    <value>Report error</value>
+  </data>
+  <data name="repositoryLink.Text" xml:space="preserve">
+    <value>GitHub Repository</value>
+  </data>
+  <data name="scheduleParametersTitle.Text" xml:space="preserve">
+    <value>Schedule parameters</value>
+  </data>
+  <data name="specialThanksPeople.Text" xml:space="preserve">
+    <value>Vitaliy Moshkov, Anastasiya Godunova</value>
+  </data>
+  <data name="specialThanksTitle.Text" xml:space="preserve">
+    <value>Special thanks</value>
+  </data>
+  <data name="sutLink.Text" xml:space="preserve">
+    <value>SPbSUT</value>
+  </data>
+  <data name="tenMinuteReminder.Content" xml:space="preserve">
+    <value>10 minutes</value>
+  </data>
+  <data name="titleNote.Text" xml:space="preserve">
+    <value>(i) This doesn't affect professors' schedule</value>
+  </data>
+  <data name="today.Content" xml:space="preserve">
+    <value>Today</value>
+  </data>
+  <data name="twitterContact.Text" xml:space="preserve">
+    <value>Twitter</value>
+  </data>
+  <data name="vkontakteContact.Text" xml:space="preserve">
+    <value>VKontakte</value>
+  </data>
+  <data name="websiteContact.Text" xml:space="preserve">
+    <value>Website</value>
+  </data>
+</root>

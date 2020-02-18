@@ -19,6 +19,7 @@ namespace GUTSchedule.UWP
 		/// </summary>
 		public App()
 		{
+			Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "ru";
 			InitializeComponent();
 			Suspending += OnSuspending;
 			UnhandledException += OnError;
