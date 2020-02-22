@@ -47,7 +47,7 @@
   <string name="addGroupToTitleCheckbox">Добавить номер группы в заголовок</string>
   <string name="titleNote">(i) Не касается преподавательского расписания</string>
 
-  <string name="destinationCalendarSpinner">Конечый календарь</string>
+  <string name="destinationCalendarSpinner">Конечный календарь</string>
 
   <string name="addScheduleButton">Добавить расписание</string>
 
