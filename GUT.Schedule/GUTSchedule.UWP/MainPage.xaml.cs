@@ -31,7 +31,7 @@ namespace GUTSchedule.UWP
 			try
 			{
 				PackageVersion ver = Package.Current.Id.Version;
-				version.Text = $"v{ver.Major}{ver.Major}.{ver.Revision} (ci-id #{ver.Build})";
+				version.Text = $"v{ver.Major}{ver.Minor}.{ver.Revision} (ci-id #{ver.Build})";
 
 				authorize.IsChecked = (bool?)settings.Values["Authorize"] ?? true;
 				if (vault.RetrieveAll() is IReadOnlyList<PasswordCredential> credentials && credentials.Count > 0)
