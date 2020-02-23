@@ -8,14 +8,14 @@
   IgnorableNamespaces="uap mp">
 
 	<Identity
-    Name="3f032359-f68f-4a46-b88c-113efc87b82b"
-    Publisher="CN=Michael Gordeev"
-    Version="1.0.0.0" />
+    Name="53949MichaelXFoxGordeev.GUT.Schedule"
+    Publisher="CN=FD7A34DD-FE4D-4D7D-9D33-2DA9EBBE7725"
+    Version="2020.222.1.0" />
 
-	<mp:PhoneIdentity PhoneProductId="3f032359-f68f-4a46-b88c-113efc87b82b" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+	<mp:PhoneIdentity PhoneProductId="ea5f6ab0-1992-40f5-b89c-11fc3a97ae9f" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
 	<Properties>
-		<DisplayName>GUT.Schedule.UWP</DisplayName>
+		<DisplayName>GUT.Schedule</DisplayName>
 		<PublisherDisplayName>Michael &quot;XFox&quot; Gordeev</PublisherDisplayName>
 		<Logo>Assets\StoreLogo.png</Logo>
 	</Properties>
