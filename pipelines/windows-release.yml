@@ -1,0 +1,72 @@
+# Universal Windows Platform
+
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    exclude:
+      - /*
+    include:
+      - changelogs/windows.json
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
+  buildPlatform: 'x86|x64|ARM'
+
+steps:
+- task: NuGetToolInstaller@1
+  displayName: 'Install NuGet Tool'
+
+- task: NuGetCommand@2
+  displayName: 'Restore Solution'
+  inputs:
+    restoreSolution: '**/*.sln'
+
+- task: PowerShell@2
+  displayName: 'Update version number'
+  inputs:
+    targetType: 'inline'
+    script: |
+      (Get-Content Package.appxmanifest -encoding UTF8 | Out-String) -replace '(?<=\bVersion=")[^"]*', "$(Get-Date -Format "yyyy.Mdd").buildId.$($(Build.BuildNumber).Split('.')[1])" | set-content Package.appxmanifest -encoding UTF8
+    workingDirectory: '$(Build.SourcesDirectory)\GUT.Schedule\GUTSchedule.UWP'
+
+- task: DownloadSecureFile@1
+  name: cert
+  displayName: 'Downloading Store association data file'
+  inputs:
+    secureFile: 'PackageStoreAssociation.xml'
+
+- task: CopyFiles@2
+  displayName: 'Copy Store association data'
+  inputs:
+    Contents: '$(cert.secureFilePath)'
+    TargetFolder: '$(Build.Repository.LocalPath)/GUTSchedule/GUTSchedule.UWP'
+
+- task: VSBuild@1
+  inputs:
+    platform: 'x86'
+    solution: '**/**.UWP.csproj'
+    configuration: '$(buildConfiguration)'
+    msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)"
+                  /p:AppxPackageDir="$(outputDirectory)" 
+                  /p:AppxBundle=Always 
+                  /p:UapAppxPackageBuildMode=StoreUpload'
+
+- task: CopyFiles@2
+  displayName: 'Copy changelog to output'
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/changelogs'
+    Contents: 'windows.txt'
+    TargetFolder: '$(outputDirectory)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Drop Artifact'
+  inputs:
+    PathtoPublish: '$(outputDirectory)'
+    ArtifactName: 'WindowsBundle'
+    publishLocation: 'Container'

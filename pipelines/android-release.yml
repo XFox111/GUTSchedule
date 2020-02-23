@@ -1,10 +1,14 @@
 # Xamarin.Android
-# Build a Xamarin.Android project.
-# Add steps that test, sign, and distribute an app, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/xamarin
 
 trigger:
-- master
+  branches:
+    include:
+      - master
+  paths:
+    exclude:
+      - /*
+    include:
+      - changelogs/android.xml
 
 pool:
   vmImage: 'windows-latest'
@@ -22,13 +26,6 @@ steps:
   inputs:
     restoreSolution: '**/*.sln'
 
-- task: ResharperCli@2
-  displayName: 'RESharper CLI Code Analyzer'
-  inputs:
-    solutionOrProjectPath: 'GUT.Schedule/GUT.Schedule.sln'
-    failBuildLevelSelector: 'Error'
-    failBuildOnCodeIssues: false
-
 - task: PowerShell@2
   displayName: 'Update version number'
   inputs:
@@ -36,12 +33,12 @@ steps:
     script: |
       (Get-Content AndroidManifest.xml -encoding UTF8 | Out-String) -replace '(?<=\bandroid:versionCode=")[^"]*', $(Build.BuildId) | set-content AndroidManifest.xml -encoding UTF8
       (Get-Content AndroidManifest.xml -encoding UTF8 | Out-String) -replace '(?<=\bandroid:versionName=")[^"]*', $(Build.BuildNumber) | set-content AndroidManifest.xml -encoding UTF8
-    workingDirectory: '$(Build.SourcesDirectory)\GUT.Schedule\GUT.Schedule\Properties'
+    workingDirectory: '$(Build.SourcesDirectory)\GUT.Schedule\GUTSchedule.Droid\Properties'
 
 - task: XamarinAndroid@1
   displayName: 'Build Solution (AppBundle)'
   inputs:
-    projectFile: '**/**.csproj'
+    projectFile: '**/**.Droid.csproj'
     outputDirectory: '$(outputDirectory)'
     configuration: '$(buildConfiguration)'
     msbuildVersionOption: 'latest'
@@ -52,7 +49,7 @@ steps:
 - task: XamarinAndroid@1
   displayName: 'Build Solution (APK)'
   inputs:
-    projectFile: '**/**.csproj'
+    projectFile: '**/**.Droid.csproj'
     outputDirectory: '$(outputDirectory)'
     configuration: 'Release (APK)'
     msbuildVersionOption: 'latest'
@@ -70,8 +67,8 @@ steps:
 - task: CopyFiles@2
   displayName: 'Copy changelog to output'
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)'
-    Contents: 'changelog.md'
+    SourceFolder: '$(Build.SourcesDirectory)/changelogs'
+    Contents: 'android.xml'
     TargetFolder: '$(outputDirectory)'
 
 - task: PowerShell@2
@@ -85,5 +82,5 @@ steps:
   displayName: 'Drop Artifact'
   inputs:
     PathtoPublish: '$(outputDirectory)'
-    ArtifactName: 'bundle'
+    ArtifactName: 'AndroidBundle'
     publishLocation: 'Container'
