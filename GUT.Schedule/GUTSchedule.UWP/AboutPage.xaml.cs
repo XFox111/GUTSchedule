@@ -28,7 +28,7 @@ namespace GUTSchedule.UWP
 		private async void Page_Loaded(object sender, RoutedEventArgs e)
 		{
 			PackageVersion ver = Package.Current.Id.Version;
-			version.Text = $"v{ver.Major}{ver.Minor}.{ver.Revision} (ci-id #{ver.Build})";
+			version.Text = $"v{ver.Major}{(ver.Minor < 1000 ? "0" + ver.Minor : ver.Minor.ToString())}.{ver.Revision} (ci-id #{ver.Build})";
 
 			List<string> contributorsList = new List<string>();
 			try
