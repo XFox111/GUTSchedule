@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Popups;
@@ -19,7 +20,11 @@ namespace GUTSchedule.UWP
 		/// </summary>
 		public App()
 		{
-			Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "ru";
+			if ((new string[] { "ua", "ru", "by", "kz", "kg", "md", "lv", "ee" }).Contains(Windows.System.UserProfile.GlobalizationPreferences.Languages[0].Split('-')[0]))
+				Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "ru";
+			else
+				Windows.Globalization.ApplicationLanguages.PrimaryLanguageOverride = "en";
+
 			InitializeComponent();
 			Suspending += OnSuspending;
 			UnhandledException += OnError;
