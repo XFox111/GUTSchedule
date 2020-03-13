@@ -162,8 +162,17 @@
   <data name="clearScheduleMessage" xml:space="preserve">
     <value>This action will purge exported schedule from all available calendars.It will affect only events created by the app.'All' - will purge all timetable events including the past ones'Upcoming' - will affect only upcoming timetable events</value>
   </data>
-  <data name="clearScheduleTitle" xml:space="preserve">
+  <data name="clearScheduleTitle.PrimaryButtonText" xml:space="preserve">
     <value>Clear schedule</value>
+  </data>
+  <data name="clearScheduleTitle.SecondaryButtonText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="clearScheduleTitle.Title" xml:space="preserve">
+    <value>Clear schedule</value>
+  </data>
+  <data name="clearUpcoming.Content" xml:space="preserve">
+    <value>Remove only upcoming events</value>
   </data>
   <data name="clearUpcomingOption" xml:space="preserve">
     <value>Upcoming</value>
@@ -257,6 +266,9 @@
   </data>
   <data name="loadingStatus" xml:space="preserve">
     <value>Loading</value>
+  </data>
+  <data name="mySchedule" xml:space="preserve">
+    <value>My schedule</value>
   </data>
   <data name="noReminder.Content" xml:space="preserve">
     <value>None</value>

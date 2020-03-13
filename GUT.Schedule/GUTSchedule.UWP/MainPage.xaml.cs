@@ -58,23 +58,6 @@ namespace GUTSchedule.UWP
 
 				reminder.SelectedIndex = (int?)settings.Values["Reminder"] ?? 2;
 				addGroupToTitle.IsChecked = (bool?)settings.Values["AddGroupToTitle"] ?? false;
-
-				calendar.ItemsSource = (await Calendar.GetCalendars()).Select(i => new ComboBoxItem
-				{
-					Content = i.DisplayName,
-					Tag = i.LocalId,
-					IsSelected = (string)settings.Values["Calendar"] == i.LocalId
-				}).ToList();
-				calendar.SelectedIndex = (calendar.ItemsSource as List<ComboBoxItem>).FindIndex(i => i.IsSelected);
-				if((calendar.ItemsSource as List<ComboBoxItem>).Count < 1)
-				{
-					MessageDialog dialog = new MessageDialog(resources.GetString("createCalendarMessage"), resources.GetString("createCalendarTitle"));
-					dialog.Commands.Add(new UICommand("OK", (command) => CoreApplication.Exit()));
-
-					await dialog.ShowAsync();
-				}
-				if (calendar.SelectedIndex < 0)
-					calendar.SelectedIndex = 0;
 			}
 			catch (HttpRequestException e)
 			{
@@ -95,15 +78,13 @@ namespace GUTSchedule.UWP
 			switch (((FrameworkElement)sender).Tag)
 			{
 				case "clear":
-					MessageDialog dialog = new MessageDialog(resources.GetString("clearScheduleMessage"), resources.GetString("clearScheduleTitle"));
-					dialog.Commands.Add(new UICommand(resources.GetString("clearUpcomingOption"), (command) => Clear()));
-					dialog.Commands.Add(new UICommand(resources.GetString("clearAllOption"), (command) => Clear(true)));
-					dialog.Commands.Add(new UICommand(resources.GetString("cancelOption")));
-
-					dialog.CancelCommandIndex = 2;
-					dialog.DefaultCommandIndex = 0;
-
-					await dialog.ShowAsync();
+					ClearCalendarControl clearControl = new ClearCalendarControl();
+					ContentDialogResult result = await clearControl.ShowAsync();
+					if(result == ContentDialogResult.Primary)
+					{
+						await Calendar.Clear(clearControl.SelectedCalendars, clearControl.ClearUpcomingOnly);
+						await new MessageDialog(resources.GetString("clearScheduleDone"), resources.GetString("clearScheduleTitle/Title")).ShowAsync();
+					}
 					break;
 				case "about":
 					Frame.Navigate(typeof(AboutPage));
@@ -220,7 +201,7 @@ namespace GUTSchedule.UWP
 				List<Occupation> schedule = await Parser.GetSchedule(exportParameters);
 
 				status.Text = resources.GetString("calendarExportStatus");
-				await Calendar.Export(schedule, addGroupToTitle.IsChecked.Value, (reminder.SelectedIndex - 1) * 5, ((ComboBoxItem)calendar.SelectedItem).Tag as string);
+				await Calendar.Export(schedule, addGroupToTitle.IsChecked.Value, (reminder.SelectedIndex - 1) * 5);
 
 				status.Text = resources.GetString("doneStatus");
 				await Task.Delay(1000);
@@ -242,26 +223,6 @@ namespace GUTSchedule.UWP
 			TopAppBar.Visibility = Visibility.Visible;
 		}
 
-		private async void Clear(bool keepPrevious = true)
-		{
-			try
-			{
-				await Calendar.Clear(keepPrevious);
-
-				MessageDialog dialog = new MessageDialog(resources.GetString("clearScheduleDone"), resources.GetString("clearScheduleTitle"));
-				dialog.Commands.Add(new UICommand("OK", (command) => loading.Visibility = Visibility.Collapsed));
-
-				await dialog.ShowAsync();
-			}
-			catch (Exception e)
-			{
-				MessageDialog dialog = new MessageDialog(e.Message, e.GetType().ToString());
-				dialog.Commands.Add(new UICommand("OK", (command) => loading.Visibility = Visibility.Collapsed));
-
-				await dialog.ShowAsync();
-			}
-		}
-
 		private void Faculty_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			UpdateGroupsList();
@@ -276,9 +237,6 @@ namespace GUTSchedule.UWP
 
 		private void Reminder_SelectionChanged(object sender, SelectionChangedEventArgs e) =>
 			settings.Values["Reminder"] = reminder.SelectedIndex;
-
-		private void Calendar_SelectionChanged(object sender, SelectionChangedEventArgs e) =>
-			settings.Values["Calendar"] = (calendar.SelectedItem as ComboBoxItem).Tag;
 
 		private void Group_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Appointments;
+using Windows.ApplicationModel.Resources;
 
 namespace GUTSchedule.UWP
 {
@@ -11,21 +12,24 @@ namespace GUTSchedule.UWP
 	{
 		public static async Task<IReadOnlyList<AppointmentCalendar>> GetCalendars()
 		{
-			AppointmentStore calendarStore = await AppointmentManager.RequestStoreAsync(AppointmentStoreAccessType.AllCalendarsReadWrite);
+			AppointmentStore calendarStore = await AppointmentManager.RequestStoreAsync(AppointmentStoreAccessType.AppCalendarsReadWrite);
 			return await calendarStore.FindAppointmentCalendarsAsync();
 		}
 
-		public static async Task Export(List<Occupation> schedule, bool addGroupToTitle, int reminder, string calendar)
+		public static async Task Export(List<Occupation> schedule, bool addGroupToTitle, int reminder)
 		{
 			AppointmentStore calendarStore = await AppointmentManager.RequestStoreAsync(AppointmentStoreAccessType.AllCalendarsReadWrite);
-			AppointmentCalendar cal = await calendarStore.GetAppointmentCalendarAsync(calendar);
+			string calendarName = schedule.Any(i => string.IsNullOrWhiteSpace(i.Group)) ? ResourceLoader.GetForCurrentView().GetString("mySchedule") : schedule.FirstOrDefault().Group;
+			AppointmentCalendar cal = 
+				(await calendarStore.FindAppointmentCalendarsAsync()).FirstOrDefault(i => i.DisplayName == calendarName) ??
+				await calendarStore.CreateAppointmentCalendarAsync(calendarName);
 
 			foreach (Occupation item in schedule)
 			{
 				Appointment appointment = new Appointment
 				{
 					BusyStatus = AppointmentBusyStatus.Busy,
-					Details = item.Opponent + "\xFEFF",
+					Details = item.Opponent,
 					DetailsKind = AppointmentDetailsKind.PlainText,
 					Location = item.Cabinet,
 					Reminder = reminder < 0 ? (TimeSpan?)null : TimeSpan.FromMinutes(reminder),
@@ -42,18 +46,14 @@ namespace GUTSchedule.UWP
 			}
 		}
 
-		public static async Task Clear(bool keepPrevious = true)
+		public static async Task Clear(IEnumerable<object> targets, bool keepPrevious)
 		{
-			AppointmentStore appointmentStore = await AppointmentManager.RequestStoreAsync(AppointmentStoreAccessType.AppCalendarsReadWrite);
-
-			List<Appointment> appointments = (await appointmentStore.FindAppointmentsAsync(keepPrevious ? DateTime.Today : DateTime.Today.Subtract(TimeSpan.FromDays(3000)), TimeSpan.FromDays(10000))).ToList();
-
-			foreach(Appointment i in appointments)
-				if (i.Details.Contains('\xFEFF'))
-				{
-					AppointmentCalendar cal = await appointmentStore.GetAppointmentCalendarAsync(i.CalendarId);
-					await cal.DeleteAppointmentAsync(i.LocalId);
-				}
+			foreach (AppointmentCalendar calendar in targets)
+				if(keepPrevious)
+					foreach (Appointment appointment in await calendar.FindAppointmentsAsync(DateTime.Now, TimeSpan.FromDays(365)))
+						await calendar.DeleteAppointmentAsync(appointment.LocalId);
+				else
+					await calendar.DeleteAsync();
 		}
 	}
 }

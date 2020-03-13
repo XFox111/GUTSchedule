@@ -131,6 +131,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Calendar.cs" />
+    <Compile Include="ClearCalendarControl.xaml.cs">
+      <DependentUpon>ClearCalendarControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -197,6 +200,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="AboutPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ClearCalendarControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

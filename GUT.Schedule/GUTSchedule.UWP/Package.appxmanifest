@@ -47,6 +47,5 @@
 	<Capabilities>
 		<Capability Name="internetClient" />
 		<uap:Capability Name="appointments"/>
-		<rescap:Capability Name="appointmentSystem"/>
 	</Capabilities>
 </Package>

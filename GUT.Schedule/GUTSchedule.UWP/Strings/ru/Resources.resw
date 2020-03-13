@@ -162,8 +162,17 @@
   <data name="clearScheduleMessage" xml:space="preserve">
     <value>Это действие удалит экспортированное расписание из всех доступных календарей.Данное действие затронет только расписание, экспортированное этим приложением'Все' - удалит все события расписания, включая прошедшие'Только новые' - удалит будущие события расписания</value>
   </data>
-  <data name="clearScheduleTitle" xml:space="preserve">
+  <data name="clearScheduleTitle.PrimaryButtonText" xml:space="preserve">
+    <value>Очистить расписание</value>
+  </data>
+  <data name="clearScheduleTitle.SecondaryButtonText" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="clearScheduleTitle.Title" xml:space="preserve">
     <value>Очистка расписания</value>
+  </data>
+  <data name="clearUpcoming.Content" xml:space="preserve">
+    <value>Удалить только будущие события</value>
   </data>
   <data name="clearUpcomingOption" xml:space="preserve">
     <value>Только новые</value>
@@ -257,6 +266,9 @@
   </data>
   <data name="loadingStatus" xml:space="preserve">
     <value>Загрузка</value>
+  </data>
+  <data name="mySchedule" xml:space="preserve">
+    <value>Мое расписание</value>
   </data>
   <data name="noReminder.Content" xml:space="preserve">
     <value>Нет</value>

@@ -37,7 +37,7 @@
   <string name="forSemesterButton">For semester</string>
 
   <string name="reminderSpinner">Set reminders for</string>
-  <string name="reminderNote">(i) Attention, for cloud-based Google calendars Google automatically sets reminders for 30 minutes if there\'s no reminder set by user</string>
+  <string name="reminderNote">(i) Attention, if you choose \"None\" for cloud-based Google calendars Google sets default reminder for events automatically sets reminders for 30 minutes if there\'s no reminder set by user</string>
   <string name="noReminderOption">None</string>
   <string name="inTimeReminderOption">At the start of event</string>
   <string name="fiveMinuteReminderOption">5 minutes</string>
