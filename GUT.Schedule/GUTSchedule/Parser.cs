@@ -63,7 +63,7 @@ namespace GUTSchedule
 			}
 			else if (exportParameters is DefaultExportParameters args)
 			{
-				int offsetDay = int.Parse(await new HttpClient().GetStringAsync("https://xfox111.net/schedule_offset.txt"));
+				int offsetDay = int.Parse(await new HttpClient().GetStringAsync("https://xfox111.net/API/GUTSchedule/SemesterOffsetDay"));
 				IHtmlDocument[] rawSchedule = await GetRawSchedule(args.FacultyId, args.Course, args.GroupId);
 				if(rawSchedule[0] != null)
 					schedule.AddRange(ParseRegularSchedule(offsetDay, rawSchedule[0]));
@@ -73,21 +73,22 @@ namespace GUTSchedule
 			else
 				throw new ArgumentException("Invaild argument instance", nameof(exportParameters));
 
+			schedule = schedule.FindAll(i => i.StartTime.Date >= exportParameters.StartDate.Date && i.EndTime.Date <= exportParameters.EndDate.Date);
+
+			if (schedule.Count < 1)
+				throw new NullReferenceException("Не удалось найти расписание соответствующее критериям. Ничего не экспортировано");
+
 			// Merge duplicating entries
-			schedule.OrderByDescending(i => i.StartTime);
+			schedule.OrderBy(i => i.StartTime);
 			for (int k = 1; k < schedule.Count; k++)
 				if (schedule[k - 1].StartTime == schedule[k].StartTime &&
 					schedule[k - 1].Name == schedule[k].Name &&
 					schedule[k - 1].Type == schedule[k].Type)
 				{
-					schedule[k - 1].Opponent += "\n" + schedule[k].Opponent;
+					schedule[k - 1].Opponent += $" ({schedule[k-1].Cabinet}) \n {schedule[k].Opponent} ({schedule[k].Cabinet})";
 					schedule[k - 1].Cabinet += "; " + schedule[k].Cabinet;
 					schedule.RemoveAt(k--);
 				}
-
-			schedule = schedule.FindAll(i => i.StartTime.Date >= exportParameters.StartDate.Date && i.EndTime.Date <= exportParameters.EndDate.Date);
-			if (schedule.Count < 1)
-				throw new NullReferenceException("Не удалось найти расписание соответствующее критериям. Ничего не экспортировано");
 
 			return schedule;
 		}
