@@ -362,18 +362,14 @@ namespace GUTSchedule
 					item.StartTime = new DateTime(
 						year: date.Year,
 						month: date.Month,
-						day: int.Parse(i.ChildNodes[0].TextContent),
-						hour: int.Parse(rawTime.Split('-')[0].Split('.')[0]),
-						minute: int.Parse(rawTime.Split('-')[0].Split('.')[1]),
-						second: 0);
+						day: int.Parse(i.ChildNodes[0].TextContent));
+					item.StartTime = item.StartTime.Add(TimeSpan.Parse(rawTime.Replace('.', ':').Split('-')[0]));
 
 					item.EndTime = new DateTime(
 						year: date.Year,
 						month: date.Month,
-						day: int.Parse(i.ChildNodes[0].TextContent),
-						hour: int.Parse(rawTime.Split('-')[1].Split('.')[0]),
-						minute: int.Parse(rawTime.Split('-')[1].Split('.')[1]),
-						second: 0);
+						day: int.Parse(i.ChildNodes[0].TextContent));
+					item.EndTime = item.EndTime.Add(TimeSpan.Parse(rawTime.Replace('.', ':').Split('-')[1]));
 
 					switch(rawTime.Split('-')[1])
 					{
@@ -421,7 +417,10 @@ namespace GUTSchedule
 							break;
 
 						default:
-							item.Order = "0";
+							if (item.Name.Contains("Факультатив"))
+								item.Order = "Ф";
+							else
+								item.Order = "0";
 							break;
 					}
 
