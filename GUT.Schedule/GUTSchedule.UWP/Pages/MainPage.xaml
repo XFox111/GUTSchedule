@@ -12,7 +12,7 @@
 	</Page.Background>
 
 	<Page.TopAppBar>
-		<CommandBar ClosedDisplayMode="Compact" Background="{StaticResource SystemAccentColor}" RequestedTheme="Dark">
+		<CommandBar ClosedDisplayMode="Compact" Background="{StaticResource SystemAccentColorBrush}" RequestedTheme="Dark">
 			<CommandBar.Content>
 				<TextBlock x:Uid="appName" Text="GUT.Schedule" Style="{StaticResource TitleTextBlockStyle}" Margin="10,6"/>
 			</CommandBar.Content>
@@ -115,7 +115,7 @@
 					<TextBlock x:Uid="titleNote" Style="{StaticResource CaptionTextBlockStyle}" Text="note"/>
 
 					<TextBlock Foreground="Red" Visibility="Collapsed" Text="Error" x:Name="errorPlaceholder"/>
-					<Button x:Uid="addScheduleButton" Content="Add schedule" Background="{StaticResource SystemAccentColor}" Foreground="White" FontWeight="Bold" Margin="0,10" Click="Export"/>
+					<Button x:Uid="addScheduleButton" Content="Add schedule" Background="{StaticResource SystemAccentColorBrush}" Foreground="White" FontWeight="Bold" Margin="0,10" Click="Export"/>
 
 					<TextBlock x:Uid="copyrights" Style="{StaticResource CaptionTextBlockStyle}" Text="©2020 Michael Gordeev, INS, ICT-907"/>
 					<TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="v$(Build.BuildNumber) (ci-id #$(Build.BuildId))" x:Name="version"/>
@@ -123,7 +123,7 @@
 			</Grid>
 		</ScrollViewer>
 
-		<Grid Background="{StaticResource SystemAccentColor}" x:Name="loading" Visibility="Collapsed">
+		<Grid Background="{StaticResource SystemAccentColorBrush}" x:Name="loading" Visibility="Collapsed">
 			<StackPanel VerticalAlignment="Center">
 				<ProgressRing Width="100" Height="100" Foreground="White" IsActive="True" HorizontalAlignment="Center"/>
 				<TextBlock Style="{StaticResource TitleTextBlockStyle}" x:Name="status" Text="Processing..." HorizontalAlignment="Center" Foreground="White" Margin="0,20"/>

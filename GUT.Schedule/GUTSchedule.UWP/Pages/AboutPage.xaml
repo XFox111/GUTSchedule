@@ -9,7 +9,7 @@
 	Loaded="Page_Loaded">
 
 	<Page.TopAppBar>
-		<CommandBar ClosedDisplayMode="Compact" Background="{StaticResource SystemAccentColor}" RequestedTheme="Dark">
+		<CommandBar ClosedDisplayMode="Compact" Background="{StaticResource SystemAccentColorBrush}" RequestedTheme="Dark">
 			<CommandBar.Content>
 				<Grid>
 					<Grid.ColumnDefinitions>

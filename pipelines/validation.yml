@@ -40,7 +40,7 @@ steps:
 - task: VSBuild@1
   displayName: 'Build UWP'
   inputs:
-    platform: '$(buildPlatform)'
+    platform: 'x64'
     solution: '**/**.UWP.csproj'
     configuration: '$(buildConfiguration)'
     msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(outputDirectory)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'

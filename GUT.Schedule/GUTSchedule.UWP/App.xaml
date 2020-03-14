@@ -20,5 +20,6 @@
 			<Setter Property="Margin" Value="2"/>
 		</Style>
 		<Color x:Key="SystemAccentColor">#ff8000</Color>
+		<SolidColorBrush x:Key="SystemAccentColorBrush" Color="#ff8000" />
 	</Application.Resources>
 </Application>
