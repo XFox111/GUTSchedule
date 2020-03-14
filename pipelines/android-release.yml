@@ -78,27 +78,6 @@ steps:
     script: 'get-childitem *-Signed.* | foreach { rename-item $_ $_.Name.Replace("-Signed", "") }'
     workingDirectory: '$(outputDirectory)'
 
-- task: DownloadSecureFile@1
-  displayName: 'Download Keystore file'
-  name: cert
-  inputs:
-    secureFile: 'GutSchedule.keystore'
-
-- task: CopyFiles@2
-  displayName: 'Copy Keystore file to work folder'
-  inputs:
-    Contents: '$(cert.secureFilePath)'
-    TargetFolder: '$(Build.SourcesDirectory)'
-
-- task: AndroidSigning@3
-  displayName: 'Sign Android packages'
-  inputs:
-    apkFiles: '$(outputDirectory)/*.(apk|aab)'
-    apksignerKeystoreFile: '$(Build.SourcesDirectory)/GutSchedule.keystore'
-    apksignerKeystorePassword: '$(keystorePassword)'
-    apksignerKeystoreAlias: 'GUTSchedule'
-    apksignerKeyPassword: '$(keystorePassword)'
-
 - task: PublishBuildArtifacts@1
   displayName: 'Drop Artifact'
   inputs:
