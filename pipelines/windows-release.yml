@@ -72,9 +72,9 @@ steps:
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)/changelogs'
     Contents: |
-      'windows.json'
-      'changelog.md'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      android.xml
+      github.md
+    TargetFolder: '$(outputDirectory)'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Drop Artifact'

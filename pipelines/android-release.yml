@@ -69,8 +69,8 @@ steps:
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)/changelogs'
     Contents: |
-      'android.xml'
-      'changelog.md'
+      android.xml
+      github.md
     TargetFolder: '$(outputDirectory)'
 
 - task: PowerShell@2
