@@ -72,7 +72,7 @@ steps:
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)/changelogs'
     Contents: |
-      android.xml
+      windows.json
       github.md
     TargetFolder: '$(outputDirectory)'
 
