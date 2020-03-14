@@ -1,0 +1,86 @@
+# Android pipeline config
+
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    exclude:
+      - /*
+    include:
+      - changelogs/android.xml
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
+
+steps:
+- task: NuGetToolInstaller@1
+  displayName: 'Install NuGet Tool'
+
+- task: NuGetCommand@2
+  displayName: 'Restore Solution'
+  inputs:
+    restoreSolution: '**/*.sln'
+
+- task: PowerShell@2
+  displayName: 'Update version number'
+  inputs:
+    targetType: 'inline'
+    script: |
+      (Get-Content AndroidManifest.xml -encoding UTF8 | Out-String) -replace '(?<=\bandroid:versionCode=")[^"]*', $(Build.BuildId) | set-content AndroidManifest.xml -encoding UTF8
+      (Get-Content AndroidManifest.xml -encoding UTF8 | Out-String) -replace '(?<=\bandroid:versionName=")[^"]*', $(Build.BuildNumber) | set-content AndroidManifest.xml -encoding UTF8
+    workingDirectory: '$(Build.SourcesDirectory)\GUT.Schedule\GUTSchedule.Droid\Properties'
+
+- task: XamarinAndroid@1
+  displayName: 'Build Solution (AppBundle)'
+  inputs:
+    projectFile: '**/**.Droid.csproj'
+    outputDirectory: '$(outputDirectory)'
+    configuration: '$(buildConfiguration)'
+    msbuildVersionOption: 'latest'
+    msbuildArchitectureOption: 'x64'
+    msbuildArguments: ' /t:PackageForAndroid -t:SignAndroidPackage -p:AndroidPackageFormat=aab /p:Configuration=Release'
+    jdkOption: 'JDKVersion'
+
+- task: XamarinAndroid@1
+  displayName: 'Build Solution (APK)'
+  inputs:
+    projectFile: '**/**.Droid.csproj'
+    outputDirectory: '$(outputDirectory)'
+    configuration: 'Release (APK)'
+    msbuildVersionOption: 'latest'
+    msbuildArchitectureOption: 'x64'
+    jdkOption: 'JDKVersion'
+
+- task: DeleteFiles@1
+  displayName: 'Delete debug files'
+  inputs:
+    SourceFolder: '$(outputDirectory)'
+    Contents: |
+      **/**.pdb
+      **/**.dll
+
+- task: CopyFiles@2
+  displayName: 'Copy changelog to output'
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/changelogs'
+    Contents: 'android.xml'
+    TargetFolder: '$(outputDirectory)'
+
+- task: PowerShell@2
+  displayName: 'Update package name'
+  inputs:
+    targetType: 'inline'
+    script: 'get-childitem *-Signed.* | foreach { rename-item $_ $_.Name.Replace("-Signed", "") }'
+    workingDirectory: '$(outputDirectory)'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Drop Artifact'
+  inputs:
+    PathtoPublish: '$(outputDirectory)'
+    ArtifactName: 'AndroidBundle'
+    publishLocation: 'Container'

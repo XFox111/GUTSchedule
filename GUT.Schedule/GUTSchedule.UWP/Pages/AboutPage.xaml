@@ -1,0 +1,65 @@
+﻿<Page
+    x:Class="GUTSchedule.UWP.Pages.AboutPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+	Loaded="Page_Loaded">
+
+	<Page.TopAppBar>
+		<CommandBar ClosedDisplayMode="Compact" Background="{StaticResource SystemAccentColor}" RequestedTheme="Dark">
+			<CommandBar.Content>
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="auto"/>
+						<ColumnDefinition/>
+					</Grid.ColumnDefinitions>
+					<Button Width="48" Height="48" Margin="0" Background="Transparent" Click="BackRequested">
+						<SymbolIcon Symbol="Back"/>
+					</Button>
+					<TextBlock x:Uid="aboutTitle" Text="About application" Style="{StaticResource TitleTextBlockStyle}" Margin="10,6" Grid.Column="1"/>
+				</Grid>
+			</CommandBar.Content>
+		</CommandBar>
+	</Page.TopAppBar>
+
+	<ScrollViewer>
+		<StackPanel Margin="10">
+			<TextBlock x:Uid="appName" Style="{StaticResource TitleTextBlockStyle}" Text="GUT.Schedule"/>
+			<TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="v$(Build.BuildNumber) (ci-id #$(Build.BuildId))" Foreground="DarkGray" Margin="0,0,0,10" x:Name="version"/>
+
+			<TextBlock x:Uid="appDescription" Text="appDescription"/>
+
+			<TextBlock x:Uid="developedBy" Text="developedBy"/>
+
+			<TextBlock x:Uid="contributorsTitle" x:Name="contributorsTitle" Style="{StaticResource SubtitleTextBlockStyle}" Text="Contributors" Margin="0,10,0,0" Visibility="Collapsed"/>
+			<TextBlock x:Name="contributors" Visibility="Collapsed"/>
+
+			<TextBlock x:Uid="specialThanksTitle" Style="{StaticResource SubtitleTextBlockStyle}" Text="Special thanks" Margin="0,10,0,0"/>
+			<TextBlock x:Uid="specialThanksPeople"/>
+
+			<TextBlock x:Uid="contactsTitle" Style="{StaticResource SubtitleTextBlockStyle}" Text="Contacts" Margin="0,10,0,0"/>
+			<TextBlock>
+				<Run x:Uid="websiteContact">Website</Run>: <Hyperlink NavigateUri="https://xfox111.net">https://xfox111.net</Hyperlink><LineBreak/>
+				<Run x:Uid="twitterContact">Twitter</Run>: <Hyperlink NavigateUri="https://twitter.com/xfox111">@xfox111</Hyperlink><LineBreak/>
+				<Run x:Uid="vkontakteContact">VKontakte</Run>: <Hyperlink NavigateUri="https://vk.com/xfox.mike">@xfox.mike</Hyperlink><LineBreak/>
+				<Run>LinkedIn</Run>: <Hyperlink NavigateUri="https://linkedin.com/in/xfox">@xfox</Hyperlink><LineBreak/>
+				<Run>GitHub</Run>: <Hyperlink NavigateUri="https://github.com/xfox111">@xfox111</Hyperlink>
+			</TextBlock>
+			
+			<TextBlock x:Uid="linksTitle" Style="{StaticResource SubtitleTextBlockStyle}" Text="Useful links" Margin="0,10,0,0"/>
+			<TextBlock>
+				<Hyperlink NavigateUri="https://xfox111.net/Projects/GUTSchedule/PrivacyPolicy.txt"><Run x:Uid="privacyPolicyLink">Privacy policy</Run></Hyperlink><LineBreak/>
+				<Hyperlink NavigateUri="https://www.gnu.org/licenses/gpl-3.0">General Public License v3</Hyperlink><LineBreak/>
+				<Hyperlink NavigateUri="https://github.com/xfox111/gutschedule"><Run x:Uid="repositoryLink">GitHub repository</Run></Hyperlink><LineBreak/>
+				<Hyperlink NavigateUri="http://tios.spbgut.ru/index.php"><Run x:Uid="notsLink">"TIES" RF</Run></Hyperlink><LineBreak/>
+				<Hyperlink NavigateUri="https://sut.ru"><Run x:Uid="sutLink">SPbSUT</Run></Hyperlink>
+			</TextBlock>
+
+			<TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="©2020 Michael &#x22;XFox&#x22; Gordeev" Margin="0,10,0,0"/>
+			<Button x:Uid="leaveFeedback" Content="Leave feedback" HorizontalAlignment="Left" Margin="5" Click="Feedback_Click"/>
+		</StackPanel>
+	</ScrollViewer>
+</Page>

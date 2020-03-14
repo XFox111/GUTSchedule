@@ -1,0 +1,46 @@
+# Pull request validation pipeline config
+
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  outputDirectory: '$(build.binariesDirectory)/$(buildConfiguration)'
+  buildPlatform: 'x86|x64|ARM'
+
+steps:
+- task: NuGetToolInstaller@1
+  displayName: 'Install NuGet Tool'
+
+- task: NuGetCommand@2
+  displayName: 'Restore Solution'
+  inputs:
+    restoreSolution: '**/*.sln'
+
+- task: ResharperCli@2
+  displayName: 'RESharper CLI Code Analyzer'
+  inputs:
+    solutionOrProjectPath: 'GUT.Schedule/GUT.Schedule.sln'
+    failBuildLevelSelector: 'Error'
+    failBuildOnCodeIssues: false
+
+- task: XamarinAndroid@1
+  displayName: 'Build Android'
+  inputs:
+    projectFile: '**/**.Droid.csproj'
+    outputDirectory: '$(outputDirectory)'
+    configuration: '$(buildConfiguration)'
+    msbuildVersionOption: 'latest'
+    msbuildArchitectureOption: '$(buildPlatform)'
+    jdkOption: 'JDKVersion'
+
+- task: VSBuild@1
+  displayName: 'Build UWP'
+  inputs:
+    platform: '$(buildPlatform)'
+    solution: '**/**.UWP.csproj'
+    configuration: '$(buildConfiguration)'
+    msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(outputDirectory)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'

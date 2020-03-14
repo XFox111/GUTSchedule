@@ -6,17 +6,21 @@
 [![GitHub issues](https://img.shields.io/github/issues/xfox111/GUTSchedule)](https://github.com/xfox111/GUTSchedule/issues)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![GitHub repo size](https://img.shields.io/github/repo-size/xfox111/GUTSchedule?label=Repository%20size)
-![Platforms](https://img.shields.io/badge/platforms-android-lightgrey)
+![Platforms](https://img.shields.io/badge/platforms-android,%20UWP-lightgrey)
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/xfox111?style=social)](https://twitter.com/xfox111)
 [![GitHub followers](https://img.shields.io/github/followers/xfox111?label=Follow%20@xfox111&style=social)](https://github.com/xfox111)
 
 ## Overview
-Android application which exports SPbSUT timetable to calendar
+Cross-platform application which exports SPbSUT timetable to calendar
 - Programming language: C# 8.0
-- Platform: Xamarin.Android
-- Minimal Android version: 4.1 (API level 16 - Jelly Bean)
-- Target Android version: 9.0 (API level 28 - Pie)
+- Platforms: Xamarin.Android, Universal Windows Platform
+- Android:
+  - Minimal version: 4.1 (API level 16 - Jelly Bean)
+  - Target version: 9.0 (API level 28 - Pie)
+- UWP:
+  - Minimal version: 1507 (10.0.10240)
+  - Target version: 1709 (10.0.16299, Fall Creators Update)
 
 ## Contributing
 There are many ways in which you can participate in the project, for example:

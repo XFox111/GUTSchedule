@@ -1,0 +1,133 @@
+﻿<Page
+    x:Class="GUTSchedule.UWP.Pages.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+	Loaded="Page_Loaded">
+
+	<Page.Background>
+		<ImageBrush ImageSource="https://cabs.itut.ru/cabinet/ini/general/0/cabinet/img/bg_n.jpg" Stretch="UniformToFill"/>
+	</Page.Background>
+
+	<Page.TopAppBar>
+		<CommandBar ClosedDisplayMode="Compact" Background="{StaticResource SystemAccentColor}" RequestedTheme="Dark">
+			<CommandBar.Content>
+				<TextBlock x:Uid="appName" Text="GUT.Schedule" Style="{StaticResource TitleTextBlockStyle}" Margin="10,6"/>
+			</CommandBar.Content>
+			<CommandBar.SecondaryCommands>
+				<AppBarButton x:Uid="clearCalendarOption" Icon="Delete" Label="Clear schedule" Tag="clear" Click="AppBarButton_Click"/>
+				<AppBarButton x:Uid="reportErrorOption" Label="Report error" Tag="report" Click="AppBarButton_Click">
+					<AppBarButton.Icon>
+						<FontIcon Glyph="&#xEBE8;"/>
+					</AppBarButton.Icon>
+				</AppBarButton>
+				<AppBarButton x:Uid="aboutOption" Label="About application" Tag="about" Click="AppBarButton_Click">
+					<AppBarButton.Icon>
+						<FontIcon Glyph="&#xE946;"/>
+					</AppBarButton.Icon>
+				</AppBarButton>
+			</CommandBar.SecondaryCommands>
+		</CommandBar>
+	</Page.TopAppBar>
+
+	<Grid>
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup>
+				<VisualState>
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="800"/>
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="grid.ColumnDefinitions[1].Width" Value="*"/>
+					</VisualState.Setters>
+				</VisualState>
+				<VisualState>
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="1200"/>
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="grid.ColumnDefinitions[1].Width" Value="2*"/>
+					</VisualState.Setters>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
+		
+		<ScrollViewer>
+			<Grid x:Name="grid">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition Width="0"/>
+				</Grid.ColumnDefinitions>
+				<StackPanel Padding="10" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+					<TextBlock x:Uid="scheduleParametersTitle" Style="{StaticResource SubtitleTextBlockStyle}" Text="Schedule parameters"/>
+
+					<CheckBox x:Uid="authorizeCheckbox" Content="Authorize via personal cabinet" Checked="ChangeAuthorizationMethod" Unchecked="ChangeAuthorizationMethod" IsChecked="True" x:Name="authorize"/>
+					<StackPanel x:Name="credentialMethod">
+						<TextBox x:Uid="email" PlaceholderText="E-mail" x:Name="email" IsSpellCheckEnabled="False"/>
+						<PasswordBox x:Uid="password" PlaceholderText="Password" x:Name="password"/>
+						<CheckBox x:Uid="remember" Content="Remember" x:Name="rememberCredential" Checked="RememberCredential_Checked" Unchecked="RememberCredential_Checked"/>
+					</StackPanel>
+					<StackPanel x:Name="defaultMethod" Visibility="Collapsed">
+						<ComboBox x:Uid="facultySpinner" x:Name="faculty" PlaceholderText="No schedule is available" Header="Course" SelectionChanged="Faculty_SelectionChanged"/>
+						<ComboBox x:Uid="courseSpinner" x:Name="course" Header="Course" SelectionChanged="Course_SelectionChanged">
+							<ComboBoxItem Content="1"/>
+							<ComboBoxItem Content="2"/>
+							<ComboBoxItem Content="3"/>
+							<ComboBoxItem Content="4"/>
+						</ComboBox>
+						<ComboBox x:Uid="groupSpinner" x:Name="group" PlaceholderText="No schedule is available" Header="Group" SelectionChanged="Group_SelectionChanged"/>
+					</StackPanel>
+
+					<TextBlock x:Uid="exportParametersTitle" Style="{StaticResource SubtitleTextBlockStyle}" Text="Export parameters"/>
+
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition/>
+							<ColumnDefinition/>
+						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="Auto"/>
+						</Grid.RowDefinitions>
+
+						<CalendarDatePicker x:Uid="dateRangeFrom" Header="Export from" x:Name="startDate"/>
+						<CalendarDatePicker x:Uid="dateRangeTo" Grid.Row="1" Header="Export to" VerticalAlignment="Top" x:Name="endDate"/>
+
+						<Button x:Uid="today" Content="Today" Grid.Column="1" VerticalAlignment="Bottom" Click="SetTodayDate" />
+						<StackPanel Grid.Column="1" Grid.Row="1" Margin="0,28,0,0">
+							<Button x:Uid="forDay" Content="For day" Click="SetEndDate" Tag="0"/>
+							<Button x:Uid="forWeek" Content="For week" Click="SetEndDate" Tag="6"/>
+							<Button x:Uid="forMonth" Content="For month" Click="SetEndDate" Tag="30"/>
+							<Button x:Uid="forSemester" Content="For semester" Click="SetForSemester"/>
+						</StackPanel>
+					</Grid>
+
+					<ComboBox x:Uid="reminderSpinner" Header="Set reminder for:" x:Name="reminder" SelectionChanged="Reminder_SelectionChanged">
+						<ComboBoxItem x:Uid="noReminder" Content="None"/>
+						<ComboBoxItem x:Uid="inTimeReminder" Content="At the begining of event"/>
+						<ComboBoxItem x:Uid="fiveMinuteReminder" Content="5 minutes"/>
+						<ComboBoxItem x:Uid="tenMinuteReminder" Content="10 minutes"/>
+					</ComboBox>
+
+					<CheckBox x:Uid="addGroupToTitle" Content="Add group number to event title" x:Name="addGroupToTitle" Checked="AddGroupToTitle_Checked" Unchecked="AddGroupToTitle_Checked"/>
+					<TextBlock x:Uid="titleNote" Style="{StaticResource CaptionTextBlockStyle}" Text="note"/>
+
+					<TextBlock Foreground="Red" Visibility="Collapsed" Text="Error" x:Name="errorPlaceholder"/>
+					<Button x:Uid="addScheduleButton" Content="Add schedule" Background="{StaticResource SystemAccentColor}" Foreground="White" FontWeight="Bold" Margin="0,10" Click="Export"/>
+
+					<TextBlock x:Uid="copyrights" Style="{StaticResource CaptionTextBlockStyle}" Text="©2020 Michael Gordeev, INS, ICT-907"/>
+					<TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="v$(Build.BuildNumber) (ci-id #$(Build.BuildId))" x:Name="version"/>
+				</StackPanel>
+			</Grid>
+		</ScrollViewer>
+
+		<Grid Background="{StaticResource SystemAccentColor}" x:Name="loading" Visibility="Collapsed">
+			<StackPanel VerticalAlignment="Center">
+				<ProgressRing Width="100" Height="100" Foreground="White" IsActive="True" HorizontalAlignment="Center"/>
+				<TextBlock Style="{StaticResource TitleTextBlockStyle}" x:Name="status" Text="Processing..." HorizontalAlignment="Center" Foreground="White" Margin="0,20"/>
+			</StackPanel>
+		</Grid>
+	</Grid>
+</Page>

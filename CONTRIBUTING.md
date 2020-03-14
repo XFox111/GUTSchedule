@@ -87,13 +87,26 @@ If you are interested in writing code to fix issues or implement new awesome fea
     git clone https://github.com/xfox111/GUTSchedule.git
     ```
 2. Open `GUT.Schedule/GUT.Schedule.sln` using [Microsoft Visual Studio](https://visualstudio.microsoft.com/) 2019 or later
-    - Make sure you have properly installed and congigured [Xamarin.Android](https://docs.microsoft.com/en-us/xamarin/android/get-started/installation/) environment
-3. On the VS toolbar choose build configuration:
+    - Make sure you have properly installed and congigured [Xamarin.Android](https://docs.microsoft.com/en-us/xamarin/android/get-started/installation/) and UWP development environments
+
+**Android**
+
+1. In `Solution Explorer` right-click `GUTSchedule.Droid` project and click `Set as StartUp Project`
+2. On the VS toolbar choose build configuration:
     - `Debug` for building and deploying test version of the app
     - `Release` for building final version of application and creating AppBundle package (.aab)
     - `Release (APK)` for building final version of application and creating Android package fike (.apk)
-4. To ensure that code compiles go to `Build -> Build Solution`
-5. [Debug application](https://docs.microsoft.com/en-us/xamarin/android/deploy-test/debugging/) on an actual device or Android Emulator
+3. To ensure that code compiles go to `Build -> Build Solution`
+4. [Debug application](https://docs.microsoft.com/en-us/xamarin/android/deploy-test/debugging/) on an actual device or Android Emulator
+
+**UWP**
+
+1. In `Solution Explorer` right-click `GUTSchedule.UWP (Universal Windows)` project and click `Set as StartUp Project`
+2. On the VS toolbar choose build configuration:
+    - `Debug` for building and deploying test version of the app
+    - `Release` for building final version of application and creating Appx packages
+3. To ensure that code compiles go to `Build -> Build Solution`
+4. [Debug application](https://docs.microsoft.com/en-us/windows/uwp/debug-test-perf/deploying-and-debugging-uwp-apps) on your machine or Windows Device Emulator
 
 ### Development workflow
 This section represents how contributors should interact with codebase implementing features and fixing bugs
@@ -241,18 +254,29 @@ To avoid multiple pull requests resolving the same issue, let others know you ar
 ### Contributing to translations
 If you want to help us to translate this application into other languages you can do it making these steps:
 
-1. Navigate to `GUT.Schedule/GUT.Schedule/Resources`
+**Android**
+
+1. Navigate to `GUT.Schedule/GUTSchedule.Droid/Resources`
 2. Create new folder named `values-lc` where `lc` is locale language.
 Folder name examples:
-    - `values-uk` for Ukrainian
-    - `values-be` for Belarusian
-    - `values-ru` for Russian
+   - `values-uk` for Ukrainian
+   - `values-be` for Belarusian
+   - `values-ru` for Russian
 
-    > **Note** that we only accept region neutral localizations (e.g. pull request with `values-en-rUS` (English (United States)) folder will be rejected whether PR with `values-en` (English (Invarian Country)) folder will be accepted).
     For reference, here is a [list of Java locales](https://www.oracle.com/technetwork/java/javase/locales-137662.html) and [Android-supported locales via StackOverflow](https://stackoverflow.com/questions/7973023/what-is-the-list-of-supported-languages-locales-on-android).
-3. In the folder copy `strings.xml` file from `GUT.Schedule/GUT.Schedule/Resources/values`
+
+3. In the folder copy `strings.xml` file from `GUT.Schedule/GUTSchedule.Droid/Resources/values`
+
+**UWP**
+
+1. Navigate to `GUT.Schedule/GUTSchedule.UWP/Strings`
+2. Clone the folder you want to base your localization on and change its name to match desired localization language. See [Globalization and localization](https://docs.microsoft.com/en-us/windows/uwp/design/globalizing/globalizing-portal) for more information
+3. Open `.resw` files from the folder in Visual Studio or other text editor
+***
 4. Edit localization strings
 5. Commit changes and create a pull request
+
+> **Note** that we only accept region neutral localizations (e.g. pull request with `values-en-rUS` (English (United States)) folder will be rejected whether PR with `values-en` (English) folder will be accepted).
 
 ### Submitting pull requests
 To enable us to quickly review and accept your pull requests, always create one pull request per issue and [link the issue in the pull request](https://github.com/blog/957-introducing-issue-mentions). Never merge multiple requests in one unless they have the same root cause. Be sure to follow our [Coding Guidelines](#coding-guidelines) and keep code changes as small as possible. Avoid pure formatting changes to code that has not been modified otherwise. Pull requests should contain tests whenever possible. Fill pull request content according to its template. Deviations from template are not recommended
