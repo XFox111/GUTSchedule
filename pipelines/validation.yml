@@ -23,7 +23,7 @@ steps:
 - task: ResharperCli@2
   displayName: 'RESharper CLI Code Analyzer'
   inputs:
-    solutionOrProjectPath: 'GUT.Schedule/GUT.Schedule.sln'
+    solutionOrProjectPath: 'GUT.Schedule/GUTSchedule.sln'
     failBuildLevelSelector: 'Error'
     failBuildOnCodeIssues: false
 
@@ -34,7 +34,7 @@ steps:
     outputDirectory: '$(outputDirectory)'
     configuration: '$(buildConfiguration)'
     msbuildVersionOption: 'latest'
-    msbuildArchitectureOption: '$(buildPlatform)'
+    msbuildArchitectureOption: 'x64'
     jdkOption: 'JDKVersion'
 
 - task: VSBuild@1
