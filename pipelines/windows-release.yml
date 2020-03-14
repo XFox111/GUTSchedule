@@ -6,7 +6,7 @@ trigger:
       - master
   paths:
     exclude:
-      - /*
+      - '*'
     include:
       - changelogs/windows.json
 
@@ -36,7 +36,7 @@ steps:
     workingDirectory: '$(Build.SourcesDirectory)\GUT.Schedule\GUTSchedule.UWP'
 
 - task: DownloadSecureFile@1
-  name: cert
+  name: assoc
   displayName: 'Downloading Store association data file'
   inputs:
     secureFile: 'PackageStoreAssociation.xml'
@@ -44,8 +44,14 @@ steps:
 - task: CopyFiles@2
   displayName: 'Copy Store association data'
   inputs:
-    Contents: '$(cert.secureFilePath)'
+    Contents: '$(assoc.secureFilePath)'
     TargetFolder: '$(Build.Repository.LocalPath)/GUTSchedule/GUTSchedule.UWP'
+
+- task: DownloadSecureFile@1
+  name: cert
+  displayName: 'Downloading PFX certificate file'
+  inputs:
+    secureFile: 'GUTScheduleCert.pfx'
 
 - task: VSBuild@1
   inputs:
@@ -53,20 +59,24 @@ steps:
     solution: '**/**.UWP.csproj'
     configuration: '$(buildConfiguration)'
     msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)"
-                  /p:AppxPackageDir="$(outputDirectory)" 
-                  /p:AppxBundle=Always 
-                  /p:UapAppxPackageBuildMode=StoreUpload'
+                  /p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\AppxPackages" 
+                  /p:AppxBundle=Always
+                  /p:UapAppxPackageBuildMode=StoreUpload
+                  /p:AppxPackageSigningEnabled=true
+                  /p:PackageCertificateKeyFile="$(cert.secureFilePath)"
+                  /p:PackageCertificatePassword=$(certPassword)
+                  /p:PackageCertificateThumbprint=""'
 
 - task: CopyFiles@2
   displayName: 'Copy changelog to output'
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)/changelogs'
     Contents: 'windows.json'
-    TargetFolder: '$(outputDirectory)'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Drop Artifact'
   inputs:
-    PathtoPublish: '$(outputDirectory)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'WindowsBundle'
     publishLocation: 'Container'
