@@ -245,8 +245,13 @@ namespace GUTSchedule.UWP.Pages
 				settings.Values["Group"] = ((ComboBoxItem)group.SelectedItem).Tag;
 		}
 
-		private void RememberCredential_Checked(object sender, RoutedEventArgs e) =>
+		private void RememberCredential_Checked(object sender, RoutedEventArgs e)
+		{
 			settings.Values["RememberCredential"] = rememberCredential.IsChecked;
+			if(!rememberCredential.IsChecked.Value)
+				foreach (PasswordCredential credential in vault.RetrieveAll())
+					vault.Remove(credential);
+		}
 
 		private void AddGroupToTitle_Checked(object sender, RoutedEventArgs e) =>
 			settings.Values["AddGroupToTitle"] = rememberCredential.IsChecked;
