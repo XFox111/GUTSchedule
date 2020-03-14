@@ -3,11 +3,11 @@
 	{
 		"en-US": 
 		{
-			"releaseNotes": ""
+			"releaseNotes": "- Fixed some parsing issues\n- Disabled spellcheck for E-mail input field\n- Credentials are now immediately removed from credential storage after \"Remember\" checkbox uncheck"
 		},
 		"ru-RU":
 		{
-			"releaseNotes": ""
+			"releaseNotes": "- Исправлены некоторые проблемы с загрузкой расписания\n- Проверка орфографии отключена для поля ввода E-mail\n- Теперь учетные данные удаляются из хранилища УД сразу после снятия галочки в поле \"Запомнить\""
 		}
 	}
 }

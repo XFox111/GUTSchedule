@@ -1,4 +1,4 @@
-# Universal Windows Platform
+# Universal Windows Platform pipeline config
 
 trigger:
   branches:
@@ -61,7 +61,7 @@ steps:
   displayName: 'Copy changelog to output'
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)/changelogs'
-    Contents: 'windows.txt'
+    Contents: 'windows.json'
     TargetFolder: '$(outputDirectory)'
 
 - task: PublishBuildArtifacts@1

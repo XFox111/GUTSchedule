@@ -9,3 +9,4 @@
 - Optimized schedule loader
 - Fixed issues with post-graduate students schedule export
 - Fixed doubled occupations merge issues
+- Fixed some time parsing issues
