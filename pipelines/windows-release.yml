@@ -32,7 +32,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      (Get-Content Package.appxmanifest -encoding UTF8 | Out-String) -replace '(?<=\bVersion=")[^"]*', "$(Get-Date -Format "yy")$((Get-Date).DayOfYear.ToString('000')).$(Build.BuildId).$((Build.BuildNumber).ToString().Split('.')[1]).0" | set-content Package.appxmanifest -encoding UTF8
+      (Get-Content Package.appxmanifest -encoding UTF8 | Out-String) -replace '(?<=\bVersion=")[^"]*', "$(Get-Date -Format "yy")$((Get-Date).DayOfYear.ToString('000')).$(Build.BuildId).$($(Build.BuildNumber).ToString().Split('.')[1]).0" | set-content Package.appxmanifest -encoding UTF8
     workingDirectory: '$(Build.SourcesDirectory)\GUT.Schedule\GUTSchedule.UWP'
 
 - task: DownloadSecureFile@1
