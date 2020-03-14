@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Windows.UI.Xaml.Controls;
 
-namespace GUTSchedule.UWP
+namespace GUTSchedule.UWP.Controls
 {
 	public sealed partial class ClearCalendarControl : ContentDialog
 	{

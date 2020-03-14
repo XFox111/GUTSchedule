@@ -1,16 +1,15 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("GUT.Schedule.UWP")]
+[assembly: AssemblyTitle("GUT.Schedule")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("GUT.Schedule.UWP")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
+[assembly: AssemblyCompany("Michael \"XFox\" Gordeev")]
+[assembly: AssemblyProduct("GUT.Schedule")]
+[assembly: AssemblyCopyright("Copyright ©2020 Michael \"XFox\" Gordeev")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

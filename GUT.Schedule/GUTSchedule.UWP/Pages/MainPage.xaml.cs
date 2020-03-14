@@ -1,4 +1,5 @@
 ﻿using GUTSchedule.Models;
+using GUTSchedule.UWP.Controls;
 using System;
 using Windows.Security.Credentials;
 using Windows.System;
@@ -15,7 +16,7 @@ using Microsoft.Services.Store.Engagement;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 
-namespace GUTSchedule.UWP
+namespace GUTSchedule.UWP.Pages
 {
 	public sealed partial class MainPage : Page
 	{
@@ -277,7 +278,3 @@ namespace GUTSchedule.UWP
 		}
 	}
 }
-
-// TODO: Reminder prefs broken
-// TODO: Calendar prefs broken
-// TODO: Faculty prefs broken

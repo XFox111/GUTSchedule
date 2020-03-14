@@ -1,20 +1,18 @@
 ﻿using Microsoft.Services.Store.Engagement;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using Windows.ApplicationModel;
-using Windows.ApplicationModel.Resources;
+using Windows.Data.Json;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
 
-namespace GUTSchedule.UWP
+namespace GUTSchedule.UWP.Pages
 {
 	public sealed partial class AboutPage : Page
 	{
-		private readonly ResourceLoader resources = ResourceLoader.GetForCurrentView();
 		public AboutPage()
 		{
 			InitializeComponent();
@@ -39,11 +37,11 @@ namespace GUTSchedule.UWP
 
 				HttpResponseMessage response = await client.SendAsync(request);
 				string resposeContent = await response.Content.ReadAsStringAsync();
-				dynamic parsedResponse = JsonConvert.DeserializeObject(resposeContent);
+				JsonObject parsedResponse = JsonObject.Parse(resposeContent);
 
 				foreach (var i in parsedResponse)
-					if (i.type == "User" && ((string)i.login).ToLower() != "xfox111")
-						contributorsList.Add((string)i.login);
+					if (i.Value.GetObject()["type"].GetString() == "User" && i.Value.GetObject()["login"].GetString().ToLower() != "xfox111")
+						contributorsList.Add(i.Value.GetObject()["login"].GetString());
 
 				request.Dispose();
 				client.Dispose();
