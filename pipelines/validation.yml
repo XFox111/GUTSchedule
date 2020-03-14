@@ -37,6 +37,18 @@ steps:
     msbuildArchitectureOption: 'x64'
     jdkOption: 'JDKVersion'
 
+- task: DownloadSecureFile@1
+  name: cert
+  displayName: 'Download PFX certificate'
+  inputs:
+    secureFile: 'GUTScheduleCert.pfx'
+
+- task: CopyFiles@2
+  displayName: 'Copy PFX certificate to work folder'
+  inputs:
+    Contents: '$(cert.secureFilePath)'
+    TargetFolder: '$(Build.Repository.LocalPath)/GUTSchedule/GUTSchedule.UWP'
+
 - task: VSBuild@1
   displayName: 'Build UWP'
   inputs:
