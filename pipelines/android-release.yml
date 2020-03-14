@@ -6,7 +6,7 @@ trigger:
       - master
   paths:
     exclude:
-      - /*
+      - '*'
     include:
       - changelogs/android.xml
 
@@ -77,6 +77,20 @@ steps:
     targetType: 'inline'
     script: 'get-childitem *-Signed.* | foreach { rename-item $_ $_.Name.Replace("-Signed", "") }'
     workingDirectory: '$(outputDirectory)'
+
+- task: DownloadSecureFile@1
+  name: cert
+  inputs:
+    secureFile: 'GutSchedule.keystore'
+
+- task: AndroidSigning@3
+  displayName: 'Sign Android packages'
+  inputs:
+    apkFiles: '$(outputDirectory)/*.(apk|aab)'
+    apksignerKeystoreFile: '$(cert.secureFilePath)'
+    apksignerKeystorePassword: '$(keystorePassword)'
+    apksignerKeystoreAlias: 'GUTSchedule'
+    apksignerKeyPassword: '$(keystorePassword)'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Drop Artifact'
