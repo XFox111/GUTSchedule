@@ -24,8 +24,8 @@ steps:
   displayName: 'RESharper CLI Code Analyzer'
   inputs:
     solutionOrProjectPath: 'GUT.Schedule/GUTSchedule.sln'
-    failBuildLevelSelector: Warning
-    failBuildOnCodeIssues: true
+    failBuildLevelSelector: Hint
+    failBuildOnCodeIssues: false
 
 - task: XamarinAndroid@1
   displayName: 'Build Android'
