@@ -22,6 +22,7 @@ steps:
 
 - task: ResharperCli@2
   displayName: 'RESharper CLI Code Analyzer'
+  enabled: false
   inputs:
     solutionOrProjectPath: 'GUT.Schedule/GUTSchedule.sln'
     failBuildLevelSelector: 'Error'
@@ -29,6 +30,7 @@ steps:
 
 - task: XamarinAndroid@1
   displayName: 'Build Android'
+  enabled: false
   inputs:
     projectFile: '**/**.Droid.csproj'
     outputDirectory: '$(outputDirectory)'
@@ -55,3 +57,4 @@ steps:
     platform: 'x64'
     solution: '**/**.UWP.csproj'
     configuration: '$(buildConfiguration)'
+    msbuildArgs: '/p:AppxPackageSigningEnabled=false'
