@@ -22,15 +22,13 @@ steps:
 
 - task: ResharperCli@2
   displayName: 'RESharper CLI Code Analyzer'
-  enabled: false
   inputs:
     solutionOrProjectPath: 'GUT.Schedule/GUTSchedule.sln'
-    failBuildLevelSelector: 'Error'
-    failBuildOnCodeIssues: false
+    failBuildLevelSelector: Warning
+    failBuildOnCodeIssues: true
 
 - task: XamarinAndroid@1
   displayName: 'Build Android'
-  enabled: false
   inputs:
     projectFile: '**/**.Droid.csproj'
     outputDirectory: '$(outputDirectory)'
@@ -38,18 +36,6 @@ steps:
     msbuildVersionOption: 'latest'
     msbuildArchitectureOption: 'x64'
     jdkOption: 'JDKVersion'
-
-- task: DownloadSecureFile@1
-  name: cert
-  displayName: 'Download PFX certificate'
-  inputs:
-    secureFile: 'GUTScheduleCert.pfx'
-
-- task: CopyFiles@2
-  displayName: 'Copy PFX certificate to work folder'
-  inputs:
-    Contents: '$(cert.secureFilePath)'
-    TargetFolder: '$(Build.Repository.LocalPath)/GUTSchedule/GUTSchedule.UWP'
 
 - task: VSBuild@1
   displayName: 'Build UWP'
