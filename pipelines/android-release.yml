@@ -68,7 +68,9 @@ steps:
   displayName: 'Copy changelog to output'
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)/changelogs'
-    Contents: 'android.xml'
+    Contents: |
+      'android.xml'
+      'changelog.md'
     TargetFolder: '$(outputDirectory)'
 
 - task: PowerShell@2

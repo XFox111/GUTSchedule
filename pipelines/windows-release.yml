@@ -71,7 +71,9 @@ steps:
   displayName: 'Copy changelog to output'
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)/changelogs'
-    Contents: 'windows.json'
+    Contents: |
+      'windows.json'
+      'changelog.md'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: PublishBuildArtifacts@1
