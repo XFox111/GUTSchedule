@@ -8,7 +8,7 @@
 	<Identity
     Name="53949MichaelXFoxGordeev.GUT.Schedule"
     Publisher="CN=FD7A34DD-FE4D-4D7D-9D33-2DA9EBBE7725"
-    Version="2020.313.2.0" />
+    Version="0.0.0.0" />
 
 	<mp:PhoneIdentity PhoneProductId="ea5f6ab0-1992-40f5-b89c-11fc3a97ae9f" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
