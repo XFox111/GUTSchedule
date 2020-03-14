@@ -79,6 +79,7 @@ steps:
     workingDirectory: '$(outputDirectory)'
 
 - task: DownloadSecureFile@1
+  displayName: 'Download Keystore file'
   name: cert
   inputs:
     secureFile: 'GutSchedule.keystore'
