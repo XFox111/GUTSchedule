@@ -8,7 +8,7 @@ trigger:
     exclude:
       - '*'
     include:
-      - changelogs/windows.json
+      - changelogs/appMetadata/*
 
 pool:
   vmImage: 'windows-latest'

@@ -1,0 +1,3 @@
+- Fixed some parsing issues
+- Disabled spellcheck for E-mail input field
+- Credentials are now immediately removed from credential storage after "Remember" checkbox uncheck
