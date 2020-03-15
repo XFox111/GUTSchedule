@@ -71,8 +71,8 @@ steps:
   displayName: 'Copy changelog to output'
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)/changelogs'
-    Contents: appMetadata
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/changelogs'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Drop Artifact'
