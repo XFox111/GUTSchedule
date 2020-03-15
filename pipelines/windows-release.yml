@@ -74,7 +74,7 @@ steps:
     Contents: |
       windows.json
       github.md
-    TargetFolder: '$(outputDirectory)'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Drop Artifact'

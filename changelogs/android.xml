@@ -5,10 +5,3 @@
 	- Исправлены проблемы с экспортом расписания студентов магистратуры
 	- Исправлены некоторые проблемы слияния двойных пар
 </ru-RU>
-<en-US>
-	- Polished english localization
-	- Optimized schedule loader
-	- Fixed invisible error titles and buttons
-	- Fixed issues with post-graduate students schedule export
-	- Fixed doubled occupations merge issues
-</en-US>
