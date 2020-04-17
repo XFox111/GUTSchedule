@@ -25,7 +25,7 @@ namespace GUTSchedule
 
 			await client.GetAsync("https://cabs.itut.ru/cabinet/");
 
-			HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://cabs.itut.ru/cabinet/lib/autentificationok.php");
+			HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://lk.sut.ru/cabinet/lib/autentificationok.php");
 			request.SetContent(
 				("users", email),
 				("parole", password));
@@ -39,8 +39,9 @@ namespace GUTSchedule
 			if (!responseContent.StartsWith("1", StringComparison.OrdinalIgnoreCase))
 			{
 				Dictionary<string, string> responseQuery = new Dictionary<string, string>();
-				foreach (string i in responseContent.Split('&'))
-					responseQuery.Add(i.Split('=')[0], i.Split('=')[1]);
+				if (responseContent.Length > 1)
+					foreach (string i in responseContent.Split('&'))
+						responseQuery.Add(i.Split('=')[0], i.Split('=')[1]);
 
 				throw new System.Security.VerificationException(responseQuery["error"].Replace("|", "; "));
 			}
@@ -85,7 +86,7 @@ namespace GUTSchedule
 					schedule[k - 1].Name == schedule[k].Name &&
 					schedule[k - 1].Type == schedule[k].Type)
 				{
-					schedule[k - 1].Opponent += $" ({schedule[k-1].Cabinet}) \n {schedule[k].Opponent} ({schedule[k].Cabinet})";
+					schedule[k - 1].Opponent += $" ({schedule[k-1].Cabinet}) \n{schedule[k].Opponent} ({schedule[k].Cabinet})";
 					schedule[k - 1].Cabinet += "; " + schedule[k].Cabinet;
 					schedule.RemoveAt(k--);
 				}
@@ -229,11 +230,11 @@ namespace GUTSchedule
 					int order = int.Parse(item.GetAttribute("pair")) - 1;
 					Occupation occupation = new Occupation
 					{
-						Name = item.QuerySelector(".subect").TextContent,
+						Name = item.QuerySelector(".subect").TextContent.Replace(" (1)", "").Replace(" (2)", ""),
 						Type = item.QuerySelector(".type").TextContent.Replace("(", "").Replace(")", ""),
 						Group = groupName,
-						Opponent = item.QuerySelector(".teacher")?.GetAttribute("title").Replace("; ", "\n") ?? "",
-						Cabinet = item.QuerySelector(".aud")?.TextContent.Replace("ауд.: ", "").Replace("; Б22", "") ?? "СПбГУТ",
+						Opponent = item.QuerySelector(".teacher")?.GetAttribute("title").Replace("; ", "") ?? "",
+						Cabinet = item.QuerySelector(".aud")?.TextContent.Replace("ауд.: ", "").Replace("; Б22", "").Replace(" ", "") ?? "СПбГУТ",
 						Order = order > 50 ? $"Ф{order - 81}" : order.ToString()
 					};
 
@@ -309,10 +310,17 @@ namespace GUTSchedule
 
 				DateTime date = DateTime.Parse(item.FirstChild.FirstChild.TextContent, new CultureInfo("ru-RU"));
 				string rawTime = item.ChildNodes[2].TextContent;
-				rawTime = rawTime.Substring(rawTime.IndexOf('(')).Replace(")", "").Replace('.', ':');
-
-				occupation.StartTime = date.Add(TimeSpan.Parse(rawTime.Split('-')[0]));
-				occupation.EndTime = date.Add(TimeSpan.Parse(rawTime.Split('-')[1]));
+				try 
+				{
+					rawTime = rawTime.Substring(rawTime.IndexOf('(')).Replace(")", "").Replace('.', ':');
+					occupation.StartTime = date.Add(TimeSpan.Parse(rawTime.Split('-')[0]));
+					occupation.EndTime = date.Add(TimeSpan.Parse(rawTime.Split('-')[1]));
+				}
+				catch
+				{
+					occupation.StartTime = date;
+					occupation.EndTime = date;
+				}
 
 				schedule.Add(occupation);
 			}
@@ -355,7 +363,7 @@ namespace GUTSchedule
 						item.Opponent = i.QuerySelectorAll("i")[k].NextSibling.NextSibling.NextSibling?.NodeType == NodeType.Text ?
 							i.QuerySelectorAll("i")[k].NextSibling.NextSibling.NextSibling.TextContent : "";
 
-					try { item.Cabinet = i.QuerySelectorAll("small")[k].NextSibling.TextContent.Replace("; Б22", ""); }
+					try { item.Cabinet = i.QuerySelectorAll("small")[k].NextSibling.TextContent.Replace(" ", "").Replace(";Б22", ""); }
 					catch { item.Cabinet = "СПбГУТ"; }
 
 					string rawTime = i.QuerySelectorAll("b")[k * 2 + 2].TextContent;
