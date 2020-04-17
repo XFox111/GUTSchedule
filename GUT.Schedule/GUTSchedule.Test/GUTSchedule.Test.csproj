@@ -19,4 +19,10 @@
     <ProjectReference Include="..\GUTSchedule\GUTSchedule.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="TestCredential.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

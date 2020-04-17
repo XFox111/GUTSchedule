@@ -2,6 +2,8 @@ using NUnit.Framework;
 using System.Threading.Tasks;
 using GUTSchedule.Models;
 using System;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace GUTSchedule.Test
 {
@@ -10,10 +12,11 @@ namespace GUTSchedule.Test
 		[Test]
 		public async Task ScheduleListTest()
 		{
+			dynamic secrets = JsonConvert.DeserializeObject(File.ReadAllText(Directory.GetCurrentDirectory() + "\\TestCredential.json"));
 			var list = await Parser.GetSchedule(new CabinetExportParameters
 			{
-				Email = "%EMAIL%",
-				Password = "%PASSWORD%",
+				Email = secrets.testEmail,
+				Password = secrets.testPassword,
 				EndDate = DateTime.Today.AddDays(7),
 				StartDate = DateTime.Today
 			});
