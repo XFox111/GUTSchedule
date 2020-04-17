@@ -187,7 +187,7 @@
     <value>Свой вклад в разработку внесли</value>
   </data>
   <data name="copyrights.Text" xml:space="preserve">
-    <value>©2020 Михаил Гордеев, ИКСС, ИКТ-907</value>
+    <value>©2020 Михаил Гордеев, ИСиТ, ИСТ-942</value>
   </data>
   <data name="courseSpinner.Header" xml:space="preserve">
     <value>Курс</value>
@@ -208,7 +208,7 @@
     <value>Конечный календарь</value>
   </data>
   <data name="developedBy.Text" xml:space="preserve">
-    <value>Разработано Михаилом Гордеевым, ИКТ-907, ИКСС в Научно-образовательном центре "Технологии информационных образовательных систем"</value>
+    <value>Разработано Михаилом Гордеевым, ИСТ-942, ИСиТ в Научно-образовательном центре "Технологии информационных образовательных систем"</value>
   </data>
   <data name="doneStatus" xml:space="preserve">
     <value>Готово</value>
