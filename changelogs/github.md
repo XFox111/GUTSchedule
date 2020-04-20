@@ -1,2 +1,2 @@
 ## Core
-- Fixed anonymous schedule loading
+- Fixed and improved parser

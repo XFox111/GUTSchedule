@@ -71,10 +71,8 @@ steps:
   displayName: 'Copy changelog to output'
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)/changelogs'
-    Contents: |
-      android.xml
-      github.md
-    TargetFolder: '$(outputDirectory)'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/changelogs'
 
 - task: PowerShell@2
   displayName: 'Update package name'
