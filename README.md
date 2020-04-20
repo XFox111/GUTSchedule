@@ -1,8 +1,4 @@
 # GUTSchedule
-[![Build Status](https://dev.azure.com/xfox111/GitHub%20CI/_apis/build/status/XFox111.GUTSchedule?branchName=master)](https://dev.azure.com/xfox111/GitHub%20CI/_build/latest?definitionId=8&branchName=master)
-![Continious Delivery Pipeline](https://vsrm.dev.azure.com/xfox111/_apis/public/Release/badge/e42c572c-a3cd-4aac-bbb1-f720d9ccb5ea/1/5)
-
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/xfox111/GUTSchedule)](https://github.com/xfox111/gutschedule/releases/latest)
 [![GitHub issues](https://img.shields.io/github/issues/xfox111/GUTSchedule)](https://github.com/xfox111/GUTSchedule/issues)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![GitHub repo size](https://img.shields.io/github/repo-size/xfox111/GUTSchedule?label=Repository%20size)
@@ -21,6 +17,18 @@ Cross-platform application which exports SPbSUT timetable to calendar
 - UWP:
   - Minimal version: 1507 (10.0.10240)
   - Target version: 1709 (10.0.16299, Fall Creators Update)
+
+## Download
+### **https://xfox111.net/Projects/GUTSchedule**
+
+## Continious Integration and Delivery
+[![Build Status](https://dev.azure.com/xfox111/GitHub%20CI/_apis/build/status/XFox111.GUTSchedule?branchName=master)](https://dev.azure.com/xfox111/GitHub%20CI/_build/latest?definitionId=8&branchName=master)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/xfox111/GUTSchedule)](https://github.com/xfox111/gutschedule/releases/latest)
+
+| Platform        | Deployment status |
+| --------------- | ----------------  |
+| Google Play     | [![Open Store page](https://vsrm.dev.azure.com/xfox111/_apis/public/Release/badge/e42c572c-a3cd-4aac-bbb1-f720d9ccb5ea/1/10)](https://play.google.com/store/apps/details?id=com.xfox111.gut.schedule) |
+| Microsoft Store | [![Open Store page](https://vsrm.dev.azure.com/xfox111/_apis/public/Release/badge/e42c572c-a3cd-4aac-bbb1-f720d9ccb5ea/2/13)](https://www.microsoft.com/store/apps/9NXKDK52W3RX) |
 
 ## Contributing
 There are many ways in which you can participate in the project, for example:

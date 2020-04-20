@@ -72,7 +72,7 @@ steps:
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)/changelogs'
     Contents: '**'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/changelogs'
+    TargetFolder: '$(outputDirectory)/changelogs'
 
 - task: PowerShell@2
   displayName: 'Update package name'
