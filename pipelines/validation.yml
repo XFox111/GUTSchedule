@@ -49,6 +49,7 @@ steps:
   displayName: 'Update test credential'
   inputs:
     folderPath: '$(System.DefaultWorkingDirectory)'
+    xmlTransformationRules: 
     jsonTargetFiles: '**/TestCredential.json'
 
 - task: VSBuild@1
@@ -61,7 +62,7 @@ steps:
   inputs:
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
-      **\*test*.dll
+      **\*.Test.dll
       !**\*TestAdapter.dll
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
