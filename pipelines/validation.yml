@@ -12,13 +12,13 @@ variables:
   buildPlatform: 'x86|x64|ARM'
 
 steps:
-- task: NuGetToolInstaller@1
-  displayName: 'Install NuGet Tool'
+# - task: NuGetToolInstaller@1
+#   displayName: 'Install NuGet Tool'
 
-- task: NuGetCommand@2
-  displayName: 'Restore Solution'
-  inputs:
-    restoreSolution: '**/*.sln'
+# - task: NuGetCommand@2
+#   displayName: 'Restore Solution'
+#   inputs:
+#     restoreSolution: '**/*.sln'
 
 # - task: ResharperCli@2
 #   displayName: 'RESharper CLI Code Analyzer'
@@ -56,22 +56,23 @@ steps:
   displayName: 'Build Tests'
   inputs:
     solution: '**\*.Test.csproj'
+    restoreNugetPackages: true
 
 - task: VSTest@2
   displayName: 'Run Tests'
   inputs:
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
-      **\*test*.dll
+      **\*.Test.dll
       !**\*TestAdapter.dll
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
 
-- task: PublishTestResults@2
-  displayName: 'Publish test results'
-  inputs:
-    testResultsFormat: 'NUnit'
-    testResultsFiles: '**/*.trx'
-    searchFolder: '$(Agent.TempDirectory)\TestResults'
-    mergeTestResults: true
-    failTaskOnFailedTests: true
+# - task: PublishTestResults@2
+#   displayName: 'Publish test results'
+#   inputs:
+#     testResultsFormat: 'NUnit'
+#     testResultsFiles: '**/*.trx'
+#     searchFolder: '$(Agent.TempDirectory)\TestResults'
+#     mergeTestResults: true
+#     failTaskOnFailedTests: true
