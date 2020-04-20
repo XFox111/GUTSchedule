@@ -23,7 +23,7 @@ namespace GUTSchedule
 
 			HttpClient client = new HttpClient();
 
-			await client.GetAsync("https://cabs.itut.ru/cabinet/");
+			await client.GetAsync("https://lk.sut.ru/cabinet/");
 
 			HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://lk.sut.ru/cabinet/lib/autentificationok.php");
 			request.SetContent(
@@ -330,7 +330,7 @@ namespace GUTSchedule
 
 		private static async Task<List<Occupation>> GetCabinetSchedule(HttpClient client, DateTime date, bool checkProfSchedule)
 		{
-			HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"https://cabs.itut.ru/cabinet/project/cabinet/forms/{(checkProfSchedule ? "pr_" : "")}raspisanie_kalendar.php");
+			HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"https://lk.sut.ru/cabinet/project/cabinet/forms/{(checkProfSchedule ? "pr_" : "")}raspisanie_kalendar.php");
 			request.SetContent(
 				("month", date.Month.ToString()),
 				("year", date.Year.ToString()),
