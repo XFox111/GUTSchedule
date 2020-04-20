@@ -65,3 +65,12 @@ steps:
       !**\*TestAdapter.dll
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
+
+- task: PublishTestResults@2
+  displayName: 'Publish test results'
+  inputs:
+    testResultsFormat: 'NUnit'
+    testResultsFiles: '**/TEST-*.xml'
+    searchFolder: '$(Agent.TempDirectory)\TestResults'
+    mergeTestResults: true
+    failTaskOnFailedTests: true
