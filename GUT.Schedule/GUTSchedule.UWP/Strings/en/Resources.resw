@@ -187,7 +187,7 @@
     <value>Contributors</value>
   </data>
   <data name="copyrights.Text" xml:space="preserve">
-    <value>©2020 Michael Gordeev, INS, ICT-907</value>
+    <value>©2020 Michael Gordeev, IST, IST-942</value>
   </data>
   <data name="courseSpinner.Header" xml:space="preserve">
     <value>Course</value>
@@ -208,7 +208,7 @@
     <value>Destination calendar</value>
   </data>
   <data name="developedBy.Text" xml:space="preserve">
-    <value>Developed by Michael Gordeev (ICT-907, INS) in the "Technologies of Informational and Educational Systems" Research Facility</value>
+    <value>Developed by Michael Gordeev (IST-942, IST) in the "Technologies of Informational and Educational Systems" Research and Educational Center</value>
   </data>
   <data name="doneStatus" xml:space="preserve">
     <value>Done</value>
@@ -274,7 +274,7 @@
     <value>None</value>
   </data>
   <data name="notsLink.Text" xml:space="preserve">
-    <value>"TIES" RF</value>
+    <value>"TIES" REC</value>
   </data>
   <data name="password.PlaceholderText" xml:space="preserve">
     <value>Password</value>

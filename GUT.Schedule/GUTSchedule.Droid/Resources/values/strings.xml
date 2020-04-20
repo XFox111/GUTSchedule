@@ -50,7 +50,7 @@
   
   <string name="addScheduleButton">Add schedule</string>
 
-  <string name="copyrights">©2020 Michael Gordeev, INS, ICT-907</string>
+  <string name="copyrights">©2020 Michael Gordeev, IST, IST-942</string>
 
   <string name="clearCalendarOption">Clear schedule</string>
   <string name="reportErrorOption">Report error</string>
@@ -79,7 +79,7 @@
   <!-- AboutActivity -->
   <string name="aboutTitle">About application</string>
   <string name="appDescription">Application for SPbSUT professors\' and students\' schedule export</string>
-  <string name="developedBy">Developed by Michael Gordeev (ICT-907, INS) in the \"Technologies of Informational and Educational Systems\" Research Facility</string>
+  <string name="developedBy">Developed by Michael Gordeev (IST-942, IST) in the \"Technologies of Informational and Educational Systems\" Research and Educational Center</string>
   <string name="contributorsTitle">Contributors</string>
 
   <string name="specialThanksTitle">Special thanks</string>
@@ -93,7 +93,7 @@
   <string name="linksTitle">Useful links</string>
   <string name="privacyPolicyLink">Privacy policy</string>
   <string name="repositoryLink">GitHub Repository</string>
-  <string name="notsLink">\"TIES\" RF</string>
+  <string name="notsLink">\"TIES\" REC</string>
   <string name="sutLink">SPbSUT</string>
 
   <string name="feedbackButton">Leave feedback</string>

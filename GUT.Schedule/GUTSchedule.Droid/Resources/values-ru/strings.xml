@@ -51,7 +51,7 @@
 
   <string name="addScheduleButton">Добавить расписание</string>
 
-  <string name="copyrights">©2020 Михаил Гордеев, ИКСС, ИКТ-907</string>
+  <string name="copyrights">©2020 Михаил Гордеев, ИСиТ, ИСТ-942</string>
 
   <string name="clearCalendarOption">Очистить расписание</string>
   <string name="reportErrorOption">Сообщить об ошибке</string>
@@ -81,7 +81,7 @@
   <!-- AboutActivity -->
   <string name="aboutTitle">О приложении</string>
   <string name="appDescription">Приложение для экспорта перподавательского и учебного расписаний Санкт-Петербургского Государственного Университета Телекоммуникаций им. проф. М.А. Бонч-Бруевича</string>
-  <string name="developedBy">Разработано Михаилом Гордеевым, ИКТ-907, ИКСС в Научно-образовательном центре \"Технологии информационных образовательных систем\"</string>
+  <string name="developedBy">Разработано Михаилом Гордеевым, ИСТ-942, ИСиТ в Научно-образовательном центре \"Технологии информационных образовательных систем\"</string>
   <string name="contributorsTitle">Свой вклад в разработку внесли</string>
   
   <string name="specialThanksTitle">Особые благодарности</string>

@@ -8,7 +8,8 @@ trigger:
     exclude:
       - '*'
     include:
-      - changelogs/android.xml
+      - changelogs/appMetadata/en/changelogs/*
+      - changelogs/appMetadata/ru/changelogs/*
 
 pool:
   vmImage: 'windows-latest'
@@ -33,6 +34,8 @@ steps:
     script: |
       (Get-Content AndroidManifest.xml -encoding UTF8 | Out-String) -replace '(?<=\bandroid:versionCode=")[^"]*', $(Build.BuildId) | set-content AndroidManifest.xml -encoding UTF8
       (Get-Content AndroidManifest.xml -encoding UTF8 | Out-String) -replace '(?<=\bandroid:versionName=")[^"]*', $(Build.BuildNumber) | set-content AndroidManifest.xml -encoding UTF8
+      Rename-Item '$(Build.SourcesDirectory)/changelogs/appMetadata/en/changelogs/android-changelog.txt' '$(Build.BuildId).txt'
+      Rename-Item '$(Build.SourcesDirectory)/changelogs/appMetadata/ru/changelogs/android-changelog.txt' '$(Build.BuildId).txt'
     workingDirectory: '$(Build.SourcesDirectory)\GUT.Schedule\GUTSchedule.Droid\Properties'
 
 - task: XamarinAndroid@1
@@ -68,10 +71,8 @@ steps:
   displayName: 'Copy changelog to output'
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)/changelogs'
-    Contents: |
-      android.xml
-      github.md
-    TargetFolder: '$(outputDirectory)'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/changelogs'
 
 - task: PowerShell@2
   displayName: 'Update package name'
