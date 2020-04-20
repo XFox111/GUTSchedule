@@ -20,35 +20,36 @@ steps:
   inputs:
     restoreSolution: '**/*.sln'
 
-- task: ResharperCli@2
-  displayName: 'RESharper CLI Code Analyzer'
-  inputs:
-    solutionOrProjectPath: 'GUT.Schedule/GUTSchedule.sln'
-    failBuildLevelSelector: Hint
-    failBuildOnCodeIssues: false
+# - task: ResharperCli@2
+#   displayName: 'RESharper CLI Code Analyzer'
+#   inputs:
+#     solutionOrProjectPath: 'GUT.Schedule/GUTSchedule.sln'
+#     failBuildLevelSelector: Hint
+#     failBuildOnCodeIssues: false
 
-- task: XamarinAndroid@1
-  displayName: 'Build Android'
-  inputs:
-    projectFile: '**/**.Droid.csproj'
-    outputDirectory: '$(outputDirectory)'
-    configuration: '$(buildConfiguration)'
-    msbuildVersionOption: 'latest'
-    msbuildArchitectureOption: 'x64'
-    jdkOption: 'JDKVersion'
+# - task: XamarinAndroid@1
+#   displayName: 'Build Android'
+#   inputs:
+#     projectFile: '**/**.Droid.csproj'
+#     outputDirectory: '$(outputDirectory)'
+#     configuration: '$(buildConfiguration)'
+#     msbuildVersionOption: 'latest'
+#     msbuildArchitectureOption: 'x64'
+#     jdkOption: 'JDKVersion'
 
-- task: VSBuild@1
-  displayName: 'Build UWP'
-  inputs:
-    platform: 'x64'
-    solution: '**/**.UWP.csproj'
-    configuration: '$(buildConfiguration)'
-    msbuildArgs: '/p:AppxPackageSigningEnabled=false'
+# - task: VSBuild@1
+#   displayName: 'Build UWP'
+#   inputs:
+#     platform: 'x64'
+#     solution: '**/**.UWP.csproj'
+#     configuration: '$(buildConfiguration)'
+#     msbuildArgs: '/p:AppxPackageSigningEnabled=false'
 
 - task: FileTransform@2
   displayName: 'Update test credential'
   inputs:
     folderPath: '$(System.DefaultWorkingDirectory)'
+    xmlTransformationRules: 
     jsonTargetFiles: '**/TestCredential.json'
 
 - task: VSBuild@1
@@ -70,7 +71,7 @@ steps:
   displayName: 'Publish test results'
   inputs:
     testResultsFormat: 'NUnit'
-    testResultsFiles: '**/TEST-*.xml'
+    testResultsFiles: '**/*.trx'
     searchFolder: '$(Agent.TempDirectory)\TestResults'
     mergeTestResults: true
     failTaskOnFailedTests: true
