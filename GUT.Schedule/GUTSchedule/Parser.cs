@@ -64,10 +64,10 @@ namespace GUTSchedule
 			}
 			else if (exportParameters is DefaultExportParameters args)
 			{
-				int offsetDay = int.Parse(await new HttpClient().GetStringAsync("https://xfox111.net/API/GUTSchedule/SemesterOffsetDay"));
+				DateTime startDate = new DateTime(long.Parse(await new HttpClient().GetStringAsync("https://xfox111.net/API/GUTSchedule/SemesterOffsetDay")));
 				IHtmlDocument[] rawSchedule = await GetRawSchedule(args.FacultyId, args.Course, args.GroupId);
 				if(rawSchedule[0] != null)
-					schedule.AddRange(ParseRegularSchedule(offsetDay, rawSchedule[0]));
+					schedule.AddRange(ParseRegularSchedule(startDate, rawSchedule[0]));
 				if(rawSchedule[1] != null)
 					schedule.AddRange(ParseSessionSchedule(rawSchedule[1]));
 			}
@@ -156,13 +156,12 @@ namespace GUTSchedule
 				return $"205.{now.Year - 2000}{now.Year - 1999}/1";
 		}
 
-		private static DateTime[] GetDatesFromWeeks(int offsetDay, int weekday, string[] weeks)
+		private static DateTime[] GetDatesFromWeeks(DateTime date, int weekday, string[] weeks)
 		{
 			List<DateTime> dates = new List<DateTime>();
 			foreach(string rawWeek in weeks)
 			{
 				int week = int.Parse(rawWeek.Replace("*", ""));
-				DateTime date = new DateTime(DateTime.Today.Year, DateTime.Today.Month >= 8 ? 9 : 2, offsetDay);
 
 				date = date.AddDays(--week * 7);
 				date = date.AddDays(weekday - 1);
@@ -209,7 +208,7 @@ namespace GUTSchedule
 			return docs;
 		}
 
-		private static List<Occupation> ParseRegularSchedule(int offsetDay, IHtmlDocument raw)
+		private static List<Occupation> ParseRegularSchedule(DateTime startDate, IHtmlDocument raw)
 		{
 			if (raw == null)
 				throw new ArgumentNullException(nameof(raw));
@@ -221,7 +220,7 @@ namespace GUTSchedule
 			foreach (IElement item in pairs)
 			{
 				DateTime[] dates = GetDatesFromWeeks(
-					offsetDay,
+					startDate,
 					int.Parse(item.GetAttribute("weekday")),
 					item.QuerySelector(".weeks").TextContent.Replace("(", "").Replace("н)", "").Replace(" ", "").Split(','));
 
@@ -233,7 +232,7 @@ namespace GUTSchedule
 						Name = item.QuerySelector(".subect").TextContent.Replace(" (1)", "").Replace(" (2)", ""),
 						Type = item.QuerySelector(".type").TextContent.Replace("(", "").Replace(")", ""),
 						Group = groupName,
-						Opponent = item.QuerySelector(".teacher")?.GetAttribute("title").Replace("; ", "") ?? "",
+						Opponent = item.QuerySelector(".teacher")?.GetAttribute("title").Replace("; ", "\n") ?? "",
 						Cabinet = item.QuerySelector(".aud")?.TextContent.Replace("ауд.: ", "").Replace("; Б22", "").Replace(" ", "") ?? "СПбГУТ",
 						Order = order > 50 ? $"Ф{order - 81}" : order.ToString()
 					};
@@ -310,7 +309,7 @@ namespace GUTSchedule
 
 				DateTime date = DateTime.Parse(item.FirstChild.FirstChild.TextContent, new CultureInfo("ru-RU"));
 				string rawTime = item.ChildNodes[2].TextContent;
-				try 
+				try
 				{
 					rawTime = rawTime.Substring(rawTime.IndexOf('(')).Replace(")", "").Replace('.', ':');
 					occupation.StartTime = date.Add(TimeSpan.Parse(rawTime.Split('-')[0]));

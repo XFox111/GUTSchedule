@@ -1,1 +1,2 @@
-- Fixed and improved parser
+- Updated schedule parser Обновлен парсер расписания
+- Authorization via personal cabinet is temporarly disabled

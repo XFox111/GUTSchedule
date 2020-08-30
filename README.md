@@ -13,7 +13,7 @@ Cross-platform application which exports SPbSUT timetable to calendar
 - Platforms: Xamarin.Android, Universal Windows Platform
 - Android:
   - Minimal version: 4.1 (API level 16 - Jelly Bean)
-  - Target version: 9.0 (API level 28 - Pie)
+  - Target version: 10.0 (API level 29 - Oreo)
 - UWP:
   - Minimal version: 1507 (10.0.10240)
   - Target version: 1709 (10.0.16299, Fall Creators Update)
