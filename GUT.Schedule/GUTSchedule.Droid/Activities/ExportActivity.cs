@@ -46,8 +46,8 @@ namespace GUTSchedule.Droid.Activities
 				Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(this);
 				builder.SetMessage(Resources.GetText(Resource.String.connectionFailMessage))
 					.SetTitle(e.Message)
-					.SetPositiveButton("ОК", (s, e) => base.OnBackPressed())
-					.SetNegativeButton(Resources.GetText(Resource.String.repeat), (s, e) => Export());
+					.SetPositiveButton("ОК", (s, arg) => base.OnBackPressed())
+					.SetNegativeButton(Resources.GetText(Resource.String.repeat), (s, arg) => Export());
 
 				Android.Support.V7.App.AlertDialog dialog = builder.Create();
 				dialog.Show();
@@ -58,7 +58,7 @@ namespace GUTSchedule.Droid.Activities
 				Android.Support.V7.App.AlertDialog.Builder builder = new Android.Support.V7.App.AlertDialog.Builder(this);
 				builder.SetMessage(e.Message)
 					.SetTitle(e.GetType().ToString())
-					.SetPositiveButton("ОК", (s, e) => base.OnBackPressed());
+					.SetPositiveButton("ОК", (s, arg) => base.OnBackPressed());
 
 				Android.Support.V7.App.AlertDialog dialog = builder.Create();
 				dialog.Show();
