@@ -64,12 +64,12 @@
 					<TextBlock x:Uid="scheduleParametersTitle" Style="{StaticResource SubtitleTextBlockStyle}" Text="Schedule parameters"/>
 
 					<CheckBox x:Uid="authorizeCheckbox" Content="Authorize via personal cabinet" Checked="ChangeAuthorizationMethod" Unchecked="ChangeAuthorizationMethod" IsChecked="False" IsEnabled="False" x:Name="authorize"/>
-					<StackPanel x:Name="credentialMethod">
+					<StackPanel x:Name="credentialMethod" Visibility="Collapsed">
 						<TextBox x:Uid="email" PlaceholderText="E-mail" x:Name="email" IsSpellCheckEnabled="False"/>
 						<PasswordBox x:Uid="password" PlaceholderText="Password" x:Name="password"/>
 						<CheckBox x:Uid="remember" Content="Remember" x:Name="rememberCredential" Checked="RememberCredential_Checked" Unchecked="RememberCredential_Checked"/>
 					</StackPanel>
-					<StackPanel x:Name="defaultMethod" Visibility="Collapsed">
+					<StackPanel x:Name="defaultMethod" Visibility="Visible">
 						<ComboBox x:Uid="facultySpinner" x:Name="faculty" PlaceholderText="No schedule is available" Header="Course" SelectionChanged="Faculty_SelectionChanged"/>
 						<ComboBox x:Uid="courseSpinner" x:Name="course" Header="Course" SelectionChanged="Course_SelectionChanged">
 							<ComboBoxItem Content="1"/>
