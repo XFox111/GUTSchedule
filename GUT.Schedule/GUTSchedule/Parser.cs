@@ -163,10 +163,10 @@ namespace GUTSchedule
 			{
 				int week = int.Parse(rawWeek.Replace("*", ""));
 
-				date = date.AddDays(--week * 7);
-				date = date.AddDays(weekday - 1);
+				DateTime newDate = date.AddDays(--week * 7);
+				newDate = newDate.AddDays(weekday - 1);
 
-				dates.Add(date);
+				dates.Add(newDate);
 			}
 
 			return dates.ToArray();
@@ -202,7 +202,8 @@ namespace GUTSchedule
 					if (string.IsNullOrWhiteSpace(responseContent))
 						docs[k - 1] = null;
 
-					docs[k - 1] = new HtmlParser().ParseDocument(responseContent);
+					try { docs[k - 1] = new HtmlParser().ParseDocument(responseContent); }
+					catch (ArgumentException) { }
 				}
 
 			return docs;

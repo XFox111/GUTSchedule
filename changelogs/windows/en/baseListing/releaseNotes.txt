@@ -1,2 +1,3 @@
 - Updated schedule parser Обновлен парсер расписания
-- Authorization via personal cabinet is temporarly disabled
+
+Personal cabinet authorization still disabled due to some server-side connection issues
