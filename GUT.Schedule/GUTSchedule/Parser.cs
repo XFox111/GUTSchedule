@@ -161,7 +161,7 @@ namespace GUTSchedule
 			List<DateTime> dates = new List<DateTime>();
 			foreach(string rawWeek in weeks)
 			{
-				int week = int.Parse(rawWeek.Replace("*", ""));
+				int week = int.Parse(rawWeek.Replace("*", "").Replace("д", ""));
 
 				DateTime newDate = date.AddDays(--week * 7);
 				newDate = newDate.AddDays(weekday - 1);
