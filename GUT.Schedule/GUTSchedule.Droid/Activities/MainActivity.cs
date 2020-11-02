@@ -81,7 +81,7 @@ namespace GUTSchedule.Droid.Activities
 			start.Text = startDate.ToShortDateString();
 
 			groupTitle.Checked = prefs.GetBoolean("AddGroupToHeader", false);
-			//authorize.Checked = prefs.GetBoolean("Authorize", true);
+			authorize.Checked = prefs.GetBoolean("Authorize", true);
 
 			email.Text = prefs.GetString("email", "");
 			password.Text = prefs.GetString("password", "");

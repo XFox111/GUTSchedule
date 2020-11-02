@@ -46,6 +46,8 @@ namespace GUTSchedule
 				throw new System.Security.VerificationException(responseQuery["error"].Replace("|", "; "));
 			}
 
+			await client.GetAsync("https://lk.sut.ru/cabinet/?login=yes");
+
 			return client;
 		}
 

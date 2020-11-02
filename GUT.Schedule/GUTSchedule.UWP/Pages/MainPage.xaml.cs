@@ -34,7 +34,7 @@ namespace GUTSchedule.UWP.Pages
 				PackageVersion ver = Package.Current.Id.Version;
 				version.Text = $"v{ver.Major}.{ver.Minor}.{ver.Build}.{ver.Revision}";
 
-				//authorize.IsChecked = (bool?)settings.Values["Authorize"] ?? true;
+				authorize.IsChecked = (bool?)settings.Values["Authorize"] ?? true;
 				if (vault.RetrieveAll() is IReadOnlyList<PasswordCredential> credentials && credentials.Count > 0)
 				{
 					email.Text = credentials.First().UserName;
