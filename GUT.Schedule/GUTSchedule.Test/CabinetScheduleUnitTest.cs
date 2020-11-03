@@ -36,5 +36,41 @@ namespace GUTSchedule.Test
 				Console.WriteLine(i.Opponent);
 			}
 		}
+
+		[Test]
+		public async Task OccupationsCheckTest()
+		{
+			JObject secrets = JsonConvert.DeserializeObject(File.ReadAllText(Directory.GetCurrentDirectory() + "\\TestCredential.json")) as JObject;
+			var list = await Parser.CheckAvailableOccupations(secrets["testEmail"].ToObject<string>(), secrets["testPassword"].ToObject<string>());
+
+			Assert.IsNotNull(list);
+			if (list.Count < 1)
+			{
+				Assert.Warn("No available occupations");
+				return;
+			}
+
+			Console.WriteLine("Available occupations:");
+			list.ForEach(i => Console.WriteLine($"{i.Item1} / {i.Item2}"));
+		}
+
+		[Test]
+		public async Task ApplyForOccupationsTest()
+		{
+			JObject secrets = JsonConvert.DeserializeObject(File.ReadAllText(Directory.GetCurrentDirectory() + "\\TestCredential.json")) as JObject;
+			var list = await Parser.CheckAvailableOccupations(secrets["testEmail"].ToObject<string>(), secrets["testPassword"].ToObject<string>());
+
+			Assert.IsNotNull(list);
+			if (list.Count < 1)
+			{
+				Assert.Warn("No available occupations to test");
+				return;
+			}
+
+			Console.WriteLine("Available occupations:");
+			list.ForEach(i => Console.WriteLine($"{i.Item1} / {i.Item2}"));
+
+			await Parser.ApplyForOccupations(secrets["testEmail"].ToObject<string>(), secrets["testPassword"].ToObject<string>(), list);
+		}
 	}
 }

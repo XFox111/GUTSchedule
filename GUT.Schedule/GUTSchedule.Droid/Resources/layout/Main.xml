@@ -11,6 +11,15 @@
 		android:orientation="vertical"
 		android:padding="10dp">
 
+		<Button
+			android:id="@+id/applyForOccupation"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:visibility="gone"
+			android:text="@string/applyForOccupation"
+			android:background="@color/colorPrimary"
+			android:textColor="@android:color/white"/>
+
 		<TextView
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -22,8 +31,7 @@
 			android:id="@+id/authorization"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:enabled="false"
-			android:checked="false"
+			android:checked="true"
 			android:text="@string/authorizeCheckbox"/>
 
 		<LinearLayout
@@ -91,6 +99,13 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:inputType="textWebPassword"/>
+
+			<Button
+				android:id="@+id/validateCredential"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/validateCredential"/>
+
 		</LinearLayout>
 
 		<TextView

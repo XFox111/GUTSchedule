@@ -26,10 +26,21 @@ namespace GUTSchedule.Droid.Activities
 		public static int SelectedCalendarIndex { get; set; }
 		public static int Reminder { get; set; }
 
+		private List<(string, string)> _availableOccupations;
+		private List<(string, string)> AvailableOccupations
+		{
+			get => _availableOccupations;
+			set
+			{
+				_availableOccupations = value;
+				applyForOccupation.Visibility = value.Count > 0 ? ViewStates.Visible : ViewStates.Gone;
+			}
+		}
+
 		DateTime startDate = DateTime.Today;
 		DateTime endDate = DateTime.Today.AddDays(7);
 
-		Button start, end, export;
+		Button start, end, export, applyForOccupation, validateCredential;
 		Button forDay, forWeek, forMonth, forSemester;
 		Spinner faculty, course, group, reminder, calendar;
 		CheckBox groupTitle, authorize;
@@ -85,6 +96,15 @@ namespace GUTSchedule.Droid.Activities
 
 			email.Text = prefs.GetString("email", "");
 			password.Text = prefs.GetString("password", "");
+
+			try
+			{
+				AvailableOccupations = await Parser.CheckAvailableOccupations(email.Text, password.Text);
+			}
+			catch
+			{
+				AvailableOccupations = new List<(string, string)>();
+			}
 		}
 
 		private void Export_Click(object sender, EventArgs e)
@@ -119,7 +139,7 @@ namespace GUTSchedule.Droid.Activities
 				// According to this SO thread: https://stackoverflow.com/questions/1925486/android-storing-username-and-password
 				// I consider Preferences as safe enough method for storing credentials
 				// А во-вторых, даже такой казалось бы небезопасный метод хранения учетных данных в сто раз надежнее того дерьма,
-				// что творится на серверах Бонча (я не шучу, там все ОЧЕНЬ плохо)
+				// что творится на серверах Бонча (я не шучу, там пиздец)
 				// Ну и в-третьих: Андроид - это пиздец и настоящий ад разработчика. И если бы была моя воля, я бы под него никогда не писал #FuckAndroid
 				// З.Ы. Помнишь про второй пункт? Так вот, если ты используешь такой же пароль как в ЛК где-то еще, настоятельно рекомендую его поменять
 				PreferenceManager.GetDefaultSharedPreferences(this).Edit().PutString("email", email.Text).Apply();
@@ -192,6 +212,8 @@ namespace GUTSchedule.Droid.Activities
 			forWeek = FindViewById<Button>(Resource.Id.forWeek);
 			forMonth = FindViewById<Button>(Resource.Id.forMonth);
 			forSemester = FindViewById<Button>(Resource.Id.forSemester);
+			applyForOccupation = FindViewById<Button>(Resource.Id.applyForOccupation);
+			validateCredential = FindViewById<Button>(Resource.Id.validateCredential);
 
 			faculty = FindViewById<Spinner>(Resource.Id.faculty);
 			course = FindViewById<Spinner>(Resource.Id.course);
@@ -260,6 +282,40 @@ namespace GUTSchedule.Droid.Activities
 				else
 					endDate = new DateTime(DateTime.Today.Year, 8, 31);
 				end.Text = endDate.ToShortDateString();
+			};
+			applyForOccupation.Click += async (s, e) =>
+			{
+				try
+				{
+					applyForOccupation.Visibility = ViewStates.Gone;
+					AvailableOccupations = await Parser.CheckAvailableOccupations(email.Text, password.Text);
+					await Parser.ApplyForOccupations(email.Text, password.Text, AvailableOccupations);
+					Toast.MakeText(ApplicationContext, Resources.GetText(Resource.String.attendSuccess), ToastLength.Short).Show();
+				}
+				catch (Exception ex)
+				{
+					Toast.MakeText(ApplicationContext, $"{Resources.GetText(Resource.String.attendFailed)}\n{ex.Message}", ToastLength.Short).Show();
+					applyForOccupation.Visibility = ViewStates.Visible;
+				}
+			};
+			validateCredential.Click += async (s, e) =>
+			{
+				try
+				{
+					validateCredential.Enabled = false;
+					await Parser.VaildateAuthorization(email.Text, password.Text);
+
+					PreferenceManager.GetDefaultSharedPreferences(this).Edit().PutString("email", email.Text).Apply();
+					PreferenceManager.GetDefaultSharedPreferences(this).Edit().PutString("password", password.Text).Apply();
+
+					AvailableOccupations = await Parser.CheckAvailableOccupations(email.Text, password.Text);
+					Toast.MakeText(ApplicationContext, Resources.GetText(Resource.String.validationSuccess), ToastLength.Short).Show();
+				}
+				catch (Exception ex)
+				{
+					Toast.MakeText(ApplicationContext, $"{Resources.GetText(Resource.String.validationFailed)}\n{ex.Message}", ToastLength.Short).Show();
+				}
+				validateCredential.Enabled = true;
 			};
 
 			start.Click += Start_Click;

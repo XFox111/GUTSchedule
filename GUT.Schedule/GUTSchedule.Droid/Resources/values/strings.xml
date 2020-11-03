@@ -1,100 +1,108 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources>
-  <string name="appName">GUT.Schedule</string>
-  
-  <string name="initializationStatus">Initialization</string>
-  <string name="permissionsCheckStatus">Checking permissions</string>
-  <string name="calendarLoadingStatus">Loading calendars list</string>
-  <string name="facultiesLoadingStatus">Loading faculties list</string>
-  <string name="offsetDatesLoadingStatus">Loading offset dates</string>
-  
-  <string name="calendarAccessTitle">Calendar access</string>
-  <string name="calendarAccessRationale">Grant permission to the app to access calendar. Without it the app will not be able to add schedule to your calendar</string>
-  
-  <string name="createCalendarTitle">Create new calendar</string>
-  <string name="createCalendarMessage">There\'s no calendars on your device we can write schedule to</string>
+	<string name="appName">GUT.Schedule</string>
 
-  <string name="connectionFailMessage">Unable to load schedule. Check your internet connection or try again later</string>
-  <string name="repeat">Try again</string>
-  <string name="quit">Quit</string>
-  <string name="close">Close</string>
+	<string name="initializationStatus">Initialization</string>
+	<string name="permissionsCheckStatus">Checking permissions</string>
+	<string name="calendarLoadingStatus">Loading calendars list</string>
+	<string name="facultiesLoadingStatus">Loading faculties list</string>
+	<string name="offsetDatesLoadingStatus">Loading offset dates</string>
 
-  <!-- MainActivity -->
-  <string name="scheduleParametersTitle">Schedule parameters</string>
-  <string name="authorizeCheckbox">Authorize via Personal cabinet</string>
-  <string name="facultySpinner">Faculty</string>
-  <string name="courseSpinner">Course</string>
-  <string name="groupSpinner">Group</string>
+	<string name="calendarAccessTitle">Calendar access</string>
+	<string name="calendarAccessRationale">Grant permission to the app to access calendar. Without it the app will not be able to add schedule to your calendar</string>
 
-  <string name="passwordField">Password</string>
+	<string name="createCalendarTitle">Create new calendar</string>
+	<string name="createCalendarMessage">There\'s no calendars on your device we can write schedule to</string>
 
-  <string name="exportParametersTitle">Export parameters</string>
-  <string name="dateRange">Export range</string>
+	<string name="connectionFailMessage">Unable to load schedule. Check your internet connection or try again later</string>
+	<string name="repeat">Try again</string>
+	<string name="quit">Quit</string>
+	<string name="close">Close</string>
 
-  <string name="forDayButton">For day</string>
-  <string name="forWeekButton">For week</string>
-  <string name="forMonthButton">For month</string>
-  <string name="forSemesterButton">For semester</string>
+	<!-- MainActivity -->
+	<string name="scheduleParametersTitle">Schedule parameters</string>
+	<string name="authorizeCheckbox">Authorize via Personal cabinet</string>
+	<string name="facultySpinner">Faculty</string>
+	<string name="courseSpinner">Course</string>
+	<string name="groupSpinner">Group</string>
 
-  <string name="reminderSpinner">Set reminders for</string>
-  <string name="reminderNote">(i) Attention, if you choose \"None\" for cloud-based Google calendars Google sets default reminder for events automatically sets reminders for 30 minutes if there\'s no reminder set by user</string>
-  <string name="noReminderOption">None</string>
-  <string name="inTimeReminderOption">At the start of event</string>
-  <string name="fiveMinuteReminderOption">5 minutes</string>
-  <string name="tenMinuteReminderOption">10 minutes</string>
+	<string name="passwordField">Password</string>
+	<string name="applyForOccupation">Apply for occupation</string>
+	<string name="validateCredential">Validate credential</string>
 
-  <string name="addGroupToTitleCheckbox">Add group number to event title</string>
-  <string name="titleNote">(i) This doesn\'t affect professors\' schedule</string>
+	<string name="attendFailed">Something went wrong. Please try again or do it via personal cabinet</string>
+	<string name="attendSuccess">Successfully registered for occupation</string>
 
-  <string name="destinationCalendarSpinner">Destination calendar</string>
-  
-  <string name="addScheduleButton">Add schedule</string>
+	<string name="validationSuccess">Authorized successfully</string>
+	<string name="validationFailed">Authorization failed. Check your credential.</string>
 
-  <string name="copyrights">©2020 Michael Gordeev, IST, IST-942</string>
+	<string name="exportParametersTitle">Export parameters</string>
+	<string name="dateRange">Export range</string>
 
-  <string name="clearCalendarOption">Clear schedule</string>
-  <string name="reportErrorOption">Report error</string>
+	<string name="forDayButton">For day</string>
+	<string name="forWeekButton">For week</string>
+	<string name="forMonthButton">For month</string>
+	<string name="forSemesterButton">For semester</string>
 
-  <string name="invalidDateRangeError">Error: Invalid date range</string>
-  <string name="authorizationState">Authorization...</string>
-  <string name="invalidAuthorizationError">Error: Invalid credential</string>
-  <string name="authorizationError">Authorization error</string>
-  <string name="invalidCredentialError">Authorization error: Invalid e-mail and/or password</string>
-  <string name="groupSelectionError">Error: no group was selected</string>
+	<string name="reminderSpinner">Set reminders for</string>
+	<string name="reminderNote">(i) Attention, if you choose \"None\" for cloud-based Google calendars Google sets default reminder for events automatically (usually, 30 minutes)</string>
+	<string name="noReminderOption">None</string>
+	<string name="inTimeReminderOption">At the start of event</string>
+	<string name="fiveMinuteReminderOption">5 minutes</string>
+	<string name="tenMinuteReminderOption">10 minutes</string>
 
-  <string name="clearScheduleTitle">Clear schedule</string>
-  <string name="clearScheduleMessage">This action will purge exported schedule from all available calendars. \nIt will affect only events created by the app. \n\'All\' - will purge all timetable events including the past ones \n\'Upcoming\' - will affect only upcoming timetable events</string>
-  <string name="clearAllOption">All</string>
-  <string name="clearUpcomingOption">Upcoming</string>
-  <string name="cancelOption">Cancel</string>
-  <string name="clearingStatus">Clearing...</string>
-  
-  <!-- ExportActivity -->
-  <string name="loadingStatus">Loading</string>
-  <string name="potatoLoadingStatus">Loading schedule from SPbSUT potato servers</string>
-  <string name="scheduleLoadingStatus">Loading schedule</string>
-  <string name="calendarExportStatus">Exporting to calendar</string>
-  <string name="doneStatus">Done</string>
+	<string name="addGroupToTitleCheckbox">Add group number to event title</string>
+	<string name="titleNote">(i) This doesn\'t affect professors\' schedule</string>
 
-  <!-- AboutActivity -->
-  <string name="aboutTitle">About application</string>
-  <string name="appDescription">Application for SPbSUT professors\' and students\' schedule export</string>
-  <string name="developedBy">Developed by Michael Gordeev (IST-942, IST) in the \"Technologies of Informational and Educational Systems\" Research and Educational Center</string>
-  <string name="contributorsTitle">Contributors</string>
+	<string name="destinationCalendarSpinner">Destination calendar</string>
 
-  <string name="specialThanksTitle">Special thanks</string>
-  <string name="specialThanksPeople">Vitaliy Moshkov, Anastasiya Godunova</string>
+	<string name="addScheduleButton">Add schedule</string>
 
-  <string name="contactsTitle">Contacts</string>
-  <string name="websiteContact">Website</string>
-  <string name="twitterContact">Twitter</string>
-  <string name="vkontakteContact">Vkontakte</string>
+	<string name="copyrights">©2020 Michael Gordeev, IST, IST-942</string>
 
-  <string name="linksTitle">Useful links</string>
-  <string name="privacyPolicyLink">Privacy policy</string>
-  <string name="repositoryLink">GitHub Repository</string>
-  <string name="notsLink">\"TIES\" REC</string>
-  <string name="sutLink">SPbSUT</string>
+	<string name="clearCalendarOption">Clear schedule</string>
+	<string name="reportErrorOption">Report error</string>
 
-  <string name="feedbackButton">Leave feedback</string>
+	<string name="invalidDateRangeError">Error: Invalid date range</string>
+	<string name="authorizationState">Authorization...</string>
+	<string name="invalidAuthorizationError">Error: Invalid credential</string>
+	<string name="authorizationError">Authorization error</string>
+	<string name="invalidCredentialError">Authorization error: Invalid e-mail and/or password</string>
+	<string name="groupSelectionError">Error: no group was selected</string>
+
+	<string name="clearScheduleTitle">Clear schedule</string>
+	<string name="clearScheduleMessage">This action will purge exported schedule from all available calendars. \nIt will affect only events created by the app. \n\'All\' - will purge all timetable events including the past ones \n\'Upcoming\' - will affect only upcoming timetable events</string>
+	<string name="clearAllOption">All</string>
+	<string name="clearUpcomingOption">Upcoming</string>
+	<string name="cancelOption">Cancel</string>
+	<string name="clearingStatus">Clearing...</string>
+
+	<!-- ExportActivity -->
+	<string name="loadingStatus">Loading</string>
+	<string name="potatoLoadingStatus">Loading schedule from SPbSUT potato servers</string>
+	<string name="scheduleLoadingStatus">Loading schedule</string>
+	<string name="calendarExportStatus">Exporting to calendar</string>
+	<string name="doneStatus">Done</string>
+
+	<!-- AboutActivity -->
+	<string name="aboutTitle">About application</string>
+	<string name="appDescription">Application for SPbSUT professors\' and students\' schedule export</string>
+	<string name="developedBy">Developed by Michael Gordeev (IST-942, IST) in the \"Technologies of Informational and Educational Systems\" Research and Educational Center</string>
+	<string name="contributorsTitle">Contributors</string>
+
+	<string name="specialThanksTitle">Special thanks</string>
+	<string name="specialThanksPeople">Vitaliy Moshkov, Anastasiya Godunova</string>
+
+	<string name="contactsTitle">Contacts</string>
+	<string name="websiteContact">Website</string>
+	<string name="twitterContact">Twitter</string>
+	<string name="vkontakteContact">Vkontakte</string>
+
+	<string name="linksTitle">Useful links</string>
+	<string name="privacyPolicyLink">Privacy policy</string>
+	<string name="repositoryLink">GitHub Repository</string>
+	<string name="notsLink">\"TIES\" REC</string>
+	<string name="sutLink">SPbSUT</string>
+
+	<string name="feedbackButton">Leave feedback</string>
 </resources>

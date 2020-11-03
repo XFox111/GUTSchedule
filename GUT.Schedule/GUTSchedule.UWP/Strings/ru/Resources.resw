@@ -160,7 +160,10 @@
     <value>Расписание очищено</value>
   </data>
   <data name="clearScheduleMessage" xml:space="preserve">
-    <value>Это действие удалит экспортированное расписание из всех доступных календарей.Данное действие затронет только расписание, экспортированное этим приложением'Все' - удалит все события расписания, включая прошедшие'Только новые' - удалит будущие события расписания</value>
+    <value>Это действие удалит экспортированное расписание из всех доступных календарей.
+Данное действие затронет только расписание, экспортированное этим приложением
+'Все' - удалит все события расписания, включая прошедшие
+'Только новые' - удалит будущие события расписания</value>
   </data>
   <data name="clearScheduleTitle.PrimaryButtonText" xml:space="preserve">
     <value>Очистить расписание</value>
@@ -326,5 +329,23 @@
   </data>
   <data name="websiteContact.Text" xml:space="preserve">
     <value>Веб-сайт</value>
+  </data>
+  <data name="applyForOccupation.Content" xml:space="preserve">
+    <value>Начать занятие</value>
+  </data>
+  <data name="validateCredential.Content" xml:space="preserve">
+    <value>Проверить данные</value>
+  </data>
+  <data name="attendFailed" xml:space="preserve">
+    <value>Что-то пошло не так. Попроуйте снова или выполните действие через личный кабинет</value>
+  </data>
+  <data name="attendSuccess" xml:space="preserve">
+    <value>Регистрация на занятие выполнена</value>
+  </data>
+  <data name="validationSuccess" xml:space="preserve">
+    <value>Авторизация выполнена успешно</value>
+  </data>
+  <data name="validationFailed" xml:space="preserve">
+    <value>Ошибка авторизации. Проверьте данные.</value>
   </data>
 </root>

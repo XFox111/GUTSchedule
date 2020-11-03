@@ -8,13 +8,14 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace GUTSchedule
 {
 	public static class Parser
 	{
-		private static async Task<HttpClient> VaildateAuthorization(string email, string password)
+		public static async Task<HttpClient> VaildateAuthorization(string email, string password)
 		{
 			if (string.IsNullOrWhiteSpace(email))
 				throw new ArgumentNullException(nameof(email));
@@ -441,6 +442,31 @@ namespace GUTSchedule
 				}
 
 			return schedule;
+		}
+
+		public static async Task<List<(string, string)>> CheckAvailableOccupations(string email, string password)
+		{
+			HttpClient client = await VaildateAuthorization(email, password);
+			HttpResponseMessage response = await client.GetAsync("https://lk.sut.ru/cabinet//project/cabinet/forms/raspisanie_bak.php");
+			string responseContent = await response.GetString();
+
+			if (!response.IsSuccessStatusCode)
+				throw new HttpRequestException(responseContent);
+
+			IHtmlDocument doc = new HtmlParser().ParseDocument(responseContent);
+			List<(string, string)> occupations = doc.QuerySelectorAll(".simple-little-table td[align=left] > span[id] > a").Select(i =>
+			{
+				string[] parameters = new Regex(@"(?<=\()[0-9,]*(?=\))").Match(i.Attributes["onclick"].Value).Value.Split(',');
+				return (parameters[0], parameters[1]);
+			}).ToList();
+			return occupations;
+		}
+
+		public static async Task ApplyForOccupations(string email, string password, List<(string, string)> occupations)
+		{
+			HttpClient client = await VaildateAuthorization(email, password);
+			foreach (var i in occupations)
+				await client.GetAsync($"https://lk.sut.ru/cabinet/project/cabinet/forms/raspisanie_bak.php?open=1&rasp={i.Item1}&week={i.Item2}");
 		}
 	}
 }

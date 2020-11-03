@@ -1,1 +1,3 @@
 - Personal cabinet authorization is available again
+- Added ability to validate your personal cabinet credential
+- Added ability to apply for lesson in one click
