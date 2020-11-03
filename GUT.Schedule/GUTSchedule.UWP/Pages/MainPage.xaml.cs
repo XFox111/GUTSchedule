@@ -73,7 +73,7 @@ namespace GUTSchedule.UWP.Pages
 
 				try
 				{
-					AvailableOccupations = await Parser.CheckAvailableOccupations(email.Text, password.Text);
+					AvailableOccupations = await Parser.CheckAvailableOccupations(email.Text, password.Password);
 				}
 				catch
 				{
@@ -320,7 +320,7 @@ namespace GUTSchedule.UWP.Pages
 					foreach (PasswordCredential credential in vault.RetrieveAll())
 						vault.Remove(credential);
 
-				AvailableOccupations = await Parser.CheckAvailableOccupations(email.Text, password.Text);
+				AvailableOccupations = await Parser.CheckAvailableOccupations(email.Text, password.Password);
 				await new MessageDialog(resources.GetString("validationSuccess")).ShowAsync();
 			}
 			catch (Exception ex)
