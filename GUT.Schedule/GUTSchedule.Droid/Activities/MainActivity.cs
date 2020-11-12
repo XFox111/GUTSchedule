@@ -288,15 +288,15 @@ namespace GUTSchedule.Droid.Activities
 				try
 				{
 					applyForOccupation.Visibility = ViewStates.Gone;
-					AvailableOccupations = await Parser.CheckAvailableOccupations(email.Text, password.Text);
-					await Parser.ApplyForOccupations(email.Text, password.Text, AvailableOccupations);
+					var occupations = await Parser.CheckAvailableOccupations(email.Text, password.Text);
+					await Parser.ApplyForOccupations(email.Text, password.Text, occupations);
 					Toast.MakeText(ApplicationContext, Resources.GetText(Resource.String.attendSuccess), ToastLength.Short).Show();
 				}
 				catch (Exception ex)
 				{
 					Toast.MakeText(ApplicationContext, $"{Resources.GetText(Resource.String.attendFailed)}\n{ex.Message}", ToastLength.Short).Show();
-					applyForOccupation.Visibility = ViewStates.Visible;
 				}
+				AvailableOccupations = await Parser.CheckAvailableOccupations(email.Text, password.Text);
 			};
 			validateCredential.Click += async (s, e) =>
 			{
