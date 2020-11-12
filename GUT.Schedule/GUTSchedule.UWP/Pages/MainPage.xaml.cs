@@ -24,6 +24,17 @@ namespace GUTSchedule.UWP.Pages
 		private readonly ResourceLoader resources = ResourceLoader.GetForCurrentView();
 		static readonly ApplicationDataContainer settings = ApplicationData.Current.LocalSettings;
 
+		private List<(string, string)> _availableOccupations;
+		private List<(string, string)> AvailableOccupations
+		{
+			get => _availableOccupations;
+			set
+			{
+				_availableOccupations = value;
+				applyForOccupation.Visibility = value.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+			}
+		}
+
 		public MainPage() =>
 			InitializeComponent();
 
@@ -34,7 +45,7 @@ namespace GUTSchedule.UWP.Pages
 				PackageVersion ver = Package.Current.Id.Version;
 				version.Text = $"v{ver.Major}.{ver.Minor}.{ver.Build}.{ver.Revision}";
 
-				//authorize.IsChecked = (bool?)settings.Values["Authorize"] ?? true;
+				authorize.IsChecked = (bool?)settings.Values["Authorize"] ?? true;
 				if (vault.RetrieveAll() is IReadOnlyList<PasswordCredential> credentials && credentials.Count > 0)
 				{
 					email.Text = credentials.First().UserName;
@@ -59,6 +70,15 @@ namespace GUTSchedule.UWP.Pages
 
 				reminder.SelectedIndex = (int?)settings.Values["Reminder"] ?? 2;
 				addGroupToTitle.IsChecked = (bool?)settings.Values["AddGroupToTitle"] ?? false;
+
+				try
+				{
+					AvailableOccupations = await Parser.CheckAvailableOccupations(email.Text, password.Password);
+				}
+				catch
+				{
+					AvailableOccupations = new List<(string, string)>();
+				}
 			}
 			catch (HttpRequestException e)
 			{
@@ -280,6 +300,50 @@ namespace GUTSchedule.UWP.Pages
 			dialog.DefaultCommandIndex = 0;
 
 			await dialog.ShowAsync();
+		}
+
+		private async void ValidateCredential(object sender, RoutedEventArgs e)
+		{
+			try
+			{
+				validateCredential.IsEnabled = false;
+				await Parser.VaildateAuthorization(email.Text, password.Password);
+
+				if (rememberCredential.IsChecked.Value)
+					vault.Add(new PasswordCredential
+					{
+						UserName = email.Text,
+						Password = password.Password,
+						Resource = "xfox111.gutschedule"
+					});
+				else
+					foreach (PasswordCredential credential in vault.RetrieveAll())
+						vault.Remove(credential);
+
+				AvailableOccupations = await Parser.CheckAvailableOccupations(email.Text, password.Password);
+				await new MessageDialog(resources.GetString("validationSuccess")).ShowAsync();
+			}
+			catch (Exception ex)
+			{
+				await new MessageDialog($"{resources.GetString("validationFailed")}\n{ex.Message}").ShowAsync();
+			}
+			validateCredential.IsEnabled = true;
+		}
+
+		private async void ApplyForLesson(object sender, RoutedEventArgs e)
+		{
+			try
+			{
+				applyForOccupation.Visibility = Visibility.Collapsed;
+				AvailableOccupations = await Parser.CheckAvailableOccupations(email.Text, password.Password);
+				await Parser.ApplyForOccupations(email.Text, password.Password, AvailableOccupations);
+				await new MessageDialog(resources.GetString("attendSuccess")).ShowAsync();
+			}
+			catch (Exception ex)
+			{
+				await new MessageDialog($"{resources.GetString("attendFailed")}\n{ex.Message}").ShowAsync();
+				applyForOccupation.Visibility = Visibility.Visible;
+			}
 		}
 	}
 }

@@ -1,3 +1,3 @@
-- Updated schedule parser Обновлен парсер расписания
-
-Personal cabinet authorization still disabled due to some server-side connection issues
+- Personal cabinet authorization is available again
+- Added ability to validate your personal cabinet credential
+- Added ability to apply for lesson in one click
