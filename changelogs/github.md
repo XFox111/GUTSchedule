@@ -1,2 +1,2 @@
 ## Core
-- Fixed and improved parser
+- Updated schedule parser

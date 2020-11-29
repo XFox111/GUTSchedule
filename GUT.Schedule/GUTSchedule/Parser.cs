@@ -59,7 +59,7 @@ namespace GUTSchedule
 			if (exportParameters is CabinetExportParameters cabinetArgs)
 			{
 				HttpClient client = await VaildateAuthorization(cabinetArgs.Email, cabinetArgs.Password);
-				for (DateTime d = exportParameters.StartDate; d <= exportParameters.EndDate; d = d.AddMonths(1))
+				for (DateTime d = exportParameters.StartDate.AddDays(1 - exportParameters.StartDate.Day); d <= exportParameters.EndDate.AddDays(1 - exportParameters.EndDate.Day); d = d.AddMonths(1))
 				{
 					schedule.AddRange(await GetCabinetSchedule(client, d, false));
 					schedule.AddRange(await GetCabinetSchedule(client, d, true));
