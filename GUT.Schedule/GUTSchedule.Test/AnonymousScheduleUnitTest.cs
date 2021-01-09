@@ -12,7 +12,8 @@ namespace GUTSchedule.Test
 		{
 			var list = await Parser.GetFaculties();
 			Assert.IsNotNull(list);
-			Assert.IsTrue(list.Count > 0);
+			if (list.Count < 1)
+				Assert.Warn("No faculties available");
 
 			Console.WriteLine("Faculties list:");
 			list.ForEach(i =>

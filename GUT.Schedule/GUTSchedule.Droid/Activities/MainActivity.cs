@@ -185,7 +185,7 @@ namespace GUTSchedule.Droid.Activities
 
 		private async void UpdateGroupsList()
 		{
-			if (course.SelectedItem == null)
+			if (course.SelectedItem == null || Faculties.Count < 1)
 				return;
 
 			Groups = await Parser.GetGroups(Faculties[faculty.SelectedItemPosition].id, (course.SelectedItemPosition + 1).ToString());

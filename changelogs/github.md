@@ -1,2 +1,2 @@
-## Core
-- Updated schedule parser
+## Android
+- Fixed application crashes when there is no public schedule available
