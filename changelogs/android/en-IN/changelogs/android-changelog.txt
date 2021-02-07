@@ -1,1 +1,1 @@
-- Fixed application crashes when there is no public schedule available
+- Anonymous schedule export is temporarly disabled

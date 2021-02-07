@@ -61,7 +61,7 @@ namespace GUTSchedule.Droid.Activities
 
 			AssignVariables();
 
-			faculty.SetList(this, Faculties.Select(i => i.name));
+			/*faculty.SetList(this, Faculties.Select(i => i.name));
 			int s = Faculties.FindIndex(i => i.id == prefs.GetString("Faculty", "-123"));
 			faculty.SetSelection(s == -1 ? 0 : s);
 
@@ -70,7 +70,7 @@ namespace GUTSchedule.Droid.Activities
 															// P.S. Fuck Android
 
 			await Task.Delay(100);
-			UpdateGroupsList();
+			UpdateGroupsList(); */	// TODO: Temp
 
 			AddEvents();
 
@@ -85,14 +85,14 @@ namespace GUTSchedule.Droid.Activities
 			reminder.SetSelection(prefs.GetInt("Reminder", 0));
 
 			calendar.SetList(this, Calendar.Calendars.Select(i => i.Name));
-			s = Calendar.Calendars.FindIndex(i => i.Id == prefs.GetString("Calendar", "-123"));
+			int s = Calendar.Calendars.FindIndex(i => i.Id == prefs.GetString("Calendar", "-123"));
 			calendar.SetSelection(s == -1 ? 0 : s);
 
 			end.Text = endDate.ToShortDateString();
 			start.Text = startDate.ToShortDateString();
 
 			groupTitle.Checked = prefs.GetBoolean("AddGroupToHeader", false);
-			authorize.Checked = prefs.GetBoolean("Authorize", true);
+			authorize.Checked = true;// prefs.GetBoolean("Authorize", true);	// TODO: Temp
 
 			email.Text = prefs.GetString("email", "");
 			password.Text = prefs.GetString("password", "");

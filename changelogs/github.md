@@ -1,2 +1,2 @@
-## Android
-- Fixed application crashes when there is no public schedule available
+## Core
+- Anonymous schedule export is temporarly disabled

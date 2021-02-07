@@ -1,1 +1,1 @@
-- Updated schedule parser
+- Anonymous schedule export is temporarly disabled
