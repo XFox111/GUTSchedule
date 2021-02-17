@@ -338,6 +338,12 @@ namespace GUTSchedule
 				("month", date.Month.ToString()),
 				("year", date.Year.ToString()),
 				("type_z", "0"));
+			request.Headers.UserAgent.Clear();
+			request.Headers.UserAgent.Add(new ProductInfoHeaderValue("Mozilla", "5.0"));
+			request.Headers.UserAgent.Add(new ProductInfoHeaderValue("AppleWebKit", "537.36"));
+			request.Headers.UserAgent.Add(new ProductInfoHeaderValue("Chrome", "88.0.4324.150"));
+			request.Headers.UserAgent.Add(new ProductInfoHeaderValue("Safari", "537.36"));
+			request.Headers.UserAgent.Add(new ProductInfoHeaderValue("Edg", "88.0.705.68"));
 
 			HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
 			string responseContent = await response.GetString().ConfigureAwait(false);
@@ -367,7 +373,14 @@ namespace GUTSchedule
 							i.QuerySelectorAll("i")[k].NextSibling.NextSibling.NextSibling.TextContent : "";
 
 					try { item.Cabinet = i.QuerySelectorAll("small")[k].NextSibling.TextContent.Replace(" ", "").Replace(";Б22", ""); }
-					catch { item.Cabinet = "СПбГУТ"; }
+					catch
+					{
+						INode cab = i?.QuerySelectorAll("b")[k * 2 + 2].NextSibling?.NextSibling;
+						if (cab?.NodeType == NodeType.Text)
+							item.Cabinet = cab.TextContent;
+						else
+							item.Cabinet = "СПбГУТ";
+					}
 
 					string rawTime = i.QuerySelectorAll("b")[k * 2 + 2].TextContent;
 					item.StartTime = new DateTime(
