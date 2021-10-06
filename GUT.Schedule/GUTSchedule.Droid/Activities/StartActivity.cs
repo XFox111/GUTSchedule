@@ -59,7 +59,7 @@ namespace GUT.Schedule.Droid.Activities
 				}
 
 				status.Text = Resources.GetText(Resource.String.facultiesLoadingStatus);
-				//MainActivity.Faculties = await Parser.GetFaculties();	// TODO: Temp
+				MainActivity.Faculties = await Parser.GetFaculties();
 			}
 			catch (HttpRequestException e)
 			{

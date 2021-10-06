@@ -15,14 +15,17 @@ namespace GUTSchedule
 {
 	public static class Parser
 	{
+		private static readonly HttpClient client = new HttpClient(new HttpClientHandler
+		{
+			ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
+		});
+
 		public static async Task<HttpClient> VaildateAuthorization(string email, string password)
 		{
 			if (string.IsNullOrWhiteSpace(email))
 				throw new ArgumentNullException(nameof(email));
 			if (string.IsNullOrWhiteSpace(password))
 				throw new ArgumentNullException(nameof(password));
-
-			HttpClient client = new HttpClient();
 
 			await client.GetAsync("https://lk.sut.ru/cabinet/");
 
@@ -67,7 +70,7 @@ namespace GUTSchedule
 			}
 			else if (exportParameters is DefaultExportParameters args)
 			{
-				DateTime startDate = new DateTime(long.Parse(await new HttpClient().GetStringAsync("https://xfox111.net/API/GUTSchedule/SemesterOffsetDay")));
+				DateTime startDate = new DateTime(2021, 8, 30);
 				IHtmlDocument[] rawSchedule = await GetRawSchedule(args.FacultyId, args.Course, args.GroupId);
 				if(rawSchedule[0] != null)
 					schedule.AddRange(ParseRegularSchedule(startDate, rawSchedule[0]));
@@ -131,20 +134,17 @@ namespace GUTSchedule
 		private static async Task<List<(string id, string name)>> GetList(params (string key, string value)[] parameters)
 		{
 			List<(string id, string name)> list = new List<(string, string)>();
-			using (HttpClient client = new HttpClient())
-			{
-				HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://cabinet.sut.ru/raspisanie_all_new.php");
-				request.SetContent(parameters);
-				request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+			HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://cabinet.sut.ru/raspisanie_all_new.php");
+			request.SetContent(parameters);
+			request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
 
-				HttpResponseMessage response = await client.SendAsync(request);
-				string responseBody = await response.Content.ReadAsStringAsync();
-				if (string.IsNullOrWhiteSpace(responseBody))
-					return list;
+			HttpResponseMessage response = await client.SendAsync(request);
+			string responseBody = await response.Content.ReadAsStringAsync();
+			if (string.IsNullOrWhiteSpace(responseBody))
+				return list;
 
-				foreach (string s in responseBody.Remove(responseBody.Length - 1).Split(';'))
-					list.Add((s.Split(',')[0], s.Split(',')[1]));
-			}
+			foreach (string s in responseBody.Remove(responseBody.Length - 1).Split(';'))
+				list.Add((s.Split(',')[0], s.Split(',')[1]));
 
 			return list;
 		}
@@ -185,29 +185,28 @@ namespace GUTSchedule
 				throw new ArgumentNullException(nameof(groupId));
 
 			IHtmlDocument[] docs = new IHtmlDocument[2];
-			using (HttpClient client = new HttpClient())
-				for(int k = 1; k < 3; k++)
-				{
-					HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://cabinet.sut.ru/raspisanie_all_new");
-					request.SetContent(
-						("group_el", "0"),
-						("kurs", course),
-						("type_z", k.ToString()),
-						("faculty", facultyId),
-						("group", groupId),
-						("ok", "Показать"),
-						("schet", GetCurrentSemester()));
+			for (int k = 1; k < 3; k++)
+			{
+				HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://cabinet.sut.ru/raspisanie_all_new");
+				request.SetContent(
+					("group_el", "0"),
+					("kurs", course),
+					("type_z", k.ToString()),
+					("faculty", facultyId),
+					("group", groupId),
+					("ok", "Показать"),
+					("schet", GetCurrentSemester()));
 
-					request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+				request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
 
-					HttpResponseMessage response = await client.SendAsync(request);
-					string responseContent = await response.Content.ReadAsStringAsync();
-					if (string.IsNullOrWhiteSpace(responseContent))
-						docs[k - 1] = null;
+				HttpResponseMessage response = await client.SendAsync(request);
+				string responseContent = await response.Content.ReadAsStringAsync();
+				if (string.IsNullOrWhiteSpace(responseContent))
+					docs[k - 1] = null;
 
-					try { docs[k - 1] = new HtmlParser().ParseDocument(responseContent); }
-					catch (ArgumentException) { }
-				}
+				try { docs[k - 1] = new HtmlParser().ParseDocument(responseContent); }
+				catch (ArgumentException) { }
+			}
 
 			return docs;
 		}

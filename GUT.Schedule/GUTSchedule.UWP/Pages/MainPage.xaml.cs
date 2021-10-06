@@ -45,7 +45,7 @@ namespace GUTSchedule.UWP.Pages
 				PackageVersion ver = Package.Current.Id.Version;
 				version.Text = $"v{ver.Major}.{ver.Minor}.{ver.Build}.{ver.Revision}";
 
-				authorize.IsChecked = true;//(bool?)settings.Values["Authorize"] ?? true; // TODO: Temp
+				authorize.IsChecked = (bool?)settings.Values["Authorize"] ?? true;
 				if (vault.RetrieveAll() is IReadOnlyList<PasswordCredential> credentials && credentials.Count > 0)
 				{
 					email.Text = credentials.First().UserName;
@@ -54,7 +54,7 @@ namespace GUTSchedule.UWP.Pages
 				}
 				rememberCredential.IsChecked = (bool?)settings.Values["RememberCredential"] ?? true;
 
-				/*faculty.ItemsSource = (await Parser.GetFaculties()).Select(i => new ComboBoxItem		// TODO: Temp
+				faculty.ItemsSource = (await Parser.GetFaculties()).Select(i => new ComboBoxItem
 				{
 					Content = i.name,
 					Tag = i.id,
@@ -63,7 +63,7 @@ namespace GUTSchedule.UWP.Pages
 				faculty.SelectedIndex = (faculty.ItemsSource as List<ComboBoxItem>).FindIndex(i => i.IsSelected);
 				if (faculty.SelectedIndex < 0)
 					faculty.SelectedIndex = 0;
-				course.SelectedIndex = (int?)settings.Values["Course"] ?? 0;*/
+				course.SelectedIndex = (int?)settings.Values["Course"] ?? 0;
 
 				startDate.Date = DateTime.Today;
 				endDate.Date = startDate.Date.Value.AddDays(6);

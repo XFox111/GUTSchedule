@@ -1,3 +1,2 @@
-- Anonymous schedule export is temporarly disabled
-- Fixed export failing
-- Remote lessons are now appropriately marked
+- Fixed SSL error
+- Turned back on anonymous schedule export

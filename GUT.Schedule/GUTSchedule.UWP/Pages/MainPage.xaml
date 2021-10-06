@@ -65,7 +65,7 @@
 
 					<TextBlock x:Uid="scheduleParametersTitle" Style="{StaticResource SubtitleTextBlockStyle}" Text="Schedule parameters"/>
 
-					<CheckBox x:Uid="authorizeCheckbox" Content="Authorize via personal cabinet" Checked="ChangeAuthorizationMethod" Unchecked="ChangeAuthorizationMethod" IsChecked="True" IsEnabled="False" x:Name="authorize"/>
+					<CheckBox x:Uid="authorizeCheckbox" Content="Authorize via personal cabinet" Checked="ChangeAuthorizationMethod" Unchecked="ChangeAuthorizationMethod" IsChecked="True" x:Name="authorize"/>
 					<StackPanel x:Name="credentialMethod" Visibility="Visible">
 						<TextBox x:Uid="email" PlaceholderText="E-mail" x:Name="email" IsSpellCheckEnabled="False"/>
 						<PasswordBox x:Uid="password" PlaceholderText="Password" x:Name="password"/>
