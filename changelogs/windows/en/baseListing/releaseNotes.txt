@@ -1,1 +1,1 @@
-- Turned back on anonymous schedule export
+- Fixed semester determination for anonymous schedule

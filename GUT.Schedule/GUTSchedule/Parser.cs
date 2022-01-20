@@ -153,10 +153,12 @@ namespace GUTSchedule
 		{
 			DateTime now = DateTime.Today;
 
-			if (now.Month > 1 && now.Month < 9)
-				return $"205.{now.Year - 2001}{now.Year - 2000}/2";
+			string semester = now.Month >= 8 || now.Month < 2 ? "1" : "2";
+
+			if (now.Month >= 8)
+				return $"205.{now.Year - 2000}{now.Year - 1999}/{semester}";
 			else
-				return $"205.{now.Year - 2000}{now.Year - 1999}/1";
+				return $"205.{now.Year - 2001}{now.Year - 2000}/{semester}";
 		}
 
 		private static DateTime[] GetDatesFromWeeks(DateTime date, int weekday, string[] weeks)
