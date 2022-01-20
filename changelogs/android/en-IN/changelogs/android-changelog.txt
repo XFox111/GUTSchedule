@@ -1,1 +1,2 @@
 - Fixed semester determination for anonymous schedule
+- Upgraded target system version to Android 11
