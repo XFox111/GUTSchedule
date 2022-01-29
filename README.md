@@ -19,7 +19,7 @@ Cross-platform application which exports SPbSUT timetable to calendar
   - Target version: 1709 (10.0.16299, Fall Creators Update)
 
 ## Download
-### **https://xfox111.net/Projects/GUTSchedule**
+### **https://play.google.com/store/apps/details?id=com.xfox111.gut.schedule**
 
 ## Continious Integration and Delivery
 [![Build Status](https://dev.azure.com/xfox111/GitHub%20CI/_apis/build/status/XFox111.GUTSchedule?branchName=master)](https://dev.azure.com/xfox111/GitHub%20CI/_build/latest?definitionId=8&branchName=master)
