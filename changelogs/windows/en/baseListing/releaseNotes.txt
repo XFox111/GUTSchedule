@@ -1,1 +1,5 @@
-- Fixed semester determination for anonymous schedule
+- Updated first week of the first semester start date for anonymous timetable export
+
+Since anonymous schedule on SPbSUT website is based on week numbers, it is crucial to manually set the date of first week's monday to get correct dates for the timetable
+
+You can sign in with your SPbSUT profile to have access to correct timetable anytime
