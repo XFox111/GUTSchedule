@@ -70,7 +70,7 @@ namespace GUTSchedule
 			}
 			else if (exportParameters is DefaultExportParameters args)
 			{
-				DateTime startDate = new DateTime(2022, 8, 29);
+				DateTime startDate = new DateTime(2023, 2, 6);
 				IHtmlDocument[] rawSchedule = await GetRawSchedule(args.FacultyId, args.Course, args.GroupId);
 				if(rawSchedule[0] != null)
 					schedule.AddRange(ParseRegularSchedule(startDate, rawSchedule[0]));

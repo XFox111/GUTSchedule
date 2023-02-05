@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using GUTSchedule.Models;
 using NUnit.Framework;
@@ -68,8 +69,8 @@ namespace GUTSchedule.Test
 				var list = await Parser.GetSchedule(new DefaultExportParameters
 				{
 					Course = "0",
-					FacultyId = faculty.id,
-					GroupId = group.id,
+					FacultyId = "50005",
+					GroupId = "54222",
 					EndDate = DateTime.Today.AddDays(7),
 					StartDate = DateTime.Today
 				});
@@ -78,7 +79,7 @@ namespace GUTSchedule.Test
 				Assert.IsTrue(list.Count > 0);
 
 				Console.WriteLine("Events list:");
-				foreach (var i in list)
+				foreach (var i in list.OrderBy(i => i.StartTime))
 				{
 					Console.WriteLine("--------------------------------------------------");
 					Console.WriteLine($"[{i.Group}] {i.Order}. {i.Name} ({i.Type})");

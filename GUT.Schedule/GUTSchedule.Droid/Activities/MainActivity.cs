@@ -92,19 +92,19 @@ namespace GUTSchedule.Droid.Activities
 			start.Text = startDate.ToShortDateString();
 
 			groupTitle.Checked = prefs.GetBoolean("AddGroupToHeader", false);
-			authorize.Checked = prefs.GetBoolean("Authorize", true);
+			authorize.Checked = false; // prefs.GetBoolean("Authorize", true);
 
-			email.Text = prefs.GetString("email", "");
-			password.Text = prefs.GetString("password", "");
+			//email.Text = prefs.GetString("email", "");
+			//password.Text = prefs.GetString("password", "");
 
-			try
+			/*try
 			{
 				AvailableOccupations = await Parser.CheckAvailableOccupations(email.Text, password.Text);
 			}
 			catch
 			{
 				AvailableOccupations = new List<(string, string)>();
-			}
+			}*/
 		}
 
 		private void Export_Click(object sender, EventArgs e)
