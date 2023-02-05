@@ -2,6 +2,7 @@
 - Updated first week of the first semester start date for anonymous timetable export
 Since anonymous schedule on SPbSUT website is based on week numbers, it is crucial to manually set the date of first week's monday to get correct dates for the timetable
 ## Android
+- Updated target SDK to 31 (Android 12)
 - Disabled the ability to sign in with an account
 This is a temporary measure as at the time this feature is blocked by DDoS protection software that was recently installed on the SPbSUT website. We are working on a solution to this problem
 
