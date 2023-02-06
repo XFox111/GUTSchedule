@@ -69,8 +69,8 @@ namespace GUTSchedule.Test
 				var list = await Parser.GetSchedule(new DefaultExportParameters
 				{
 					Course = "0",
-					FacultyId = "50005",
-					GroupId = "54222",
+					FacultyId = faculty.id,
+					GroupId = group.id,
 					EndDate = DateTime.Today.AddDays(7),
 					StartDate = DateTime.Today
 				});
