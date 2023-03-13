@@ -23,6 +23,7 @@ namespace GUTSchedule.Droid.Activities
 		public static List<(string id, string name)> Faculties { get; set; }
 		public static List<(string id, string name)> Groups { get; set; }
 		public static bool AddGroupToTitle { get; set; }
+		public static bool ExcludeMilitary { get; set; }
 		public static int SelectedCalendarIndex { get; set; }
 		public static int Reminder { get; set; }
 
@@ -43,7 +44,7 @@ namespace GUTSchedule.Droid.Activities
 		Button start, end, export, applyForOccupation, validateCredential;
 		Button forDay, forWeek, forMonth, forSemester;
 		Spinner faculty, course, group, reminder, calendar;
-		CheckBox groupTitle, authorize;
+		CheckBox groupTitle, authorize, excludeMilitary;
 		TextView error;
 		LinearLayout studentParams, profParams;
 		EditText email, password;
@@ -93,6 +94,7 @@ namespace GUTSchedule.Droid.Activities
 
 			groupTitle.Checked = prefs.GetBoolean("AddGroupToHeader", false);
 			authorize.Checked = prefs.GetBoolean("Authorize", true);
+			excludeMilitary.Checked = prefs.GetBoolean("ExcludeMilitary", false);
 
 			email.Text = prefs.GetString("email", "");
 			password.Text = prefs.GetString("password", "");
@@ -165,6 +167,7 @@ namespace GUTSchedule.Droid.Activities
 			}
 
 			AddGroupToTitle = groupTitle.Checked;
+			ExcludeMilitary = excludeMilitary.Checked;
 			SelectedCalendarIndex = calendar.SelectedItemPosition;
 			Reminder = (reminder.SelectedItemPosition - 1) * 5;
 
@@ -225,6 +228,7 @@ namespace GUTSchedule.Droid.Activities
 
 			groupTitle = FindViewById<CheckBox>(Resource.Id.groupTitle);
 			authorize = FindViewById<CheckBox>(Resource.Id.authorization);
+			excludeMilitary = FindViewById<CheckBox>(Resource.Id.excludeMilitary);
 
 			studentParams = FindViewById<LinearLayout>(Resource.Id.studentParams);
 			profParams = FindViewById<LinearLayout>(Resource.Id.professorParams);
@@ -268,6 +272,8 @@ namespace GUTSchedule.Droid.Activities
 
 			groupTitle.Click += (s, e) =>
 				prefs.Edit().PutBoolean("AddGroupToHeader", groupTitle.Checked).Apply();
+			excludeMilitary.Click += (s, e) =>
+				prefs.Edit().PutBoolean("ExcludeMilitary", excludeMilitary.Checked).Apply();
 
 
 			forDay.Click += (s, e) => SetDate(0);

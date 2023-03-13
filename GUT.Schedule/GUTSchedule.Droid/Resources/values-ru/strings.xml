@@ -57,6 +57,8 @@
 
 	<string name="destinationCalendarSpinner">Конечный календарь</string>
 
+	<string name="excludeMilitary">Не добавлять расписание военной кафедры</string>
+
 	<string name="addScheduleButton">Добавить расписание</string>
 
 	<string name="copyrights">©2020 Михаил Гордеев, ИСиТ, ИСТ-942</string>

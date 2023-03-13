@@ -230,6 +230,12 @@
 			android:layout_marginVertical="5dp"
 			android:visibility="gone"/>
 
+		<CheckBox
+			android:id="@+id/excludeMilitary"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:text="@string/excludeMilitary"/>
+
 		<Button
 			android:id="@+id/export"
 			android:layout_width="match_parent"

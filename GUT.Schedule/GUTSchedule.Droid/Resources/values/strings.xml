@@ -56,6 +56,8 @@
 
 	<string name="destinationCalendarSpinner">Destination calendar</string>
 
+	<string name="excludeMilitary">Exclude military department schedule</string>
+
 	<string name="addScheduleButton">Add schedule</string>
 
 	<string name="copyrights">©2020 Michael Gordeev, IST, IST-942</string>

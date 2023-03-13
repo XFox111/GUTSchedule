@@ -45,6 +45,9 @@ namespace GUTSchedule.Droid
 		{
 			foreach (Occupation item in schedule)
 			{
+				if (MainActivity.ExcludeMilitary && item.Name.ToLowerInvariant().Contains("военная подготовка"))
+					continue;
+
 				ContentValues eventValues = new ContentValues();
 
 				eventValues.Put(CalendarContract.Events.InterfaceConsts.CalendarId, Calendars[MainActivity.SelectedCalendarIndex].Id);
