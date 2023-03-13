@@ -31,7 +31,7 @@ namespace GUT.Schedule.Droid.Activities
 
 			status = FindViewById<TextView>(Resource.Id.status);
 			PackageInfo version = PackageManager.GetPackageInfo(PackageName, PackageInfoFlags.MatchAll);
-			FindViewById<TextView>(Resource.Id.version).Text = $"v{version.VersionName} (ci-id #{version.VersionCode})";
+			FindViewById<TextView>(Resource.Id.version).Text = $"v{version.VersionName} (ci-id #{version.LongVersionCode})";
 
 			status.Text = Resources.GetText(Resource.String.permissionsCheckStatus);
 

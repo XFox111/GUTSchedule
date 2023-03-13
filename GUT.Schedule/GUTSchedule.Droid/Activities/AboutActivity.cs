@@ -38,7 +38,7 @@ namespace GUTSchedule.Droid.Activities
 			base.OnCreate(savedInstanceState);
 			SetContentView(Resource.Layout.About);
 			PackageInfo version = PackageManager.GetPackageInfo(PackageName, PackageInfoFlags.MatchAll);
-			FindViewById<TextView>(Resource.Id.version).Text = $"v{version.VersionName} (ci-id #{version.VersionCode})";
+			FindViewById<TextView>(Resource.Id.version).Text = $"v{version.VersionName} (ci-id #{version.LongVersionCode})";
 
 			FindViewById<Button>(Resource.Id.feedback).Click += (s, e) =>
 				StartActivity(new Intent(Intent.ActionView, Android.Net.Uri.Parse("mailto:feedback@xfox111.net")));

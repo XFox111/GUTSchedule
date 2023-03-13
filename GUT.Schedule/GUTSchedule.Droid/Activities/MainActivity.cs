@@ -56,7 +56,7 @@ namespace GUTSchedule.Droid.Activities
 			base.OnCreate(savedInstanceState);
 			SetContentView(Resource.Layout.Main);
 			PackageInfo version = PackageManager.GetPackageInfo(PackageName, PackageInfoFlags.MatchAll);
-			FindViewById<TextView>(Resource.Id.version).Text = $"v{version.VersionName} (ci-id #{version.VersionCode})";
+			FindViewById<TextView>(Resource.Id.version).Text = $"v{version.VersionName} (ci-id #{version.LongVersionCode})";
 
 			prefs = PreferenceManager.GetDefaultSharedPreferences(this);
 
