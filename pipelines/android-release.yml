@@ -24,7 +24,8 @@ steps:
 - task: NuGetCommand@2
   displayName: 'Restore Solution'
   inputs:
-    restoreSolution: '**/*.sln'
+    command: 'restore'
+    restoreSolution: '**/*.Droid.csproj'
 
 - task: PowerShell@2
   displayName: 'Update version number'
