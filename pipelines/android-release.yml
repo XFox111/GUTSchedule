@@ -22,7 +22,13 @@ steps:
   displayName: 'Install NuGet Tool'
 
 - task: NuGetCommand@2
-  displayName: 'Restore Solution'
+  displayName: 'Restore core project'
+  inputs:
+    command: 'restore'
+    restoreSolution: '**/GUTSchedule.csproj'
+
+- task: NuGetCommand@2
+  displayName: 'Restore Android project'
   inputs:
     command: 'restore'
     restoreSolution: '**/*.Droid.csproj'
