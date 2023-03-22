@@ -4,7 +4,6 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Preferences;
 using Android.Support.V7.App;
 using Android.Text.Method;
 using Android.Views;
@@ -13,6 +12,7 @@ using GUTSchedule.Models;
 using GUTSchedule.Droid.Fragments;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AndroidX.Preference;
 
 namespace GUTSchedule.Droid.Activities
 {
@@ -26,17 +26,6 @@ namespace GUTSchedule.Droid.Activities
 		public static bool ExcludeMilitary { get; set; }
 		public static int SelectedCalendarIndex { get; set; }
 		public static int Reminder { get; set; }
-
-		private List<(string, string)> _availableOccupations;
-		private List<(string, string)> AvailableOccupations
-		{
-			get => _availableOccupations;
-			set
-			{
-				_availableOccupations = value;
-				applyForOccupation.Visibility = value.Count > 0 ? ViewStates.Visible : ViewStates.Gone;
-			}
-		}
 
 		DateTime startDate = DateTime.Today;
 		DateTime endDate = DateTime.Today.AddDays(7);
@@ -101,11 +90,12 @@ namespace GUTSchedule.Droid.Activities
 
 			try
 			{
-				AvailableOccupations = await Parser.CheckAvailableOccupations(email.Text, password.Text);
+				var classes = await Parser.CheckAvailableOccupations(email.Text, password.Text);
+				applyForOccupation.Visibility = classes.Count > 0 ? ViewStates.Visible : ViewStates.Gone;
 			}
 			catch
 			{
-				AvailableOccupations = new List<(string, string)>();
+				applyForOccupation.Visibility = ViewStates.Gone;
 			}
 		}
 
@@ -291,19 +281,23 @@ namespace GUTSchedule.Droid.Activities
 			};
 			applyForOccupation.Click += async (s, e) =>
 			{
+				List<(string, string)> classes = null;
 				try
 				{
 					applyForOccupation.Visibility = ViewStates.Gone;
-					var occupations = await Parser.CheckAvailableOccupations(email.Text, password.Text);
-					await Parser.ApplyForOccupations(email.Text, password.Text, occupations);
+					classes = await Parser.CheckAvailableOccupations(email.Text, password.Text);
+					await Parser.ApplyForOccupations(email.Text, password.Text, classes);
 					Toast.MakeText(ApplicationContext, Resources.GetText(Resource.String.attendSuccess), ToastLength.Short).Show();
 				}
 				catch (Exception ex)
 				{
 					Toast.MakeText(ApplicationContext, $"{Resources.GetText(Resource.String.attendFailed)}\n{ex.Message}", ToastLength.Short).Show();
 				}
-				AvailableOccupations = await Parser.CheckAvailableOccupations(email.Text, password.Text);
+
+				classes = await Parser.CheckAvailableOccupations(email.Text, password.Text);
+				applyForOccupation.Visibility = classes.Count > 0 ? ViewStates.Visible : ViewStates.Gone;
 			};
+
 			validateCredential.Click += async (s, e) =>
 			{
 				try
@@ -314,7 +308,8 @@ namespace GUTSchedule.Droid.Activities
 					PreferenceManager.GetDefaultSharedPreferences(this).Edit().PutString("email", email.Text).Apply();
 					PreferenceManager.GetDefaultSharedPreferences(this).Edit().PutString("password", password.Text).Apply();
 
-					AvailableOccupations = await Parser.CheckAvailableOccupations(email.Text, password.Text);
+					var classes = await Parser.CheckAvailableOccupations(email.Text, password.Text);
+					applyForOccupation.Visibility = classes.Count > 0 ? ViewStates.Visible : ViewStates.Gone;
 					Toast.MakeText(ApplicationContext, Resources.GetText(Resource.String.validationSuccess), ToastLength.Short).Show();
 				}
 				catch (Exception ex)
