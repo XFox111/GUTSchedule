@@ -1,7 +1,7 @@
 ## Core
-- Small security updates
+- Updated start date for anonymous export
 ## Android
-- Added ability to exclude Military department schedule
+- Updated target platform version to 33
 
 ## Windows
 At this time UWP version of the app is not being supported

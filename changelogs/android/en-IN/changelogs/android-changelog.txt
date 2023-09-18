@@ -1,2 +1,2 @@
-- Added ability to exclude Military department schedule
-- Small security updates
+- Updated start date for anonymous export
+- Updated target platform version to 33
