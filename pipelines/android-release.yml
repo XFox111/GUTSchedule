@@ -52,8 +52,9 @@ steps:
     configuration: '$(buildConfiguration)'
     msbuildVersionOption: 'latest'
     msbuildArchitectureOption: 'x64'
-    msbuildArguments: ' /t:PackageForAndroid -t:SignAndroidPackage -p:AndroidPackageFormat=aab /p:Configuration=Release'
+    msbuildArguments: '/t:PackageForAndroid -t:SignAndroidPackage -p:AndroidPackageFormat=aab /p:Configuration=Release'
     jdkOption: 'JDKVersion'
+    jdkVersionOption: '1.11'
 
 - task: XamarinAndroid@1
   displayName: 'Build Solution (APK)'
@@ -64,6 +65,7 @@ steps:
     msbuildVersionOption: 'latest'
     msbuildArchitectureOption: 'x64'
     jdkOption: 'JDKVersion'
+    jdkVersionOption: '1.11'
 
 - task: DeleteFiles@1
   displayName: 'Delete debug files'
