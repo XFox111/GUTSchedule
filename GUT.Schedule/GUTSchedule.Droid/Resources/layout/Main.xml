@@ -28,6 +28,7 @@
 			android:textSize="16dp"/>
 
 		<CheckBox
+			android:visibility="gone"
 			android:id="@+id/authorization"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

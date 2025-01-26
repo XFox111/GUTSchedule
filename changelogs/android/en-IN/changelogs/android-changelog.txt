@@ -1,2 +1,1 @@
-- Updated start date for anonymous export
-- Updated target platform version to 33
+- Disabled anonymous timetable export
